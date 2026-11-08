@@ -1,0 +1,175 @@
+# EKI calibration of time-varying weather corrections (set up 2026-11-08).
+# Plan: ../ParameterEstimationFiles/camp_fire_eki_calibration_plan.md. Decisions and
+# their reasons are in README.md. Paths may use $VARS and ~; relative paths are
+# relative to this folder.
+
+study:
+  # Wind stations averaged into the baseline (run prefix: [name, station id]).
+  # Openshaw is excluded (concerns about its data).
+  stations:
+    JG: ["JARBO GAP", "041214"]
+    CO: ["COHASSET", "041211"]
+  # Baseline wind: equal-weight (50/50) mean of the two stations' wind vectors
+  # (u and v averaged, then speed and direction recombined), the MEAN blend of
+  # ../ParameterEstimationFiles/.../generate_weather.py. Dead fuel moisture:
+  # Jarbo Gap NFDRS, as in every earlier study.
+
+sources:
+  wind_csv: "../HistoricalDataClass/COHASSET,JARBO GAP,...OPENSHAW__WeatherHourly__11-06-2018__11-11-2018.csv"
+  moisture_csv: ../HistoricalDataClass/drive-download-20261019T162718Z-1-001/JarboGap__NfdrsHourly__09-30-2003__09-30-2026.csv
+  moisture_station: ["JARBO GAP", "041214"]
+  nfdrs_fuel_model: V
+  # Brewer and Clements (2020) sec. 3.3: Jarbo Gap questionable after about
+  # 06:00 PST 9 Nov 2018. A window past this time is refused.
+  jarbo_gap_reliable_until_utc: "2018-11-09T14:00:00Z"
+  # The groupmate's MEAN series (rounded to 4 decimals); prepare checks that the
+  # baseline built here reproduces it.
+  reference_mean_csv: "../ParameterEstimationFiles/Combined JG CO Wind Data-20261108T190836Z-1-001/Combined JG CO Wind Data/outputs/weather_MEAN.csv"
+  observations_geojson: "../ParameterEstimationFiles/Arrival time observations-20261108T190842Z-1-001/Arrival time observations/camp_fire_arrival_times.geojson"
+  # The GeoJSON's elapsed times are measured from this local time (checked for
+  # every feature). It must equal the model ignition time, t0 + ignition_s.
+  observations_origin_pst: "2018-11-08T06:15:00"
+  # NIST TN 2135 Appendix F workbook (mds2-2954, downloaded 2026-11-08), the source of
+  # the GeoJSON: record IDs, descriptions, fire types, sources, observation windows.
+  # Read only. Field definitions: TN 2135 Table 6 and sec. 7.4.1 (../ParameterEstimationFiles/NIST_TN2135_report/).
+  nist_workbook: "../ParameterEstimationFiles/NIST_TN2135_AppendixF/NIST TN 2135 Appendix F Fire Spread Data.xlsx"
+
+simulation:
+  t0_utc: "2018-11-08T14:00:00Z"   # model t = 0 = weather band 1 (06:00 PST)
+  ignition_s: 900                  # SIMULATION_TSTART: ignition at 06:15 PST, the observations' origin
+  stop_s: 86400                    # SIMULATION_TSTOP: 24 h after t0 (06:00 PST 9 Nov)
+  dt_weather_s: 3600
+  ignition_lonlat: [-121.437222, 39.810283]   # the original fixed ignition cell (row 447, col 1186)
+  seed: 2023                       # ELMFIRE SEED; RANDOMIZE_RANDOM_SEED = .FALSE. (deterministic)
+  # P_EPS is fixed at 0.01 in elmfire.data.template; run.json records the literal.
+
+corrections:
+  # U(t) = U0(t) exp(a(t)), D(t) = (D0(t) + d(t)) mod 360, Mk(t) = Mk0(t) + w_k m(t).
+  # a, d, m are piecewise linear between knots and constant outside them.
+  knots_h: [0, 6, 12]              # hours after t0: 06:00, 12:00, 18:00 PST (bands 1, 7, 13)
+  moisture_weights: {m1: 1.0, m10: 1.0, m100: 1.0}   # the same percentage-point offset on all three
+  # ELMFIRE raises any dead moisture below 1 % to 1 % without warning
+  # (elmfire.f90 line 550). A history below this is refused, never clipped.
+  moisture_min_pct: 1.0
+
+initial_ensemble:
+  # Exploratory initialization ranges for the first, diagnostic ensemble. They are
+  # not regularization scales and not update constraints.
+  size: 32
+  seed: 20261108
+  # Within each family, the knots' normal scores have correlation C_rs = rho^|r-s|;
+  # the three families are independent. Each knot's marginal is uniform on its range.
+  knot_correlation: 0.7
+  speed_multiplier: [0.5, 3.0]     # sampled as a multiplier; a = ln(multiplier)
+  direction_deg: [-60.0, 60.0]
+  moisture_pp: [-2.0, 2.0]
+
+observations:
+  # Eligible cell: one ELMFIRE can give an arrival time, judged from the fixed
+  # landscape only: a surface-burnable fuel model, or urban fuel 91 with building
+  # area > 0 (burned by the building model). Never from whether a run burned it.
+  # A point in an eligible cell uses that cell (direct). A point in a nonburnable
+  # cell uses the eligible cell whose centre is nearest the reported point, if
+  # within the radius (proxy); otherwise it is excluded. Mappings are frozen in
+  # prepared/observations.csv and never change between runs.
+  proxy_radius_m: 60               # primary rule (2 cell widths)
+  sensitivity_radius_m: 90         # sensitivity check
+  # Points in these fuels (92 snow/ice, 93 agriculture, 98 water, 99 barren) are
+  # held for review instead of getting a proxy automatically.
+  review_fuels: [92, 93, 98, 99]
+  # Decisions on the review points (Jacob, 2026-11-08), by obs_id and checked against the
+  # coordinates. Static: they never depend on any simulation. proxy = the same nearest-
+  # eligible rule as the other proxies; excluded = kept in the table, not used.
+  review_decisions:
+    OBS0073: {decision: proxy, lonlat: [-121.472717, 39.787733],
+              note: "TD-009 'fire burning across Rim Rd' (V): a road through wildland; 30 m proxy accepted provisionally"}
+    OBS2440: {decision: proxy, lonlat: [-121.726883, 39.673967],
+              note: "TD-092 'fire coming across valley from the east' (V); 44 m proxy accepted provisionally; kept with OBS2434 for splitting"}
+    OBS2482: {decision: excluded, lonlat: [-121.556751, 39.710355],
+              note: "TD-008 'fire established in canyon to point where river turns into lake': a landmark on water; excluded from the primary calibration for now"}
+  # Reports kept in the same split partition because they may describe one event
+  # (in addition to sharing a sampling cell or being the same NIST record).
+  same_event_groups:
+    - [OBS2440, OBS2434]     # 8 m apart; checked 2026-11-08: different sources and statements (TD-092, TD-091)
+
+holdout:
+  # Provisional spatial-block split (Jacob, 2026-11-08). 1 km squares in the case CRS,
+  # counted from the fuel grid's top-left corner, located by each report's frozen
+  # sampling cell (the containing cell for reports without one). About 20 % of the
+  # occupied blocks are held out, chosen at random with the seed. Reports sharing a
+  # cell, a NIST record or a same_event_groups entry stay in one partition (blocks they
+  # span are drawn together). Frozen in prepared/holdout_v1.csv; never changed.
+  version: 1
+  block_m: 1000
+  fraction: 0.2
+  seed: 20261108
+
+target:
+  # One-sided presence constraints (Jacob, 2026-11-08). A fire_present report says fire
+  # was at the place by the end of its window, so its cell's arrival T_i should satisfy
+  # T_i <= u_i. Residual for a finite arrival: r_i = max(0, (T_i - u_i) / s_i).
+  # Objective: sum r_i^2 / (2 N) + |B theta|^2 / 2. This is penalized constraint
+  # fitting, not an exact-arrival likelihood. Reports are never turned into exact
+  # arrival times (start or midpoint).
+  partition: fit
+  # u_i = window end (NIST start + Obs Window) + deadline_allowance_s. A tighter bound
+  # only where a description explicitly supports it, listed in deadline_overrides with
+  # the reason. Checked 2026-11-08: no description anchors a time for its location
+  # inside its window, so there are none.
+  deadline_allowance_s: 0          # no extra timing allowance
+  deadline_overrides: {}           # obs_id: {u_model_s: ..., reason: "..."}
+  exclude_residual: true           # residual reports are after the front: not in the primary fit
+  # One primary constraint per fixed sampling cell: among comparable reports (eligible,
+  # mapped, not residual, window inside the run), the smallest u_i; ties to the first
+  # in file order. Never chosen from model output.
+  one_per_cell: smallest_deadline
+  # Standardized lateness (T - u) / s among reached cells: a diagnostic only, never fitted.
+  lateness_scale_s: 3600
+
+fit:
+  # First controlled update (Jacob, 2026-11-08).
+  # Response: d_i = distance from the constraint's fixed sampling-cell centre to the
+  # nearest cell burned by its deadline, i.e. inside the cumulative burned area at u_i
+  # (0 < T <= u_i, or the ignition cell). It is 0 when the cell itself burned by u_i.
+  # Objective: Phi = 1/2 sum_i w_i (d_i / L)^2 + R_amp + R_smooth, with
+  # w_i = 1 / (K n_b): equal total weight per occupied fit block (K blocks, n_b
+  # constraints in block b; the weights sum to 1). This is an area-balanced objective,
+  # not a statement of independence.
+  length_scale_m: 1000             # L: a provisional geometric weighting scale
+  # Penalty scales, centred on the baseline (zero correction). They are not the
+  # initialization ranges and not hard limits. q_g(t) = c_g(t) / scale_g.
+  penalty_scales: {a: 0.6931471805599453, d: 30.0, m: 1.0}   # ln 2, degrees, percentage points
+  # R_amp = amplitude_weight * 1/2 sum_g (time average of q_g(t)^2 over the run, 0 .. stop_s),
+  # integrated exactly for the piecewise-linear curve, including its constant part after
+  # the last knot.
+  amplitude_weight: 1.0
+  # R_smooth = 1/2 sum_g sum_adjacent (smoothness_reference_h / dt_h) (q_next - q_prev)^2
+  smoothness_reference_h: 6.0
+  step:                            # alpha doubles from alpha0 until every limit holds
+    alpha0: 1.0
+    max_mean_sd: 0.5               # |ensemble-mean move| <= 0.5 current ensemble sd, per coefficient
+    max_member_sd: 1.0             # |each member's move| <= 1 current ensemble sd, per coefficient
+    sd_floor: 1.0e-6               # a coefficient whose sd is below sd_floor x its penalty scale counts as collapsed
+    alpha_limit: 1048576
+
+weather_grid:                      # uniform weather rasters in the case CRS
+  cellsize_m: 3000
+  margin_cells: 2                  # 1 is not enough: see weather.check_coverage
+
+case:
+  dir: ~/elmfire-class/camp_fire   # baseline case, read only
+  template: elmfire.data.template
+  elmfire: ~/elmfire/build/linux/bin/elmfire_1.1
+
+paths:
+  prepared: prepared               # baseline.csv, observations.csv (small)
+  ensembles: ensembles             # I00.csv ... one file per iteration, never edited
+  batches: batches
+  results: results
+  scratch_root: $SCRATCH/elmfire-class/eki_calibration   # shared/ and runs/
+
+slurm:   # CPUs, time and memory are in the Slurm file
+  script: slurm/eki_batch.slurm
+  runs_per_task: 33                # the baseline and 32 members in one task, 24 fires at a time
+  max_concurrent_tasks: 2
+  check_script: slurm/eki_check.slurm   # CHK batches (a few runs at ensemble means): 3 CPUs

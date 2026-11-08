@@ -1,0 +1,42 @@
+{
+ "mean": "vector",
+ "target_lonlat": [
+  -121.60632,
+  39.75581
+ ],
+ "target_x_y": [
+  619388.9500073523,
+  4401583.785845948
+ ],
+ "ignition_cell_x_y": [
+  633774.544,
+  4407867.763
+ ],
+ "target_distance_m": 15698.20637505916,
+ "target_toward_deg": 246.40312491233942,
+ "target_from_deg": 66.40312491233942,
+ "stations": {
+  "JG": {
+   "mean_from_deg": 35.53873949394526,
+   "aim_deg": 30.864385418394164
+  },
+  "OP": {
+   "mean_from_deg": 351.2360067406656,
+   "aim_deg": 75.16711817167385
+  },
+  "CO": {
+   "mean_from_deg": 45.43211152791113,
+   "aim_deg": 20.97101338442829
+  }
+ },
+ "created_utc": "2026-10-27T04:58:20Z",
+ "forcing_sha256": {
+  "JG": "e46f71cabab02064f86fcd6466f0076d5003643b6061dc0c7f6abf7705644095",
+  "OP": "8488dca2cf170c938ad17496c56e529fb11cb39e891ef9cc5925fc9e142bf5f6",
+  "CO": "e1041689a04441bd4b32c69fa5c648a01d67cb52fe0ac325fec951010bd5c681"
+ },
+ "sources_sha256": {
+  "wind_csv": "a806c851c6285a4089af73fce31e5b7e9b4efb498cfeb14b5fd49f7bf1a89ce3",
+  "moisture_csv": "9cbadc822b213c93ac78005880bd52c866ca2c6db6894911598337a83015d160"
+ }
+}

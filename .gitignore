@@ -1,0 +1,28 @@
+# Camp Fire UQ project. Data and model output stay out of git; DATA.md lists what
+# is excluded, where it lives on Sherlock, and how to get or rebuild it.
+
+# Rasters, MATLAB data, numpy archives, GIS bundles
+*.tif
+*.tiff
+*.tif.aux.xml
+*.mat
+*.npz
+*.gpkg
+
+# Slurm logs (keep the folders: Slurm needs them to exist for --output)
+*.out
+**/logs/*
+!**/logs/.gitkeep
+
+# Superseded run attempts and Python caches
+**/attempts/
+__pycache__/
+*.pyc
+
+# ELMFIRE tutorial and validation-suite outputs (496 MB)
+/results/
+
+# Large or re-downloadable source files (see DATA.md)
+/HistoricalDataClass/drive-download-20261019T162718Z-1-001/JarboGap__NfdrsHourly__09-30-2003__09-30-2026.csv
+/ParameterEstimationFiles/NIST_TN2135_report/
+/experiment/external/

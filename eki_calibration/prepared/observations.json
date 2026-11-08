@@ -1,0 +1,122 @@
+{
+ "created_utc": "2026-11-08T20:19:08Z",
+ "source": "/oak/stanford/groups/gorle/jgoell/Wildfire/eki_calibration/../ParameterEstimationFiles/Arrival time observations-20261108T190842Z-1-001/Arrival time observations/camp_fire_arrival_times.geojson",
+ "source_sha256": "8c06a8408c97549dfa8b383032f5274a2d2fdbba0e52025737b10c8435952ab0",
+ "nist_workbook": "/oak/stanford/groups/gorle/jgoell/Wildfire/eki_calibration/../ParameterEstimationFiles/NIST_TN2135_AppendixF/NIST TN 2135 Appendix F Fire Spread Data.xlsx",
+ "nist_workbook_sha256": "14fac49ca633d4c944fcb2ba2b22e95ea8751b8d0dd58216a836d2b6e89268a3",
+ "nist_rows_not_in_geojson": [
+  {
+   "sheet": "Magalia and Coutolenc Rd",
+   "sheet_row": 232,
+   "Source #": "TD-082",
+   "Date": "44509",
+   "Time": "",
+   "Latitude": "39.822322999999997",
+   "Longitude": "-121.607479",
+   "Fire Behavior Observations": "structure fully involved"
+  },
+  {
+   "sheet": "Magalia and Coutolenc Rd",
+   "sheet_row": 233,
+   "Source #": "TD-082",
+   "Date": "44509",
+   "Time": "",
+   "Latitude": "39.821598000000002",
+   "Longitude": "-121.607799",
+   "Fire Behavior Observations": "fire threatening structures"
+  },
+  {
+   "sheet": "Magalia and Coutolenc Rd",
+   "sheet_row": 234,
+   "Source #": "TD-082",
+   "Date": "44509",
+   "Time": "",
+   "Latitude": "39.821598000000002",
+   "Longitude": "-121.607799",
+   "Fire Behavior Observations": "fire threatening structures"
+  }
+ ],
+ "config_sha256": "ae5fdedb072c5b6511cc5945d9dc8f0fb9267b5d35f71ed786d49347c20a22df",
+ "features": 2836,
+ "fuel_sha256": "ca38d4d6fb3da03bf3afd8fedd01fa2eb02600092d05f385dc11555745bddb8e",
+ "bldg_area_sha256": "86a82d3e709024884fe175b0f9ce3e503768683d802e887de5466c2113ab058a",
+ "time_rule": "model_t_s = report start time (PST) - t0; equals elapsed + ignition_s (origin 2018-11-08T06:15:00 PST = ignition); window_end_s = model_t_s + 60 * NIST Obs Window (min)",
+ "in_window": "ignition_s < model_t_s <= stop_s; window_end_after_stop flags windows that end later",
+ "event_type": "residual = NIST Residual Fire? x (after the front); fire_present = any other report (fire observed at the place during the window: an upper bound on arrival)",
+ "match": "feature i = located workbook row i, accepted only because every pair agrees exactly on lon, lat (6 decimals), day and minute",
+ "eligible": "surface-burnable fuel model, or fuel 91 with building area > 0 (fixed landscape)",
+ "mapping": "direct: containing cell eligible; proxy: nonburnable containing cell, nearest eligible cell centre to the reported point within the radius (ties: lower row, then column); excluded: none within the radius, outside the domain, or excluded on review; review: containing fuel in review_fuels [92, 93, 98, 99] without a recorded decision",
+ "review_decisions": {
+  "OBS0073": {
+   "decision": "proxy",
+   "lonlat": [
+    -121.472717,
+    39.787733
+   ],
+   "note": "TD-009 'fire burning across Rim Rd' (V): a road through wildland; 30 m proxy accepted provisionally"
+  },
+  "OBS2440": {
+   "decision": "proxy",
+   "lonlat": [
+    -121.726883,
+    39.673967
+   ],
+   "note": "TD-092 'fire coming across valley from the east' (V); 44 m proxy accepted provisionally; kept with OBS2434 for splitting"
+  },
+  "OBS2482": {
+   "decision": "excluded",
+   "lonlat": [
+    -121.556751,
+    39.710355
+   ],
+   "note": "TD-008 'fire established in canyon to point where river turns into lake': a landmark on water; excluded from the primary calibration for now"
+  }
+ },
+ "radii_m": {
+  "primary": 60.0,
+  "sensitivity": 90.0
+ },
+ "column_prefixes": {
+  "primary": "r60_",
+  "sensitivity": "r90_"
+ },
+ "counts": {
+  "in_window": 2730,
+  "window_end_after_stop": 146,
+  "event_type": {
+   "fire_present": 2611,
+   "residual": 225
+  },
+  "nist_fire_type": {
+   "V": 681,
+   "R": 658,
+   "O": 649,
+   "S": 443,
+   "C": 405
+  },
+  "nist_match_basis": {
+   "unique key": 1611,
+   "key and order; candidates identical": 1090,
+   "key and order; candidates differ, but the features are identical": 135
+  },
+  "nist_record_repeats": 556,
+  "fuel_class": {
+   "nonburnable_256": 1043,
+   "wildland": 1041,
+   "urban": 749,
+   "nonburnable_review": 3
+  },
+  "r60_status": {
+   "direct": 1790,
+   "proxy": 1023,
+   "excluded": 23
+  },
+  "r90_status": {
+   "direct": 1790,
+   "proxy": 1044,
+   "excluded": 2
+  },
+  "exact_duplicates": 623
+ },
+ "sha256": "0fb14f6d270246dc3c5c9f0425682f8416284a461f220f39a0fcc8d68466ff2f"
+}

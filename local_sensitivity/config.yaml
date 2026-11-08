@@ -1,0 +1,63 @@
+# Local sensitivity study (2026-10-26): Camp Fire arrival time vs wind direction.
+# Each station's observed hourly wind directions are turned by one angle (the aim)
+# so that their mean direction blows from the ignition straight at Paradise. Run
+# <station>_WD<offset> then turns them by `offset` degrees more:
+#     wd = (wd_obs + aim + offset) mod 360
+# Wind speed and dead fuel moisture are the observed hourly values, unchanged.
+# Every other model setting is in elmfire.data.template.
+# Paths may use $VARS and ~; relative paths are relative to this folder.
+
+study:
+  stations:                      # run prefix: [wind station, station id]
+    JG: ["JARBO GAP", "041214"]
+    OP: ["OPENSHAW", "041215"]
+    CO: ["COHASSET", "041211"]
+  offsets_deg: [-50, 50, 1]      # first, last, step: 101 runs per station, JG_WD-50 ... JG_WD+50
+  # Centroid of Paradise's 2018 town limits (Census TIGER/Line place GEOID 0655520,
+  # computed in EPSG:26910). Bearing from the ignition cell: 246.4 degrees (grid), 15.7 km.
+  target_lonlat: [-121.606320, 39.755810]
+  # Mean of the 25 hourly directions. vector: direction of the mean wind vector
+  # (each hour weighted by its speed); unit: direction of the mean unit vector
+  # (every hour counts the same). The two agree within 1.2 degrees for JG and OP
+  # and differ by 14 degrees for CO, whose wind is light and variable.
+  mean: vector
+  # hourly: the recorded hourly directions, all turned by aim + offset (these runs).
+  # fixed: one direction, target + offset, in every hour (fixed_direction/config.yaml).
+  direction: hourly
+
+sources:
+  wind_csv: "../HistoricalDataClass/COHASSET,JARBO GAP,...OPENSHAW__WeatherHourly__11-06-2018__11-11-2018.csv"
+  moisture_csv: ../HistoricalDataClass/drive-download-20261019T162718Z-1-001/JarboGap__NfdrsHourly__09-30-2003__09-30-2026.csv
+  moisture_station: ["JARBO GAP", "041214"]
+  nfdrs_fuel_model: V
+  # Brewer and Clements (2020) sec. 3.3: Jarbo Gap questionable after about
+  # 06:00 PST 9 Nov 2018. A window past this time is refused.
+  jarbo_gap_reliable_until_utc: "2018-11-09T14:00:00Z"
+
+simulation:
+  t0_utc: "2018-11-08T14:00:00Z"   # model t = 0 = weather band 1 (06:00 PST)
+  ignition_s: 1800                 # SIMULATION_TSTART: ignition at 06:30 PST
+  stop_s: 86400                    # SIMULATION_TSTOP: 24 h after t0
+  dt_weather_s: 3600
+  ignition_lonlat: [-121.437222, 39.810283]
+  seed: 2023                       # ELMFIRE SEED; RANDOMIZE_RANDOM_SEED = .FALSE.
+
+weather_grid:                      # uniform weather rasters in the case CRS
+  cellsize_m: 3000
+  margin_cells: 2                  # 1 is not enough: see weather.check_coverage
+
+case:
+  dir: ~/elmfire-class/camp_fire   # baseline case, read only
+  template: elmfire.data.template
+  elmfire: ~/elmfire/build/linux/bin/elmfire_1.1
+
+paths:
+  prepared: prepared               # forcing tables and aim.json (small)
+  batches: batches
+  results: results
+  scratch_root: $SCRATCH/elmfire-class/local_sensitivity   # shared/ and runs/
+
+slurm:   # CPUs, time and memory are in the Slurm file
+  script: slurm/lsa_batch.slurm    # relative to the local_sensitivity folder; printed by make-batch
+  runs_per_task: 101               # one station per array task: 101 fires, 24 at a time
+  max_concurrent_tasks: 3

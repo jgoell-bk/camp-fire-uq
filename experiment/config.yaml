@@ -1,0 +1,92 @@
+# Camp Fire ELMFIRE Sobol experiment. Spec: ../Camp_Fire_ELMFIRE_coding_agent_handoff.md
+# Paths may use $VARS and ~; relative paths are relative to this folder.
+# Every key is required: a missing or null value stops the pipeline.
+
+design:
+  # 6-factor design (2026-10-19), written by tools/make_matrix.py with the same
+  # construction and seed as the original 5-factor matrix, which stays unchanged in
+  # manifest/ (Camp_Fire_Sobol_N128_run_matrix_4608.csv, sha256 6472d320...).
+  matrix: manifest/Camp_Fire_Sobol_N128_D6_run_matrix_5376.csv   # read-only
+  sha256: 5a378386c8aac27b4a1133ca38deaf47771fe492f77d665742ebdae5c106c74e
+  base_samples: 128
+  factors:                       # CSV column order: [lower, upper, nominal]
+    a_U: [0.8, 1.2, 1.0]         # multiplier on hourly wind speed
+    b_theta_deg: [-20.0, 20.0, 0.0]   # offset to wind-from azimuth
+    b_1_pp: [-1.0, 1.0, 0.0]     # offsets to dead fuel moisture, percentage points
+    b_10_pp: [-1.0, 1.0, 0.0]
+    b_100_pp: [-2.0, 2.0, 0.0]
+    q_spot: [0.0, 1.0, 0.588591910067779]   # nominal = ln 10 / ln 50, so P_EPS = 0.01
+  # Namelist settings computed from a factor as low * base**factor, constant within
+  # a run, and written to the CSV (as a check), run.json and the results tables.
+  # P_EPS is log-uniform on [0.001, 0.05]; smaller P_EPS = longer spotting distances.
+  # Exploratory sensitivity bounds, not a calibrated uncertainty distribution.
+  derived:
+    P_EPS: {factor: q_spot, low: 0.001, base: 50}
+  stations:                      # run prefix: [wind station, station id], file order
+    JG: ["JARBO GAP", "041214"]
+    OP: ["OPENSHAW", "041215"]
+    CO: ["COHASSET", "041211"]
+
+sources:
+  wind_csv: "../HistoricalDataClass/COHASSET,JARBO GAP,...OPENSHAW__WeatherHourly__11-06-2018__11-11-2018.csv"
+  moisture_csv: ../HistoricalDataClass/drive-download-20261019T162718Z-1-001/JarboGap__NfdrsHourly__09-30-2003__09-30-2026.csv
+  moisture_station: ["JARBO GAP", "041214"]
+  nfdrs_fuel_model: V
+  # Brewer and Clements (2020) sec. 3.3: Jarbo Gap questionable after about
+  # 06:00 PST 9 Nov 2018. A window past this time must be allowed explicitly.
+  jarbo_gap_reliable_until_utc: "2018-11-09T14:00:00Z"
+  allow_after_jarbo_gap_cutoff: false
+
+simulation:
+  t0_utc: "2018-11-08T14:00:00Z"   # model t = 0 = weather band 1 (06:00 PST)
+  ignition_s: 1800                 # SIMULATION_TSTART: ignition at 06:30 PST
+  stop_s: 86400                    # SIMULATION_TSTOP: 24 h after t0
+  dt_weather_s: 3600
+  ignition_lonlat: [-121.437222, 39.810283]
+  seed: 2023                       # ELMFIRE SEED; RANDOMIZE_RANDOM_SEED = .FALSE.
+  spotting: true                   # ENABLE_SPOTTING, at the baseline case's settings
+
+weather_grid:                      # uniform weather rasters in the case CRS
+  cellsize_m: 3000
+  margin_cells: 2                  # 1 is not enough: see weather.check_coverage
+
+case:
+  dir: ~/elmfire-class/camp_fire   # baseline case, read only
+  template: elmfire.data.template
+  elmfire: ~/elmfire/build/linux/bin/elmfire_1.1
+
+paths:
+  prepared: prepared               # forcing tables and provenance (small)
+  batches: batches
+  results: results
+  # shared/, runs/, controls/. Use a new folder whenever a model setting changes,
+  # so runs made with different settings never mix (validated runs are skipped).
+  # Earlier variants (5-factor matrix): camp_sobol = spotting-off pilot,
+  # camp_sobol_spot = spotting-on pilot and the spotting study (2026-10-19).
+  scratch_root: $SCRATCH/elmfire-class/camp_sobol_d6
+
+checkpoint:                        # handoff section 5, observed values at t0
+  time_utc: "2018-11-08T14:00:00Z"
+  wind: {JG: [18, 33], OP: [1, 48], CO: [1, 76]}   # [mph, degrees from]
+  moisture: [7.53, 7.18, 10.00]                    # 1-, 10-, 100-hour, percent
+
+pilot:
+  base_rows: [1]                   # all 12 Sobol rows of these base rows, every station
+  repeats: [JG_BASELINE]           # rerun as <id>__rep2 to check the seed policy
+
+spotting_study:   # one setting at a time around the nominal controls (make-batch spotting)
+  # Ran 2026-10-19 with the 5-factor matrix (results in camp_sobol_spot). With q_spot
+  # a factor, the P_EPS levels here are refused: a run cannot set P_EPS twice.
+  # Run IDs: <station>_BASELINE__<SETTING>-<level>, e.g. JG_BASELINE__P_EPS-0.001.
+  # Case values: P_EPS 0.01, CELL_IGNITION_DELAY 1000, EMBER_GR_PER_MW_VEGE 33.3,
+  # USE_CROSSWIND_DISTRIBUTION false. Delay and ember ranges: uq_project_plan.md sec. 5.
+  P_EPS: [0.001, 0.05]
+  CELL_IGNITION_DELAY: [300.0, 2000.0]
+  EMBER_GR_PER_MW_VEGE: [15.0, 50.0]
+  USE_CROSSWIND_DISTRIBUTION: [true]
+
+slurm:   # CPUs, time and memory are in slurm/sobol_batch.slurm, with the pilot timings
+  # 192 = 8 waves of 24 CPUs, about 1 h per task (4-15 min per fire with
+  # spotting): 28 tasks for the 5,376-run design; the 46-run pilot is one task.
+  runs_per_task: 192
+  max_concurrent_tasks: 24         # array throttle printed by make-batch

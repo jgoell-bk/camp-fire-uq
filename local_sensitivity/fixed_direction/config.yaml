@@ -1,0 +1,55 @@
+# Local sensitivity study, fixed-direction variant (2026-10-28, Jacob's request).
+# Same as ../config.yaml except that every hour blows from ONE direction: run
+# <station>_WD<offset> uses
+#     wd = (target_from + offset) mod 360   in all 25 hours,
+# where target_from (66.40 degrees) blows from the ignition straight at Paradise.
+# Wind speed and dead fuel moisture are the recorded hourly values, as before.
+# Only study.direction, the relative paths, scratch_root and the Slurm script
+# differ from ../config.yaml (tests.test_lsa checks this).
+# Paths may use $VARS and ~; relative paths are relative to this folder.
+
+study:
+  stations:                      # run prefix: [wind station, station id]
+    JG: ["JARBO GAP", "041214"]
+    OP: ["OPENSHAW", "041215"]
+    CO: ["COHASSET", "041211"]
+  offsets_deg: [-50, 50, 1]      # first, last, step: 101 runs per station, JG_WD-50 ... JG_WD+50
+  # Centroid of Paradise's 2018 town limits (Census TIGER/Line place GEOID 0655520).
+  target_lonlat: [-121.606320, 39.755810]
+  mean: vector                   # only recorded here: a fixed direction has no hourly mean to aim
+  direction: fixed
+
+sources:
+  wind_csv: "../../HistoricalDataClass/COHASSET,JARBO GAP,...OPENSHAW__WeatherHourly__11-06-2018__11-11-2018.csv"
+  moisture_csv: ../../HistoricalDataClass/drive-download-20261019T162718Z-1-001/JarboGap__NfdrsHourly__09-30-2003__09-30-2026.csv
+  moisture_station: ["JARBO GAP", "041214"]
+  nfdrs_fuel_model: V
+  jarbo_gap_reliable_until_utc: "2018-11-09T14:00:00Z"
+
+simulation:
+  t0_utc: "2018-11-08T14:00:00Z"   # model t = 0 = weather band 1 (06:00 PST)
+  ignition_s: 1800                 # SIMULATION_TSTART: ignition at 06:30 PST
+  stop_s: 86400                    # SIMULATION_TSTOP: 24 h after t0
+  dt_weather_s: 3600
+  ignition_lonlat: [-121.437222, 39.810283]
+  seed: 2023                       # ELMFIRE SEED; RANDOMIZE_RANDOM_SEED = .FALSE.
+
+weather_grid:                      # uniform weather rasters in the case CRS
+  cellsize_m: 3000
+  margin_cells: 2
+
+case:
+  dir: ~/elmfire-class/camp_fire   # baseline case, read only
+  template: ../elmfire.data.template
+  elmfire: ~/elmfire/build/linux/bin/elmfire_1.1
+
+paths:
+  prepared: prepared               # forcing tables and aim.json (same values as ../prepared)
+  batches: batches
+  results: results
+  scratch_root: $SCRATCH/elmfire-class/local_sensitivity_fixed   # shared/ and runs/
+
+slurm:   # CPUs, time and memory are in the Slurm file
+  script: slurm/lsa_batch_fixed.slurm   # relative to the local_sensitivity folder
+  runs_per_task: 101               # one station per array task: 101 fires, 24 at a time
+  max_concurrent_tasks: 3
