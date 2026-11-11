@@ -1,0 +1,244 @@
+        run window_h  constraints  weight_share  distance_term  share_of_run_term  met_share   mean_km
+uncorrected      0-6          466      0.331282      15.060007           0.335842   0.004292 10.206746
+uncorrected     6-12          417      0.335597      16.572186           0.369564   0.007194  8.776696
+uncorrected 12-24.01          179      0.333122      13.210367           0.294594   0.094972  6.038127
+   v2 final      0-6          466      0.331282       4.880137           0.833814   0.010730  5.077336
+   v2 final     6-12          417      0.335597       0.753048           0.128665   0.184652  1.171639
+   v2 final 12-24.01          179      0.333122       0.219606           0.037522   0.670391  0.348459
+   v3 final      0-6          466      0.331282       6.533238           0.776102   0.008584  6.150658
+   v3 final     6-12          417      0.335597       1.303312           0.154824   0.165468  1.338686
+   v3 final 12-24.01          179      0.333122       0.581465           0.069074   0.474860  0.640822
+
+by region (0-6 h):
+                 nist_sheet  constraints  blocks  weight_share_of_all  term v2 final  term v3 final  share v3 final  met v3 final  mean_km v2 final  mean_km v3 final
+                   Pentz Rd          151      12             0.070158       1.299557       1.692052        0.258991      0.000000          5.504412          6.485060
+                     Concow           67      24             0.152397       0.937523       1.208590        0.184991      0.059701          2.327296          2.882862
+                     Skyway           51       8             0.018151       0.617354       0.817671        0.125156      0.000000          8.146988          9.449918
+                   Clark Rd           53       8             0.027339       0.395716       0.623144        0.095381      0.000000          4.410664          5.636586
+Pearson Rd and Buschmann Rd           48       4             0.017981       0.474849       0.598312        0.091580      0.000000          4.421498          5.677904
+         Butte Creek Canyon            1       1             0.006849       0.388165       0.562762        0.086138      0.000000         10.646323         12.818990
+ Elliott Rd and Nunneley Rd           32       5             0.014999       0.314230       0.410297        0.062802      0.000000          4.601411          5.895920
+                   Bille Rd           24       5             0.008114       0.219013       0.278193        0.042581      0.000000          5.038206          6.318977
+                Wagstaff Rd           33       3             0.012134       0.141522       0.214463        0.032826      0.000000          5.851861          7.057166
+                    Neal Rd            5       3             0.002473       0.059302       0.089420        0.013687      0.000000          7.145591          8.795201
+   Magalia and Coutolenc Rd            1       1             0.000685       0.032905       0.038334        0.005868      0.000000          9.802245         10.579967
+
+top blocks:
+ block                              sheets  constraints  term v2 final  term v3 final  share v3 final
+B23_13                  Butte Creek Canyon            1       0.388165       0.562762        0.086138
+B20_17                              Skyway           24       0.330377       0.418081        0.063993
+B22_21         Pearson Rd and Buschmann Rd            3       0.360103       0.417488        0.063902
+B22_23                            Pentz Rd            1       0.261690       0.311033        0.047608
+B18_22 Bille Rd/Elliott Rd and Nunneley Rd            4       0.190020       0.232487        0.035585
+B18_25                              Concow            1       0.179414       0.212415        0.032513
+B17_24                            Pentz Rd            7       0.151159       0.196517        0.030080
+B19_23 Elliott Rd and Nunneley Rd/Pentz Rd            5       0.149780       0.194575        0.029782
+B18_24                            Pentz Rd            4       0.140046       0.175783        0.026906
+B16_24                            Pentz Rd            8       0.134561       0.173719        0.026590
+
+top constraints:
+ obs_id deadline_pst                  nist_sheet  block_n  km_from_ignition  d_km v2 final  d_km v3 final  q v2 final  q v3 final arrival_pst v3 final
+OBS2307        10:55          Butte Creek Canyon        1         23.842527      10.646323      12.818990    0.388165    0.562762                20:18
+OBS0268        08:54                    Pentz Rd        1         14.653181       8.741487       9.530042    0.261690    0.311033                15:33
+OBS0061        07:58                      Concow        1         11.471813       7.238025       7.875614    0.179414    0.212415                11:42
+OBS1093        08:30 Pearson Rd and Buschmann Rd        3         16.582295      11.208162      11.950849    0.143405    0.163040                15:38
+OBS0200        09:00                    Pentz Rd        1         11.192292       5.538637       6.467210    0.105057    0.143236                18:58
+OBS0058        07:54                      Concow        1          9.203695       5.856765       6.425675    0.117472    0.141402                20:53
+OBS1105        09:20 Pearson Rd and Buschmann Rd        3         16.666424      10.002650      10.684255    0.114216    0.130312                16:17
+OBS1102        09:30 Pearson Rd and Buschmann Rd        3         16.902145       9.474920      10.428010    0.102482    0.124136                16:25
+OBS0047        07:47                      Concow        1          9.029252       5.023545       5.514291    0.086425    0.104135                10:35
+OBS0039        07:38                      Concow        2         10.251268       6.849796       7.358505    0.080342    0.092718                12:26
+OBS1834        10:44                      Skyway        4         20.503963       8.118035      10.117075    0.056423    0.087633                22:22
+OBS0074        08:15                      Concow        1          8.813314       3.973160       4.676152    0.054062    0.074885                11:20
+{
+ "concentration": {
+  "uncorrected": {
+   "constraints": {
+    "top1": 0.0780657843205784,
+    "top5": 0.18475541667774473,
+    "top10": 0.2610628243284555,
+    "top20": 0.3605612145796825,
+    "top50": 0.5351118106738144,
+    "n_for_50pct": 42,
+    "n_for_80pct": 165,
+    "n": 466
+   },
+   "blocks": {
+    "top1": 0.07806578432057841,
+    "top5": 0.24842387850537936,
+    "top10": 0.39101324697258233,
+    "top20": 0.6189795250423348,
+    "top50": 0.9777335922557376,
+    "n_for_50pct": 15,
+    "n_for_80pct": 31,
+    "n": 62
+   },
+   "share_d_over_1km": 0.9914163090128756,
+   "share_d_over_3km": 0.9656652360515021,
+   "share_d_over_5km": 0.9420600858369099,
+   "term_from_blocks_with_1_or_2_constraints": 0.29171172195062445
+  },
+  "v2 final": {
+   "constraints": {
+    "top1": 0.07953979378708702,
+    "top5": 0.22338443316665646,
+    "top10": 0.3234883333320825,
+    "top20": 0.4324755445055618,
+    "top50": 0.6110270867697756,
+    "n_for_50pct": 30,
+    "n_for_80pct": 112,
+    "n": 466
+   },
+   "blocks": {
+    "top1": 0.07953979378708703,
+    "top5": 0.3135887187601437,
+    "top10": 0.46855055122379596,
+    "top20": 0.6991443642441948,
+    "top50": 0.9925304677389754,
+    "n_for_50pct": 12,
+    "n_for_80pct": 26,
+    "n": 62
+   },
+   "share_d_over_1km": 0.9120171673819742,
+   "share_d_over_3km": 0.6909871244635193,
+   "share_d_over_5km": 0.5579399141630901,
+   "term_from_blocks_with_1_or_2_constraints": 0.3005703320892509
+  },
+  "v3 final": {
+   "constraints": {
+    "top1": 0.08613829443858512,
+    "top5": 0.21313871307832818,
+    "top10": 0.30385994754452367,
+    "top20": 0.4079101456269468,
+    "top50": 0.5890659131899383,
+    "n_for_50pct": 33,
+    "n_for_80pct": 124,
+    "n": 466
+   },
+   "blocks": {
+    "top1": 0.08613829443858512,
+    "top5": 0.29722637656059314,
+    "top10": 0.4430973806105271,
+    "top20": 0.6791906096798911,
+    "top50": 0.9908113290638174,
+    "n_for_50pct": 13,
+    "n_for_80pct": 28,
+    "n": 62
+   },
+   "share_d_over_1km": 0.9678111587982833,
+   "share_d_over_3km": 0.7939914163090128,
+   "share_d_over_5km": 0.6502145922746781,
+   "term_from_blocks_with_1_or_2_constraints": 0.30102452565357796
+  }
+ },
+ "residual_direction_v3": {
+  "unmet_constraints": 462,
+  "share_of_v3_early_term_with_gap_within_45deg_of_radial": 0.9938417833197873,
+  "within_45_to_90": 0.006158216680212607,
+  "more_than_90": 0.0,
+  "median_angle_weighted_by_count": 7.058351537666056
+ },
+ "named_points": {
+  "OBS0001": {
+   "deadline_pst": "06:25",
+   "km_from_ignition_cell": 0.5507267925205745,
+   "description": "fire under transmission lines within 6\u00a0m (20\u00a0ft) of tower, estimated size 30\u00a0m \u00d7 30 m (100\u00a0ft \u00d7 100\u00a0ft).",
+   "uncorrected": {
+    "d_km": 0.5507267925205745,
+    "arrival_pst": "18:29"
+   },
+   "v2 final": {
+    "d_km": 0.5507267925205745,
+    "arrival_pst": "20:44"
+   },
+   "v3 final": {
+    "d_km": 0.5507267925205745,
+    "arrival_pst": "19:52"
+   }
+  },
+  "OBS0005": {
+   "deadline_pst": "06:45",
+   "km_from_ignition_cell": 3.9139366371978994,
+   "description": "second power line ignition determined near intersection of Rim Rd and Concow Rd",
+   "uncorrected": {
+    "d_km": 3.7297855166215657,
+    "arrival_pst": "20:59"
+   },
+   "v2 final": {
+    "d_km": 2.881405906844782,
+    "arrival_pst": "10:35"
+   },
+   "v3 final": {
+    "d_km": 3.666019639881925,
+    "arrival_pst": "10:26"
+   }
+  },
+  "OBS0009": {
+   "deadline_pst": "07:12",
+   "km_from_ignition_cell": 1.292439553712281,
+   "description": "fire already in and above Pulga",
+   "uncorrected": {
+    "d_km": 0.8884255736976508,
+    "arrival_pst": "09:20"
+   },
+   "v2 final": {
+    "d_km": 0.0,
+    "arrival_pst": "07:02"
+   },
+   "v3 final": {
+    "d_km": 0.0,
+    "arrival_pst": "07:11"
+   }
+  }
+ },
+ "flexibility": {
+  "runs_scored": 581,
+  "min_early_term_calibration_members": [
+   {
+    "version": "v3",
+    "run_id": "I00_M21",
+    "early_term": 3.368809177658253,
+    "early_met_share": 0.08369098712446352,
+    "outside_acres": 78879.89260827006
+   },
+   {
+    "version": "v2",
+    "run_id": "I08_M08",
+    "early_term": 3.408046948046367,
+    "early_met_share": 0.04291845493562232,
+    "outside_acres": 63412.776045019484
+   },
+   {
+    "version": "v2",
+    "run_id": "I08_M31",
+    "early_term": 3.6515492754587253,
+    "early_met_share": 0.027896995708154508,
+    "outside_acres": 68554.54482258826
+   }
+  ],
+  "SEN01": [
+   {
+    "run_id": "SEN01_I08MEAN_PEPS0.01",
+    "early_term": 4.938173022604003,
+    "early_met_share": 0.01072961373390558,
+    "outside_acres": 52359.30754230654
+   },
+   {
+    "run_id": "SEN01_I08MEAN_PEPS0.003",
+    "early_term": 1.726429384191414,
+    "early_met_share": 0.1072961373390558,
+    "outside_acres": 70122.87325768407
+   },
+   {
+    "run_id": "SEN01_I08MEAN_PEPS0.001",
+    "early_term": 0.4869237345645689,
+    "early_met_share": 0.259656652360515,
+    "outside_acres": 71944.9542090085
+   }
+  ],
+  "early_constraints_never_met_by_any_run": 310,
+  "early_constraints": 466,
+  "oracle_early_term_best_run_per_constraint": 0.38273088621016293,
+  "note": "oracle: each constraint scored by whichever run came closest; a lower bound no single run attains"
+ }
+}

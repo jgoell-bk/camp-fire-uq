@@ -1,0 +1,133 @@
+{
+ "perimeter": {
+  "polygon_acres_in_grid_crs": 153270.7464419262,
+  "GIS_ACRES_attribute": 153336.0,
+  "mask_cells": 689178,
+  "mask_acres": 153269.63332990024,
+  "cell_acres": 0.2223948433204488,
+  "mask_on_fuel_grid": true,
+  "mask_cells_on_domain_edge_band": 0
+ },
+ "runs": [
+  {
+   "run": "uncorrected",
+   "run_id": "v3/BASELINE",
+   "statistic": "single run",
+   "total_acres": 97717.40302204202,
+   "inside_acres": 57470.16343665378,
+   "outside_acres": 40247.23958538825,
+   "inside_share_of_final_perimeter": 0.3749611856443474,
+   "outside_share_of_burned": 0.4118738151105972,
+   "elmfire_reported_acres": 97717.2,
+   "nan_cells": 0,
+   "nonpositive_values": [
+    -9999.0,
+    -1.0
+   ],
+   "nodata": -9999.0,
+   "burned_cells_within_900m_of_edge": 4421,
+   "edge_sides": {
+    "north": 0,
+    "south": 4421,
+    "west": 0,
+    "east": 0
+   }
+  },
+  {
+   "run": "v1 final",
+   "run_id": "v1/CHK08_I08MEAN",
+   "statistic": "single run at ensemble-mean parameters",
+   "total_acres": 149870.77293943384,
+   "inside_acres": 97511.4653971273,
+   "outside_acres": 52359.307542306546,
+   "inside_share_of_final_perimeter": 0.6362086427599256,
+   "outside_share_of_burned": 0.3493630313327744,
+   "elmfire_reported_acres": 149870.5,
+   "nan_cells": 0,
+   "nonpositive_values": [
+    -9999.0,
+    -1.0
+   ],
+   "nodata": -9999.0,
+   "burned_cells_within_900m_of_edge": 6079,
+   "edge_sides": {
+    "north": 0,
+    "south": 0,
+    "west": 6079,
+    "east": 0
+   }
+  },
+  {
+   "run": "v2 final",
+   "run_id": "v2/CHK08_I08MEAN",
+   "statistic": "single run at ensemble-mean parameters",
+   "total_acres": 152264.1862432485,
+   "inside_acres": 97829.26762823222,
+   "outside_acres": 54434.91861501627,
+   "inside_share_of_final_perimeter": 0.6382821274039508,
+   "outside_share_of_burned": 0.35750310009245495,
+   "elmfire_reported_acres": 152264.0,
+   "nan_cells": 0,
+   "nonpositive_values": [
+    -9999.0,
+    -1.0
+   ],
+   "nodata": -9999.0,
+   "burned_cells_within_900m_of_edge": 5977,
+   "edge_sides": {
+    "north": 0,
+    "south": 0,
+    "west": 5977,
+    "east": 0
+   }
+  },
+  {
+   "run": "v3 final",
+   "run_id": "v3/CHK08_I08MEAN",
+   "statistic": "single run at ensemble-mean parameters",
+   "total_acres": 109531.46188891091,
+   "inside_acres": 90163.53977381966,
+   "outside_acres": 19367.92211509125,
+   "inside_share_of_final_perimeter": 0.5882674722640595,
+   "outside_share_of_burned": 0.1768251950725774,
+   "elmfire_reported_acres": 109531.3,
+   "nan_cells": 0,
+   "nonpositive_values": [
+    -9999.0,
+    -1.0
+   ],
+   "nodata": -9999.0,
+   "burned_cells_within_900m_of_edge": 0,
+   "edge_sides": {
+    "north": 0,
+    "south": 0,
+    "west": 0,
+    "east": 0
+   }
+  },
+  {
+   "run": "v3 rejected I09 mean",
+   "run_id": "v3/CHK09_I09MEAN",
+   "statistic": "single run at ensemble-mean parameters",
+   "total_acres": 118132.13766464262,
+   "inside_acres": 92745.54390477008,
+   "outside_acres": 25386.593759872543,
+   "inside_share_of_final_perimeter": 0.6051136281192958,
+   "outside_share_of_burned": 0.21489997778539177,
+   "elmfire_reported_acres": 118132.0,
+   "nan_cells": 0,
+   "nonpositive_values": [
+    -9999.0,
+    -1.0
+   ],
+   "nodata": -9999.0,
+   "burned_cells_within_900m_of_edge": 332,
+   "edge_sides": {
+    "north": 0,
+    "south": 0,
+    "west": 332,
+    "east": 0
+   }
+  }
+ ]
+}

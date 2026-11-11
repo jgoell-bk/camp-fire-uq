@@ -438,6 +438,30 @@ class TestPilot(unittest.TestCase):
         self.assertAlmostEqual(distance_to_burned(far, np.array([399]), np.array([399]), np.array([1e5]), 30.0)[0],
                                np.hypot(399, 399) * 30.0)       # found beyond the first search squares
 
+    def test_distance_is_to_the_burned_set_not_the_fireline(self):
+        """Audit 2026-11-10. A report means "this place burned by u". A fire spreading
+        out from (50, 50) at 10 s per cell: T = 900 + 10 r. At u = 1900 s the burned set
+        is the disc r <= 100 cells and the fireline is its edge, 100 cells away from the
+        centre. Distance to the fireline would penalize the passed points; distance to
+        the burned set must not."""
+        n = 301
+        yy, xx = np.mgrid[0:n, 0:n]
+        r = np.hypot(yy - 50, xx - 50)
+        toa = np.where(r <= 200, 900.0 + 10.0 * r, -9999.0)
+        toa[50, 50] = -1.0                                        # the ignition cell
+        u = 1900.0
+        rows = np.array([50, 50, 50, 50, 50])
+        cols = np.array([60, 150, 151, 200, 280])
+        d = distance_to_burned(toa, rows, cols, np.full(5, u), 30.0)
+        self.assertEqual(d[0], 0.0)          # passed 900 s before u, 90 cells inside the front: met
+        self.assertEqual(toa[50, 150], u)
+        self.assertEqual(d[1], 0.0)          # reached exactly at its deadline: met (T <= u)
+        self.assertEqual(d[2], 30.0)         # reached 10 s after u: one cell from the burned set
+        self.assertEqual(d[3], 50 * 30.0)    # outside the burned set: distance to its edge
+        self.assertEqual(d[4], 130 * 30.0)   # never burned (-9999): still the distance to the set
+        late = distance_to_burned(toa, rows[:1], cols[:1], np.array([900.0 + 10.0 * 10 - 1e-3]), 30.0)
+        self.assertEqual(late[0], 30.0)      # the same passed point, with a deadline 1 ms before arrival
+
 
 class TestUpdate(unittest.TestCase):
     def problem(self, J=32, seed=0):

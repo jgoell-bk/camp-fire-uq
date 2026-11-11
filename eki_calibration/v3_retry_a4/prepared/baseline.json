@@ -1,0 +1,24 @@
+{
+ "created_utc": "2026-11-11T01:06:39Z",
+ "sha256": "c0038f7c14fd820196d86f8d53379b0b7f5ca425a716c1fb87243721a7e49983",
+ "stations": {
+  "JG": [
+   "JARBO GAP",
+   "041214"
+  ],
+  "CO": [
+   "COHASSET",
+   "041211"
+  ]
+ },
+ "rule": "equal-weight mean of the stations' (u, v) wind vectors; Jarbo Gap NFDRS dead fuel moisture",
+ "reference_check": {
+  "max_abs_ws_diff_mph": 4.9318001412501644e-05,
+  "max_abs_wd_diff_deg": 4.916966062751271e-05
+ },
+ "sources_sha256": {
+  "wind_csv": "a806c851c6285a4089af73fce31e5b7e9b4efb498cfeb14b5fd49f7bf1a89ce3",
+  "moisture_csv": "9cbadc822b213c93ac78005880bd52c866ca2c6db6894911598337a83015d160",
+  "reference_mean_csv": "2dd9bf6128629dfb916552624971f0d75fbb9bc642e9f5ba1cbc5902810b0b07"
+ }
+}

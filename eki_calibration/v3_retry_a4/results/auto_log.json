@@ -1,0 +1,17 @@
+{
+ "jobs": [
+  {
+   "started_utc": "2026-11-11T07:12:21Z",
+   "slurm_job_id": "51571386",
+   "host": "sh04-07n21.int",
+   "settings": {
+    "max_ensemble": 7,
+    "min_relative_gain": 0.02
+   },
+   "steps": [],
+   "stopped": "the newest ensemble, I08, is past auto.max_ensemble (I07)",
+   "exit_code": 0,
+   "ended_utc": "2026-11-11T07:12:21Z"
+  }
+ ]
+}

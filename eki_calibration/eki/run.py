@@ -261,10 +261,14 @@ def make_batch(cfg, which="I00", of=None, quiet=False):
         part = chunk(ids, size, i)
         print(f"  task {i}: {part[0]} .. {part[-1]} ({len(part)} runs)")
     script = sl["check_script"] if name.startswith(("CHK", "SEN")) else sl["script"]
+    script = os.path.relpath(cfg.path(script), CODE_ROOT)    # config paths are relative to the config's folder
     print("Submit from the eki_calibration folder (CPUs, time and memory are set in the Slurm file):")
     print(f"  cd {CODE_ROOT}")
+    # eki_check.slurm takes the config as an optional second argument (default config.yaml)
+    extra = "" if cfg.file == CODE_ROOT / "config.yaml" or not script.endswith("eki_check.slurm") \
+        else f" {os.path.relpath(cfg.file, CODE_ROOT)}"
     print(f"  sbatch --array=0-{ntasks - 1}%{sl['max_concurrent_tasks']} {script} "
-          f"{os.path.relpath(path, CODE_ROOT)}")
+          f"{os.path.relpath(path, CODE_ROOT)}{extra}")
     return path
 
 

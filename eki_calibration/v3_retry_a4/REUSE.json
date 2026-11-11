@@ -1,0 +1,157 @@
+{
+ "created_utc": "2026-11-11T07:11:04Z",
+ "proposal": {
+  "alpha_chosen": 4.0,
+  "alphas_tried": [
+   4.0
+  ],
+  "max_abs_diff_from_independent_alpha4_step": 7.105427357601002e-15,
+  "max_abs_diff_from_v3_rejected_alpha2": 1.8992958424180042,
+  "proposed_mean": {
+   "a_k1": 0.9023191809891469,
+   "a_k2": 0.2812231171655649,
+   "a_k3": -0.25382992191366427,
+   "d_k1": 25.563064999826025,
+   "d_k2": 31.70283297129096,
+   "d_k3": 23.05998070939554,
+   "m_k1": -0.9925103162373257,
+   "m_k2": -0.7690773104354869,
+   "m_k3": -0.07664181578995824,
+   "p": -0.346173707363552
+  },
+  "v3_rejected_mean": {
+   "a_k1": 0.9566962508853083,
+   "a_k2": 0.3023499705421943,
+   "a_k3": -0.2524451685060503,
+   "d_k1": 25.833053167385124,
+   "d_k2": 31.51514993155322,
+   "d_k3": 23.7494468464064,
+   "m_k1": -1.0322293068426507,
+   "m_k2": -0.7631593898685067,
+   "m_k3": -0.09119886874312663,
+   "p": -0.3230142419265553
+  },
+  "I08_mean": {
+   "a_k1": 0.8380919731130267,
+   "a_k2": 0.25660404089052324,
+   "a_k3": -0.2559125916285775,
+   "d_k1": 25.225617329714527,
+   "d_k2": 31.85811497579748,
+   "d_k3": 22.191244164180766,
+   "m_k1": -0.9435553600878819,
+   "m_k2": -0.775268964331323,
+   "m_k3": -0.06028519400079707,
+   "p": -0.3750553833075178
+  }
+ },
+ "controls": {
+  "CHK09_I08MEAN": {
+   "reused_from": "/scratch/users/jgoell/elmfire-class/eki_calibration_v3/runs/CHK09/CHK09_I08MEAN",
+   "copied_utc": "2026-11-11T07:11:04Z",
+   "toa_sha256": "41b9ba3e21400ed293426d7169da55389103b3f839c071220936dba7d61e58f8",
+   "equal": {
+    "theta": true,
+    "theta_names": true,
+    "weather_raster_sha256": true,
+    "weather_json_bands": true,
+    "namelist_without_paths": true,
+    "P_EPS": true,
+    "SEED": true,
+    "SIMULATION_TSTART": true,
+    "SIMULATION_TSTOP": true,
+    "template_sha256": true,
+    "baseline_sha256": true,
+    "elmfire": true,
+    "namelist_overrides": true,
+    "knots_h": true,
+    "moisture_weights": true,
+    "shared_input_files": true
+   },
+   "expected_differences": {
+    "config_sha256": {
+     "v3": "9d9bafa0335301df1246c506eb405ec13e37686ae457167a27452b02ba07a189",
+     "retry": "2d9c63c07c0c3221b6182c8a7f08b760d1966dbf8ed3af3870f966aab057b0f7"
+    },
+    "coefficients_from": {
+     "v3": {
+      "source": "/oak/stanford/groups/gorle/jgoell/Wildfire/eki_calibration/v3/ensembles/CHK09.csv",
+      "sha256": "ea9ef807d9b4fa350e306b8834f7b51b5e08e71815022cb44671a618ec87d43f"
+     },
+     "retry": {
+      "source": "/oak/stanford/groups/gorle/jgoell/Wildfire/eki_calibration/v3_retry_a4/ensembles/CHK09.csv",
+      "sha256": "d8a457a5a6fa67ec1bc60b31ced0b275c001c201bbd8d8f8dc948eec69d41414"
+     }
+    },
+    "shared_manifest_sha256": {
+     "v3": "519ea86ea34f6cfb020d4e98f41f2c083f9668ea73933046dc8591c54f0084b3",
+     "retry": "b309a6650fdf10d6b1e10670d95b079962849a6df938e500ae89ef6c20a85be6"
+    },
+    "built_utc": {
+     "v3": "2026-11-11T06:01:30Z",
+     "retry": "2026-11-11T07:11:04Z"
+    },
+    "host": {
+     "v3": "sh04-04n15.int",
+     "retry": "sh04-07n21.int"
+    }
+   },
+   "note": "v3's validated run, reused because the retry config builds identical inputs (paths aside)"
+  },
+  "CHK09_I08MEAN_REP": {
+   "reused_from": "/scratch/users/jgoell/elmfire-class/eki_calibration_v3/runs/CHK09/CHK09_I08MEAN_REP",
+   "copied_utc": "2026-11-11T07:11:04Z",
+   "toa_sha256": "41b9ba3e21400ed293426d7169da55389103b3f839c071220936dba7d61e58f8",
+   "equal": {
+    "theta": true,
+    "theta_names": true,
+    "weather_raster_sha256": true,
+    "weather_json_bands": true,
+    "namelist_without_paths": true,
+    "P_EPS": true,
+    "SEED": true,
+    "SIMULATION_TSTART": true,
+    "SIMULATION_TSTOP": true,
+    "template_sha256": true,
+    "baseline_sha256": true,
+    "elmfire": true,
+    "namelist_overrides": true,
+    "knots_h": true,
+    "moisture_weights": true,
+    "shared_input_files": true
+   },
+   "expected_differences": {
+    "config_sha256": {
+     "v3": "9d9bafa0335301df1246c506eb405ec13e37686ae457167a27452b02ba07a189",
+     "retry": "2d9c63c07c0c3221b6182c8a7f08b760d1966dbf8ed3af3870f966aab057b0f7"
+    },
+    "coefficients_from": {
+     "v3": {
+      "source": "/oak/stanford/groups/gorle/jgoell/Wildfire/eki_calibration/v3/ensembles/CHK09.csv",
+      "sha256": "ea9ef807d9b4fa350e306b8834f7b51b5e08e71815022cb44671a618ec87d43f"
+     },
+     "retry": {
+      "source": "/oak/stanford/groups/gorle/jgoell/Wildfire/eki_calibration/v3_retry_a4/ensembles/CHK09.csv",
+      "sha256": "d8a457a5a6fa67ec1bc60b31ced0b275c001c201bbd8d8f8dc948eec69d41414"
+     }
+    },
+    "shared_manifest_sha256": {
+     "v3": "519ea86ea34f6cfb020d4e98f41f2c083f9668ea73933046dc8591c54f0084b3",
+     "retry": "b309a6650fdf10d6b1e10670d95b079962849a6df938e500ae89ef6c20a85be6"
+    },
+    "built_utc": {
+     "v3": "2026-11-11T06:01:30Z",
+     "retry": "2026-11-11T07:11:04Z"
+    },
+    "host": {
+     "v3": "sh04-04n15.int",
+     "retry": "sh04-07n21.int"
+    }
+   },
+   "note": "v3's validated run, reused because the retry config builds identical inputs (paths aside)"
+  }
+ },
+ "controls_bit_identical_to_each_other": true,
+ "left_to_run": [
+  "CHK09_I09MEAN"
+ ]
+}

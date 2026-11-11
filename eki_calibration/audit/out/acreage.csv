@@ -1,0 +1,6 @@
+run,run_id,statistic,total_acres,inside_acres,outside_acres,inside_share_of_final_perimeter,outside_share_of_burned,elmfire_reported_acres,nan_cells,nodata,burned_cells_within_900m_of_edge
+uncorrected,v3/BASELINE,single run,97717.4,57470.2,40247.2,0.4,0.4,97717.2,0,-9999.0,4421
+v1 final,v1/CHK08_I08MEAN,single run at ensemble-mean parameters,149870.8,97511.5,52359.3,0.6,0.3,149870.5,0,-9999.0,6079
+v2 final,v2/CHK08_I08MEAN,single run at ensemble-mean parameters,152264.2,97829.3,54434.9,0.6,0.4,152264.0,0,-9999.0,5977
+v3 final,v3/CHK08_I08MEAN,single run at ensemble-mean parameters,109531.5,90163.5,19367.9,0.6,0.2,109531.3,0,-9999.0,0
+v3 rejected I09 mean,v3/CHK09_I09MEAN,single run at ensemble-mean parameters,118132.1,92745.5,25386.6,0.6,0.2,118132.0,0,-9999.0,332

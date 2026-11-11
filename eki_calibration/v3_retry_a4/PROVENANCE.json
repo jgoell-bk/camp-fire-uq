@@ -1,0 +1,97 @@
+{
+ "created_utc": "2026-11-11T07:09:13Z",
+ "purpose": "one damped retry of v3's rejected I08 -> I09 step",
+ "config_sha256": "2d9c63c07c0c3221b6182c8a7f08b760d1966dbf8ed3af3870f966aab057b0f7",
+ "v3_config_sha256": "9d9bafa0335301df1246c506eb405ec13e37686ae457167a27452b02ba07a189",
+ "config_changes": {
+  "fit.step.alpha0": [
+   1.0,
+   4.0
+  ],
+  "paths.scratch_root": [
+   "$SCRATCH/elmfire-class/eki_calibration_v3",
+   "$SCRATCH/elmfire-class/eki_calibration_v3_retry_a4"
+  ],
+  "auto.max_ensemble": [
+   10,
+   7
+  ]
+ },
+ "copied_from_v3": {
+  "elmfire.data.template": {
+   "source": "v3/elmfire.data.template",
+   "sha256": "c04c5e47625c13c331e853682252515e380dcbbb1f1eb55263ba2057efd7bcfd"
+  },
+  "ensembles/I08.csv": {
+   "source": "v3/ensembles/I08.csv",
+   "sha256": "eb9e8c54a85b19cea198e0b8381ec8f0f810e626d9fd9abc3e0260c0926ad750"
+  },
+  "ensembles/I08.json": {
+   "source": "v3/ensembles/I08.json",
+   "sha256": "db7ce988db0d8f89cded107c414a9fa3fbcc188ce64785b3cff82cce465b2865"
+  },
+  "results/I08_G.npz": {
+   "source": "v3/results/I08_G.npz",
+   "sha256": "e41cca7fd217d23e172b05cd3eaa523d1bc7d7d24713ca5101b800efc489deb0"
+  },
+  "results/I08_distance.npz": {
+   "source": "v3/results/I08_distance.npz",
+   "sha256": "7ba4e0247c7310b61bf4b02992a9846248f098d5651a6c5a145edc3b55e534e3"
+  },
+  "results/I08_pilot.json": {
+   "source": "v3/results/I08_pilot.json",
+   "sha256": "c37573d170162438f24c54f677198c696335d4f9cd70cf91c0df9dd9d031d080"
+  },
+  "results/I08_pilot_cells.csv": {
+   "source": "v3/results/I08_pilot_cells.csv",
+   "sha256": "c034fb47a18b8c162c89ed20ed2a3610b9c4129948d8a74db0fb66fcd0ec62de"
+  },
+  "results/I08_reach.csv": {
+   "source": "v3/results/I08_reach.csv",
+   "sha256": "c74b9a9a9fec549bceed4e62307f047968167b470cf0e59319f16f34edd31802"
+  },
+  "prepared/baseline.csv": {
+   "source": "v3/prepared/baseline.csv",
+   "sha256": "c0038f7c14fd820196d86f8d53379b0b7f5ca425a716c1fb87243721a7e49983"
+  },
+  "prepared/baseline.json": {
+   "source": "v3/prepared/baseline.json",
+   "sha256": "a1a1650d0103ec9c43150b745da5e1a58990593777d34bca92bd8e80ed894572"
+  },
+  "prepared/constraints.csv": {
+   "source": "v3/prepared/constraints.csv",
+   "sha256": "90ffb20bf18c450fd1e247dbe43fc85acf727484f0bb01c1dd17c374c6e7c0c4"
+  },
+  "prepared/constraints.json": {
+   "source": "v3/prepared/constraints.json",
+   "sha256": "e8cac160d1101ec166ef69cdc3fb565517ae1cd7c92ab021d16a215138249a19"
+  },
+  "prepared/final_perimeter.json": {
+   "source": "v3/prepared/final_perimeter.json",
+   "sha256": "9601f4362e26110f159b3e4f088f620c666348659d97bec09a3185262fdaf078"
+  },
+  "prepared/final_perimeter.tif": {
+   "source": "v3/prepared/final_perimeter.tif",
+   "sha256": "0c404e5ebaf7c7e8f00ca4477c0b4b09a55b48d0f50db6388d152a7936908745"
+  },
+  "prepared/holdout_v2.csv": {
+   "source": "v3/prepared/holdout_v2.csv",
+   "sha256": "a2f61db7a58ef8e152a329dc995bdd80bf69bc6f0c2653ac8a4a87938b0247ec"
+  },
+  "prepared/holdout_v2.json": {
+   "source": "v3/prepared/holdout_v2.json",
+   "sha256": "31a163db9d649b0286e049888545ec2f9eee9682e1a684153235622289577221"
+  },
+  "prepared/observations.csv": {
+   "source": "v3/prepared/observations.csv",
+   "sha256": "029781a88856ed25d42eee1dced0b3dad45e335ff3d0760519e5bf602fadfde8"
+  },
+  "prepared/observations.json": {
+   "source": "v3/prepared/observations.json",
+   "sha256": "d9cec405080a95883a8a75985c24857db3b7d36c6cc6697c3f76a3e0b4c0fc91"
+  }
+ },
+ "shared_inputs_equal_v3": true,
+ "shared_manifest_sha256": "b309a6650fdf10d6b1e10670d95b079962849a6df938e500ae89ef6c20a85be6",
+ "v3_files_written": "none"
+}

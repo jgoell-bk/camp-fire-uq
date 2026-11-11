@@ -724,12 +724,25 @@ v1 = 51732941 (stopped at I08, gain 1.4 %).
 final run (CHK08_I08MEAN) on the same yardsticks: the cleaned fit deadlines (1,062, v2 =
 v3) and the final perimeter. The holdout is not touched.
 
-| run | RMS km | met | mean km | 0–6 h met / km | 6–12 h | 12–24 h | burned by 24 h (ac) | outside perimeter (ac) |
-|---|---|---|---|---|---|---|---|---|
-| uncorrected | 9.47 | 0.02 | 8.94 | 0.00 / 10.2 | 0.01 / 8.8 | 0.09 / 6.0 | 97,717 | 40,247 |
-| v1 final | 3.44 | 0.18 | 2.79 | 0.01 / 5.1 | 0.16 / 1.2 | 0.66 / 0.4 | 149,871 | 52,359 |
-| v2 final | 3.42 | 0.19 | 2.75 | 0.01 / 5.1 | 0.18 / 1.2 | 0.67 / 0.3 | 152,264 | 54,435 |
-| v3 final | 4.10 | 0.15 | 3.33 | 0.01 / 6.2 | 0.17 / 1.3 | 0.47 / 0.6 | 109,531 | 19,368 |
+Every row is a single run: BASELINE, or the run at the I08 ensemble-mean parameters.
+None is an average over members.
+
+| run | RMS km | met | mean km | 0–6 h met / km | 6–12 h | 12–24 h | burned by 24 h (ac) | inside perimeter (ac) | outside perimeter (ac) |
+|---|---|---|---|---|---|---|---|---|---|
+| uncorrected | 9.47 | 0.02 | 8.94 | 0.00 / 10.2 | 0.01 / 8.8 | 0.09 / 6.0 | 97,717 | 57,470 | 40,247 |
+| v1 final | 3.44 | 0.18 | 2.79 | 0.01 / 5.1 | 0.16 / 1.2 | 0.66 / 0.4 | 149,871 | 97,511 | 52,359 |
+| v2 final | 3.42 | 0.19 | 2.75 | 0.01 / 5.1 | 0.18 / 1.2 | 0.67 / 0.3 | 152,264 | 97,829 | 54,435 |
+| v3 final | 4.10 | 0.15 | 3.33 | 0.01 / 6.2 | 0.17 / 1.3 | 0.47 / 0.6 | 109,531 | 90,164 | 19,368 |
+
+The weighted distance term by deadline window (from `CHK08_verify.json`; the parts sum
+to the run's distance term):
+
+| window | v2 | v3 | v3 − v2 | share of the increase |
+|---|---|---|---|---|
+| 0–6 h | 4.880 | 6.533 | +1.653 | 64 % |
+| 6–12 h | 0.753 | 1.303 | +0.550 | 21 % |
+| 12–24 h | 0.220 | 0.581 | +0.361 | 14 % |
+| all | 5.853 | 8.418 | +2.565 | |
 
 Final coefficients (I08 mean; speed multiplier, direction, moisture at the knots 06, 12,
 18 h):
@@ -744,20 +757,44 @@ Final coefficients (I08 mean; speed multiplier, direction, moisture at the knots
   are pixel-identical to v1's (the GeoTIFF files differ only in metadata), and BASELINE
   is identical in all three versions.
 - v2 → v3: the over-spread term cuts the area outside the perimeter from 54,435 to
-  19,368 ac. The cost is 0.7 km of RMS deadline distance (3.42 → 4.10), almost all of it
-  in the 12–24 h deadlines (met 0.67 → 0.47). It does this mainly by slowing the
-  afternoon and evening wind (×2.62 → ×1.29 at 12 h, ×2.49 → ×0.77 at 18 h).
-- v1 and v2 burn about 150,000 ac in 24 h, nearly the whole final perimeter
-  (153,270 ac), which the real fire reached only by late November.
-- P_EPS: the ensemble narrowed from 0.0011–0.049 (I00) to 0.0038–0.0119 (I08), with
-  median 0.0069; p's sd went from 1.20 to 0.24. The data pin P_EPS near the default 0.01.
+  19,368 ac. The cost is 0.7 km of RMS deadline distance (3.42 → 4.10).
+  - 64 % of the added distance term is in the 0–6 h deadlines; the 12–24 h deadlines
+    add 14 %.
+  - The share of deadlines *met* falls mostly at 12–24 h (0.67 → 0.47). At 0–6 h it
+    hardly changes (0.011 → 0.009), but those misses grow from 5.1 to 6.2 km.
+  - Met share and the weighted distance term measure different things.
+  - v3 does this mainly by slowing the wind (×3.51 → ×2.31 at 06 h, ×2.62 → ×1.29 at
+    12 h, ×2.49 → ×0.77 at 18 h).
+- Acreage: v2's 152,264 ac by 24 h are 97,829 ac inside the final perimeter (64 % of
+  it) and 54,435 ac outside.
+  - Matching the final fire's total acreage does not mean matching its footprint.
+  - Without a time-resolved perimeter, nothing here says whether 90,000–98,000 ac inside
+    by 24 h is too much. Only the outside area is known to be wrong.
+  - v1 and v2 reach the western domain edge, where ELMFIRE stops spread, so their total
+    and outside areas are lower bounds (`audit/README.md` §3).
+- P_EPS: the ensemble median was 0.0070 at I00 and 0.0069 at I08. The range narrowed
+  from 0.0011–0.049 to 0.0038–0.0119, and p's sd from 1.20 to 0.24.
+  - This is ensemble concentration around the starting median, which deterministic EKI
+    produces at every step.
+  - It is not a posterior interval, and it does not show that the data identify P_EPS.
 - v3 stopped on a worsening step, not on the 2 % rule; the last accepted gain was
   8.9 %. The I09 mean lowered the distance term (8.42 → 7.94) but burned more outside
-  (19,368 → 25,387 ac). A more damped step might still improve v3.
-- The early deadlines (0–6 h) are missed by 5–6 km in every version; no weather
-  correction here reproduces the morning run.
-- The 10,000 ac reference sets the exchange rate between acres outside and deadline km,
-  so v3 is one point on that trade-off, not a unique answer.
+  (19,368 → 25,387 ac). Meeting the stopping rule is not convergence. A more damped
+  step is set up in `v3_retry_a4/`.
+- The early deadlines (0–6 h) are missed by 5–6 km in every version.
+  - The misses are widespread (33 reports give half of v3's early term) and lie
+    straight ahead of the modelled fire along its spread line.
+  - No calibration member brings the 0–6 h term below 3.4 (`audit/README.md` §2).
+- A_ref = 10,000 ac sets equal penalty *levels*: 10,000 ac outside costs as much as a
+  weighted-RMS distance of 1 km. Both terms are quadratic, so the marginal rate of
+  trading acres for km depends on the state. At v3's final state it is about
+  21,000 ac per km. v3 is one point on the trade-off, not a unique answer.
+
+Corrections (2026-11-10 audit, `audit/README.md`). The text above replaces three earlier
+statements:
+- "almost all of the cost is in the 12–24 h deadlines" (that was the met share);
+- "v1 and v2 burn nearly the whole final perimeter" (total, not footprint);
+- "the data pin P_EPS near the default" (concentration).
 
 ## One job for the whole loop (`eki/auto.py`, `slurm/eki_auto.slurm`)
 
@@ -825,4 +862,6 @@ python -m unittest tests.test_eki
 | `slurm/eki_batch.slurm` | serc, 1 node, 24 CPUs, 12 h, 2 G/CPU; logs in `logs/` |
 | `slurm/eki_check.slurm` | the same with 3 CPUs, 6 h, for CHK batches |
 | `tools/compare_finals.py` | v1/v2/v3 final runs on the cleaned fit deadlines and the final perimeter (`python -m tools.compare_finals`) |
+| `audit/` | 2026-11-10 audit: operator, early misses (maps), acreage, objective, history; `audit/README.md` is the report |
+| `v3_retry_a4/` | one damped (α = 4) retry of v3's rejected I08 → I09 step, set up, not run; see its `README.md` |
 | `$SCRATCH/elmfire-class/eki_calibration/` | `shared/` and `runs/<BASELINE\|I00\|CHK01\|...>/<run_id>/` |
