@@ -95,7 +95,7 @@ def pilot(cfg, batch):
     print(f"wrote results/{batch.stem}_pilot.json, _pilot_cells.csv, _distance.npz")
 
 
-def propose(cfg, src):
+def propose(cfg, src, quiet=False):
     from .controlled import propose as run_propose
     from .run import make_batch
     it = int(src[1:])
@@ -110,8 +110,9 @@ def propose(cfg, src):
     print(f"  chosen alpha {s['alpha']:g}; collapsed coefficients {s['collapsed_coefficients'] or 'none'}; "
           f"boundary projections {s['boundary_projections']}")
     o = rec["current_objective"]
+    over = f", over-spread {o['overspread']['mean']:.3f}" if "overspread" in o else ""
     print(f"  current members' Phi: mean {o['total']['mean']:.3f} (distance {o['distance']['mean']:.3f}, amplitude "
-          f"{o['amplitude']['mean']:.3f}, smoothness {o['smoothness']['mean']:.3f}); min {o['total']['min']:.3f}")
+          f"{o['amplitude']['mean']:.3f}, smoothness {o['smoothness']['mean']:.3f}{over}); min {o['total']['min']:.3f}")
     if rec["baseline_objective"]:
         print(f"  BASELINE Phi {rec['baseline_objective']['total']:.3f}")
     print(f"  {'coefficient':12s}{'current mean':>14s}{'proposed mean':>15s}{'mean move sd':>14s}{'max member sd':>15s}")
@@ -119,27 +120,29 @@ def propose(cfg, src):
         print(f"  {n:12s}{rec['current_mean'][n]:14.4f}{rec['proposed_mean'][n]:15.4f}"
               f"{s['mean_move_sd'][n]:14.3f}{s['max_member_move_sd'][n]:15.3f}")
     print(f"wrote {cpath} (check runs at the means); the check batch:")
-    make_batch(cfg, cpath.stem)
+    make_batch(cfg, cpath.stem, quiet=quiet)
 
 
 def verify(cfg, chk):
     from .controlled import verify as run_verify
     v = run_verify(cfg, chk)
     for r, o in v["objective"].items():
+        over = (f" + over-spread {o['overspread']:.4f} ({v['overspread_acres'][r]:,.0f} ac outside)"
+                if "overspread" in o else "")
         print(f"  {r:22s} Phi {o['total']:.4f} = distance {o['distance']:.4f} + amplitude {o['amplitude']:.4f} "
-              f"+ smoothness {o['smoothness']:.4f}")
+              f"+ smoothness {o['smoothness']:.4f}{over}")
     print(f"  repeat bit-identical: {v['repeat_bit_identical']}; variability {v['variability']:.4g}")
     print(f"  proposed - current: {v['change_proposed_minus_current']:+.4f} -> {v['verdict']}; "
           f"accepted for promotion: {v['accepted']}")
     print(f"wrote results/{chk}_verify.json")
 
 
-def promote(cfg, nxt):
+def promote(cfg, nxt, quiet=False):
     from .controlled import promote as run_promote
     from .run import make_batch
     dest = run_promote(cfg, int(nxt[1:]))
     print(f"wrote {dest}")
-    make_batch(cfg, nxt)
+    make_batch(cfg, nxt, quiet=quiet)
 
 
 def ensemble(cfg):
@@ -149,12 +152,24 @@ def ensemble(cfg):
     print(f"wrote {cfg.path(cfg['paths']['ensembles']) / 'I00.csv'}: {r['members']} members x "
           f"{r['parameters']} coefficients, rank {r['rank']}, condition number {r['condition_number']:.2f} "
           "(centred, each column scaled by its standard deviation)")
+    if "weather_from" in meta:
+        q = meta["p_eps_drawn"]
+        print(f"  weather coefficients copied from {meta['weather_from']['file']}; P_EPS drawn "
+              f"{q['min']:.4g} / {q['median']:.4g} / {q['max']:.4g} (min / median / max)")
+        return
     for k, v in meta["correlations"].items():
         print(f"  {k}: normal scores {v['normal_scores']:+.2f} (target {v['target_normal_scores']:.2f}), "
               f"coefficients {v['coefficients']:+.2f}")
     w = meta["minimum_written"]
     print(f"  lowest written values: wind {w['ws_mph']:.2f} mph, moisture 1-h {w['m1_pct']:.2f} %, "
           f"10-h {w['m10_pct']:.2f} %, 100-h {w['m100_pct']:.2f} % (floor {cfg['corrections']['moisture_min_pct']} %)")
+
+
+def perimeter(cfg):
+    from .overspread import prepare_perimeter
+    info = prepare_perimeter(cfg)
+    print(f"wrote {cfg.path(cfg['paths']['prepared']) / info['file']}: {info['inside_cells']:,} cells inside "
+          f"= {info['inside_acres']:,.0f} ac")
 
 
 def main(argv=None):
@@ -165,6 +180,7 @@ def main(argv=None):
     sub.add_parser("observations", help="write prepared/observations.csv (times, cells, frozen mapping)")
     sub.add_parser("holdout", help="write prepared/holdout_v<version>.csv, the frozen spatial-block split")
     sub.add_parser("constraints", help="write prepared/constraints.csv (deadlines, primary constraint per cell, reasons)")
+    sub.add_parser("perimeter", help="v3: rasterize the final fire perimeter on the fuel grid (prepared/final_perimeter.tif)")
     c = sub.add_parser("pilot", help="pilot diagnostics of an extracted batch (fit constraints only)")
     c.add_argument("batch")
     c = sub.add_parser("propose", help="controlled update from an ensemble: proposals/I<n+1>.csv and CHK check runs")
@@ -192,6 +208,14 @@ def main(argv=None):
     c.add_argument("batch")
     c = sub.add_parser("extract", help="arrival times at the observation cells -> results/<batch>_G.npz")
     c.add_argument("batch")
+    c = sub.add_parser("score", help="distance term and breakdown of runs on the fit and holdout constraints "
+                                          "(results/score_<name>.json; the holdout is scored once, after calibration)")
+    c.add_argument("name")
+    c.add_argument("runs", nargs="+")
+    c.add_argument("--members", help="also every member of this ensemble, e.g. I08")
+    c = sub.add_parser("auto", help="the whole loop in this job: run, score, propose, check, promote, repeat "
+                                         "(what slurm/eki_auto.slurm runs; stopping rules in config auto)")
+    c.add_argument("--workers", type=int, required=True)
     args = p.parse_args(argv)
 
     try:
@@ -204,6 +228,8 @@ def main(argv=None):
             holdout(cfg)
         elif args.cmd == "constraints":
             constraints(cfg)
+        elif args.cmd == "perimeter":
+            perimeter(cfg)
         elif args.cmd == "pilot":
             pilot(cfg, Path(args.batch))
         elif args.cmd == "propose":
@@ -236,6 +262,13 @@ def main(argv=None):
         elif args.cmd == "extract":
             from .extract import extract
             extract(cfg, Path(args.batch))
+        elif args.cmd == "score":
+            from .score import report, score
+            report(score(cfg, args.name, args.runs, args.members))
+            print(f"\nwrote results/score_{args.name}.json")
+        elif args.cmd == "auto":
+            from .auto import auto
+            return auto(cfg, args.workers)
     except StudyError as e:
         print(f"error: {e}", file=sys.stderr)
         return 2

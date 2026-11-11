@@ -13,7 +13,14 @@ coefficient the parameterization uses.
 
 These ranges only spread the starting ensemble. They are not regularization scales
 and do not constrain later updates.
+
+v3 (initial_ensemble.weather_from set; Jacob, 2026-11-10): the weather coefficients
+and speed multipliers are copied as text from that earlier I00.csv (v1's), so the
+weather of every member is v1's, and p = ln(P_EPS / reference) is added with P_EPS
+log-uniform on initial_ensemble.p_eps_range, drawn independently with p_seed.
 """
+import csv
+import io
 import math
 
 import numpy as np
@@ -92,9 +99,40 @@ def correlations(cfg, table, scores):
     return out
 
 
+def extended_text(cfg):
+    """(csv text, source path, p draws) for v3: the earlier I00.csv's rows with its text
+    kept, and the columns p and p_eps_value added."""
+    e = cfg["initial_ensemble"]
+    src = cfg.path(e["weather_from"])
+    rows = list(csv.DictReader(io.StringIO(src.read_text())))
+    names = theta_names(cfg)
+    weather = [n for n in names if n != "p"]
+    if names[-1] != "p" or not rows or any(n not in rows[0] for n in weather) or "p" in rows[0]:
+        raise StudyError(f"{src} must have the weather coefficients and no p")
+    if len(rows) != int(e["size"]):
+        raise StudyError(f"{src} has {len(rows)} members, initial_ensemble.size is {e['size']}")
+    lo, hi = (float(v) for v in e["p_eps_range"])
+    ref = float(cfg["corrections"]["p_eps"]["reference"])
+    if not 0 < lo < hi < 1:
+        raise StudyError("initial_ensemble.p_eps_range must be [lo, hi] with 0 < lo < hi < 1")
+    u = np.random.default_rng(int(e["p_seed"])).uniform(size=len(rows))
+    p = math.log(lo / ref) + u * math.log(hi / lo)               # P_EPS = ref exp(p), log-uniform on [lo, hi]
+    fields = list(rows[0])
+    k = fields.index(weather[-1]) + 1
+    fields = fields[:k] + ["p"] + fields[k:] + ["p_eps_value"]
+    out = io.StringIO()
+    wr = csv.DictWriter(out, fieldnames=fields, lineterminator="\n")
+    wr.writeheader()
+    for r, pj in zip(rows, p):
+        wr.writerow({**r, "p": f"{pj:.17g}", "p_eps_value": f"{ref * math.exp(pj):.17g}"})
+    return out.getvalue(), src, p
+
+
 def make_initial(cfg):
     """Sample, check rank and admissibility of every member, write I00.csv and I00.json.
     An existing I00.csv with different contents is never replaced."""
+    if cfg["initial_ensemble"].get("weather_from"):
+        return make_extended(cfg)
     table, scores = sample(cfg)
     names = theta_names(cfg)
     rank = rank_report(table[names])
@@ -122,4 +160,34 @@ def make_initial(cfg):
                                 "m100_pct": low["m100"]},
             "baseline_sha256": sha256(cfg.path(cfg["paths"]["prepared"]) / "baseline.csv")}
     write_json(meta_path, meta)
+    return table, meta
+
+
+def make_extended(cfg):
+    """v3's I00.csv and I00.json (see extended_text): rank and admissibility checked."""
+    text, src, p = extended_text(cfg)
+    table = pd.read_csv(io.StringIO(text))
+    names = theta_names(cfg)
+    rank = rank_report(table[names])
+    if not rank["full_rank"]:
+        raise StudyError(f"initial ensemble has rank {rank['rank']} < {len(names)}")
+    baseline = load_baseline(cfg)
+    for _, row in table.iterrows():             # raises on the first inadmissible member
+        corrected_weather(cfg, baseline, {n: row[n] for n in names})
+    out = cfg.dir("ensembles")
+    csv_path = out / "I00.csv"
+    if csv_path.exists() and csv_path.read_text() != text:
+        raise StudyError(f"{csv_path} exists with different contents; ensemble files are never edited")
+    write_text(csv_path, text)
+    e = cfg["initial_ensemble"]
+    meta = {"created_utc": utc_now(), "file": csv_path.name, "sha256": sha256(csv_path),
+            "config_sha256": cfg.sha256, "settings": e, "theta_names": names,
+            "weather_from": {"file": str(src), "sha256": sha256(src),
+                             "note": "weather coefficients and speed multipliers copied as text"},
+            "method": "P_EPS = reference * exp(p); p = ln(lo / reference) + u ln(hi / lo), "
+                      "u ~ U(0, 1) from numpy default_rng(p_seed), independent of the weather",
+            "p_eps_drawn": {"min": float(table.p_eps_value.min()), "median": float(table.p_eps_value.median()),
+                            "max": float(table.p_eps_value.max())},
+            "rank": rank, "baseline_sha256": sha256(cfg.path(cfg["paths"]["prepared"]) / "baseline.csv")}
+    write_json(csv_path.with_suffix(".json"), meta)
     return table, meta

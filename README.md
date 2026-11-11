@@ -13,6 +13,7 @@ the project relies on are in [`ELMFIRE_CODEBASE.md`](ELMFIRE_CODEBASE.md).
 | `experiment/` | Variance-based (Sobol) sensitivity study, 6 factors × 3 wind stations, 5,376 runs (`sobolfire` package, MATLAB analysis) | `experiment/README.md` |
 | `local_sensitivity/` | Local wind-direction sensitivity, ±50° around the bearing to Paradise (`lsa` package) | `local_sensitivity/README.md` |
 | `eki_calibration/` | Ensemble Kalman inversion of time-varying weather corrections against NIST arrival observations (`eki` package) | `eki_calibration/README.md` |
+| `station_baselines/` | One deterministic run per weather set (JG, CO, JG+CO mean), scored on the border-band QoI (`baselines` package) | `station_baselines/README.md` |
 | `HistoricalDataClass/`, `ParameterEstimationFiles/` | Source data: RAWS weather, Sobol design matrices, NIST TN 2135 observations, fire perimeter, the JG+CO weather blend | `DATA.md` |
 | `tutorials/`, `slurm/`, `elmfire-class/` | ELMFIRE tutorials and the baseline-case setup | `class_project_setup.md` |
 

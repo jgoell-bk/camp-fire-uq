@@ -95,6 +95,7 @@ write analysis notebooks unless asked.
 | `/oak/stanford/groups/gorle/jgoell/Wildfire/` | Project root on Oak (this file). Oak is gorle's space; groupmates **cannot** read it. |
 | `Wildfire/experiment/` | The pipeline (`sobolfire` package), config, design matrices, results, QGIS bundles. Its `README.md` is the usage guide. |
 | `Wildfire/eki_calibration/` | The EKI calibration stage (2026-11-08): package `eki`, config, ensembles, observation table, README. Run data in `$SCRATCH/elmfire-class/eki_calibration/`. Inputs from `Wildfire/ParameterEstimationFiles/`. |
+| `Wildfire/station_baselines/` | Station baselines (2026-11-09): one deterministic run each for JG, CO and the JG+CO mean, at the EKI settings (06:15 ignition), scored on the border band. Package `baselines`; run data in `$SCRATCH/elmfire-class/station_baselines/`. Spotting replicates were dropped because the configured model is deterministic (see its README). |
 | `Wildfire/local_sensitivity/` | The local wind-direction study: its own config, namelist template, `lsa` package, Slurm script, tests and README. It is independent of `experiment/`. |
 | `$SCRATCH/elmfire-class/local_sensitivity/` | Its run data: `shared/`, `runs/<JG\|OP\|CO>/<run_id>/` |
 | `Wildfire/HistoricalDataClass/` | Source data: the hourly RAWS wind CSV for the three stations, the Jarbo Gap NFDRS moisture CSV, and the original 5-factor matrix CSV. The monthly summaries in there are **not** used. |

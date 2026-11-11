@@ -13,7 +13,7 @@ import rasterio
 from pyproj import Transformer
 
 from .common import BASELINE, StudyError, parse_run_id, read_json, run_group, sha256, utc_now, write_json, write_text
-from .corrections import corrected_weather, theta_names
+from .corrections import corrected_weather, p_eps, theta_names
 from .forcing import load_baseline
 from .landscape import nonburnable
 from .weather import VARIABLES, Grid, check_coverage, grid_of, weather_grid, write_weather
@@ -145,6 +145,41 @@ def coefficients(cfg, rid):
     return {n: float(row[n].iloc[0]) for n in names}, {"source": str(path), "sha256": sha256(path)}
 
 
+OVERRIDABLE = ("P_EPS",)     # namelist keys a sensitivity (SEN) row may set
+
+
+def namelist_overrides(cfg, rid):
+    """{key: value} from the extra columns of a sensitivity run's row in
+    ensembles/SEN<nn>.csv; {} for every calibration run, whose files may not have them."""
+    group = run_group(rid)
+    if group == BASELINE:
+        return {}
+    table = pd.read_csv(cfg.path(cfg["paths"]["ensembles"]) / f"{group}.csv")
+    cols = [c for c in OVERRIDABLE if c in table.columns]
+    if cols and not group.startswith("SEN"):
+        raise StudyError(f"{group}.csv sets {cols}: only sensitivity (SEN) runs may change the namelist")
+    row = table[table.run_id == rid]
+    return {c: float(row[c].iloc[0]) for c in cols}
+
+
+def apply_overrides(text, overrides):
+    """Set each key's value in the namelist. A float is written with %g (SEN files); a
+    string is written as given (P_EPS from the coefficient p: repr, exact)."""
+    for key, value in overrides.items():
+        pattern = rf"(?m)^{key}\s*=\s*[^\s!]+"
+        if len(re.findall(pattern, text)) != 1:
+            raise StudyError(f"{key} is not set exactly once in the namelist template")
+        literal = value if isinstance(value, str) else f"{value:g}"
+        text = re.sub(pattern, f"{key} = {literal}", text)
+    return text
+
+
+def coefficient_overrides(cfg, theta):
+    """{"P_EPS": exact literal} when P_EPS is a coefficient (v3), else {}."""
+    v = p_eps(cfg, theta)
+    return {} if v is None else {"P_EPS": repr(v)}
+
+
 def build_case(cfg, rid, workdir, scratch_dir):
     """Write a run's case into workdir: inputs/ (uniform weather rasters and
     weather.json), outputs/, logs/, elmfire.data.in and run.json. Returns run.json."""
@@ -175,7 +210,12 @@ def build_case(cfg, rid, workdir, scratch_dir):
         "units": {"ws": "mph at 20 ft", "wd": "degrees the wind blows from, grid north",
                   "m1/m10/m100": "percent", "d": "degrees", "m": "percentage points"},
         "grid": shared["weather_grid"], "uniform": True, "bands": bands, "raster_sha256": raster_sha})
-    text = render_namelist(cfg, inputs, scratch_dir)
+    overrides = namelist_overrides(cfg, rid)
+    from_theta = coefficient_overrides(cfg, theta)
+    if set(overrides) & set(from_theta):
+        raise StudyError(f"{rid}: {sorted(set(overrides) & set(from_theta))} is both a coefficient and an override")
+    overrides = {**overrides, **from_theta}
+    text = apply_overrides(render_namelist(cfg, inputs, scratch_dir), overrides)
     write_text(workdir / "elmfire.data.in", text)
     names = theta_names(cfg)
     k = len(co["knots_h"])
@@ -184,6 +224,7 @@ def build_case(cfg, rid, workdir, scratch_dir):
         "theta": [theta[n] for n in names],
         "speed_mult_knots": [float(np.exp(theta[n])) for n in names[:k]],
         "knots_h": co["knots_h"], "moisture_weights": co["moisture_weights"], "coefficients_from": origin,
+        "namelist_overrides": overrides,
         "P_EPS": namelist_value(text, "P_EPS"), "SIMULATION_TSTART": namelist_value(text, "SIMULATION_TSTART"),
         "SIMULATION_TSTOP": namelist_value(text, "SIMULATION_TSTOP"), "SEED": namelist_value(text, "SEED"),
         "config_sha256": cfg.sha256, "template_sha256": sha256(cfg.path(cfg["case"]["template"])),

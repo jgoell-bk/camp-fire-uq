@@ -5,6 +5,7 @@
 Tests that need prepared/ (baseline.csv, observations.csv), ensembles/I00.csv or the
 shared manifest on scratch are skipped when those don't exist yet.
 """
+import json
 import os
 import re
 import shutil
@@ -17,7 +18,8 @@ import pandas as pd
 import rasterio
 from rasterio.transform import from_origin
 
-from eki.case import build_case, coefficients
+from eki.auto import auto, decide, latest_ensemble, update_gain
+from eki.case import apply_overrides, build_case, coefficients, namelist_overrides
 from eki.common import (BASELINE, IGNITION, NOT_MAPPED, NOT_REACHED, REACHED, RUN_FAILED, Config, StudyError,
                         parse_run_id, read_json, run_dir, run_group)
 from eki.corrections import basis, band_hours, corrected_weather, curves, theta_names
@@ -27,7 +29,7 @@ from eki.forcing import check_reference, from_uv, load_baseline, to_uv, vector_m
 from eki.holdout import Union, load_split, split
 from eki.landscape import eligible
 from eki.nist import COLUMNS as NIST_COLUMNS
-from eki.observations import load_table, map_point, match_nist, model_times, nearest_eligible
+from eki.observations import load_table, map_point, match_nist, model_times, nearest_eligible, select_subset
 from eki.run import run_one
 from eki.pilot import distance_to_burned
 from eki.target import candidates, deadline_residuals, fit_arrays, selection
@@ -732,6 +734,215 @@ class TestBuild(Base):
                 os.environ.pop("L_SCRATCH_JOB")
             else:
                 os.environ["L_SCRATCH_JOB"] = saved
+
+    def test_auto_stops_at_failed_runs(self):
+        """auto with /bin/true as ELMFIRE: the newest ensemble's runs all fail
+        validation, so it must stop there (exit 1), log why, and promote nothing."""
+        self.cfg["case"]["elmfire"] = "/bin/true"
+        self.cfg["paths"]["batches"] = str(Path(self.tmp.name) / "batches")
+        ens = sorted(p.name for p in REAL.path(REAL["paths"]["ensembles"]).iterdir())
+        saved = os.environ.get("L_SCRATCH_JOB")
+        os.environ["L_SCRATCH_JOB"] = str(Path(self.tmp.name) / "node")
+        try:
+            self.assertEqual(auto(self.cfg, workers=4), 1)
+        finally:
+            if saved is None:
+                os.environ.pop("L_SCRATCH_JOB")
+            else:
+                os.environ["L_SCRATCH_JOB"] = saved
+        log = read_json(self.cfg.dir("results") / "auto_log.json")
+        n = latest_ensemble(self.cfg)
+        self.assertIn(f"runs of I{n:02d} failed", log["jobs"][-1]["stopped"])
+        self.assertEqual(log["jobs"][-1]["steps"], [])
+        self.assertEqual(sorted(p.name for p in REAL.path(REAL["paths"]["ensembles"]).iterdir()), ens)
+
+
+class TestAuto(Base):
+    def test_decide(self):
+        self.assertIn("reached I10", decide(10, 10, 0.5, 0.02))
+        self.assertIn("1.0%", decide(4, 10, 0.01, 0.02))
+        self.assertIsNone(decide(4, 10, 0.05, 0.02))
+        self.assertIsNone(decide(0, 10, None, 0.02))          # I00 has no update behind it
+
+    def test_update_gain_matches_verify(self):
+        path = REAL.dir("results") / "CHK01_verify.json"
+        if not path.exists():
+            self.skipTest("no CHK01_verify.json")
+        v = read_json(path)
+        cur = v["objective"]["CHK01_I00MEAN"]["total"]
+        prop = v["objective"]["CHK01_I01MEAN"]["total"]
+        self.assertAlmostEqual(update_gain(REAL, 1), (cur - prop) / cur)
+        self.assertIsNone(update_gain(REAL, 0))
+
+
+
+class TestV2(Base):
+    def subset_file(self, points):
+        path = Path(self.tmp.name) / "subset.geojson"
+        feats = [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [lon, lat]},
+                  "properties": {"Date": d, "Time": t, "elapsed": m / 60, "elapsed_hours": m / 60,
+                                 "elapsed_minutes": m}} for lon, lat, d, t, m in points]
+        path.write_text(json.dumps({"type": "FeatureCollection", "features": feats,
+                                    "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}}}))
+        return path
+
+    def test_select_subset(self):
+        day = "2018-11-08T00:00:00"
+        df = pd.DataFrame({"obs_id": ["OBS0001", "OBS0002", "OBS0003", "OBS0004"],
+                           "lon": [-121.5, -121.5, -121.5, -121.6], "lat": [39.7] * 4,
+                           "date_original": [day] * 4, "time_original": ["06:30:00"] * 3 + ["07:00:00"],
+                           "elapsed_minutes_original": [15.0] * 3 + [45.0]})
+        # keeps 2 of the 3 identical points (listed in another order) and the fourth
+        path = self.subset_file([(-121.6, 39.7, day, "07:00:00", 45.0), (-121.5, 39.7, day, "06:30:00", 15.0),
+                                 (-121.5, 39.7, day, "06:30:00", 15.0)])
+        keep, info = select_subset(df, path)
+        self.assertEqual(keep, [0, 1, 3])                          # the first 2 in workbook order
+        self.assertEqual(info["partly_kept_groups"][0]["dropped_obs_ids"], ["OBS0003"])
+        self.assertEqual(info["dropped_obs_ids"], ["OBS0003"])
+        for bad in ([(-121.5001, 39.7, day, "06:30:00", 15.0)],     # moved
+                    [(-121.5, 39.7, day, "06:31:00", 16.0)],        # retimed
+                    [(-121.5, 39.7, day, "06:30:00", 20.0)],        # elapsed disagrees
+                    [(-121.6, 39.7, day, "07:00:00", 45.0)] * 2):   # more copies than the original
+            with self.assertRaises(StudyError):
+                select_subset(df, self.subset_file(bad))
+
+    def test_v2_holdout_keeps_v1_partitions(self):
+        v2 = REAL.root / "v2" / "config.yaml"
+        if not v2.exists() or not (REAL.root / "v2/prepared/holdout_v2.csv").exists():
+            self.skipTest("v2 not prepared")
+        cfg2 = Config(v2)
+        h1, h2 = load_split(REAL), load_split(cfg2)
+        m = h2.merge(h1[["obs_id", "block", "partition"]], on="obs_id", suffixes=("", "_v1"))
+        self.assertEqual(len(m), len(h2))
+        self.assertTrue((m.partition == m.partition_v1).all() and (m.block == m.block_v1).all())
+        obs2 = load_table(cfg2)
+        self.assertEqual(len(obs2), read_json(cfg2.path(cfg2["paths"]["prepared"]) / "observations.json")["subset"]["kept"])
+        self.assertTrue(set(obs2.obs_id) <= set(load_table(REAL).obs_id))
+
+
+class TestSensitivity(Base):
+    def test_sens_ids_and_overrides(self):
+        self.assertEqual(run_group("SEN01_I08MEAN_PEPS0.001"), "SEN01")
+        self.assertEqual(parse_run_id("SEN01_I08MEAN_PEPS0.001"), (None, None))
+        text = "A = 1\nP_EPS = 0.01 ! cut\nB = 2\n"
+        self.assertEqual(apply_overrides(text, {"P_EPS": 0.001}), "A = 1\nP_EPS = 0.001 ! cut\nB = 2\n")
+        self.assertEqual(apply_overrides(text, {}), text)
+        with self.assertRaises(StudyError):
+            apply_overrides(text + "P_EPS = 0.02\n", {"P_EPS": 0.001})      # set twice
+
+    def test_only_sens_files_may_override(self):
+        ens = Path(self.tmp.name) / "ensembles"
+        ens.mkdir()
+        self.cfg["paths"]["ensembles"] = str(ens)
+        (ens / "CHK99.csv").write_text("run_id,P_EPS\nCHK99_I00MEAN,0.001\n")
+        with self.assertRaises(StudyError):
+            namelist_overrides(self.cfg, "CHK99_I00MEAN")
+        (ens / "SEN99.csv").write_text("run_id,P_EPS\nSEN99_X,0.001\n")
+        self.assertEqual(namelist_overrides(self.cfg, "SEN99_X"), {"P_EPS": 0.001})
+        self.assertEqual(namelist_overrides(self.cfg, BASELINE), {})
+
+    def test_score_fit_matches_verify(self):
+        path = REAL.dir("results") / "CHK08_verify.json"
+        if not path.exists():
+            self.skipTest("no CHK08_verify.json")
+        from eki.score import one, partition_constraints
+        obs, split = load_table(REAL), load_split(REAL)
+        c, _, w = partition_constraints(REAL, obs, split, "fit")
+        s = one(REAL, "CHK08_I08MEAN", c, w)[0]
+        self.assertAlmostEqual(s["distance_term"], read_json(path)["objective"]["CHK08_I08MEAN"]["distance"], places=10)
+
+class TestV3(Base):
+    """P_EPS as a coefficient and the over-spread term: present only when configured."""
+    def setUp(self):
+        super().setUp()
+        path = REAL.root / "v3" / "config.yaml"
+        if not path.exists():
+            self.skipTest("no v3/config.yaml")
+        self.cfg3 = Config(path)
+        self.cfg3["paths"]["scratch_root"] = str(Path(self.tmp.name) / "scratch3")
+
+    def test_v1_layout_unchanged(self):
+        self.assertEqual(len(theta_names(self.cfg)), 9)
+        self.assertEqual(regularization_matrix(self.cfg).shape, (15, 9))
+        o = objective(self.cfg, np.zeros((1, 9)), np.zeros((1, 3)), np.full(3, 1 / 3))
+        self.assertNotIn("overspread", o)
+        with self.assertRaises(StudyError):
+            objective(self.cfg, np.zeros((1, 9)), np.zeros((1, 3)), np.full(3, 1 / 3), [1.0])
+        from eki.case import coefficient_overrides
+        self.assertEqual(coefficient_overrides(self.cfg, self.theta()), {})
+
+    def test_v3_regularization(self):
+        names = theta_names(self.cfg3)
+        self.assertEqual((len(names), names[-1]), (10, "p"))
+        B = regularization_matrix(self.cfg3)
+        self.assertEqual(B.shape, (9 + 1 + 6, 10))
+        th = np.random.default_rng(7).normal(0, 1, (20, 10)) * np.r_[np.repeat([0.7, 30.0, 1.0], 3), 2.0]
+        amp, smooth = regularization_terms(self.cfg3, th)
+        np.testing.assert_allclose(0.5 * ((th @ B[:10].T) ** 2).sum(1), amp, rtol=1e-6)
+        np.testing.assert_allclose(0.5 * ((th @ B[10:].T) ** 2).sum(1), smooth, rtol=1e-12)
+        one = np.zeros(10)
+        one[9] = np.log(10.0)                                           # a factor of 10 in P_EPS
+        amp, smooth = regularization_terms(self.cfg3, one)
+        self.assertAlmostEqual(amp[0], 0.5)
+        self.assertAlmostEqual(smooth[0], 0.0)
+        # the 9 weather rows are v1's
+        np.testing.assert_array_equal(B[:9, :9], regularization_matrix(self.cfg)[:9])
+        np.testing.assert_array_equal(B[10:, :9], regularization_matrix(self.cfg)[9:])
+
+    def test_v3_overspread_objective(self):
+        rng = np.random.default_rng(8)
+        th = rng.normal(0, 0.5, (3, 10))
+        d = rng.uniform(0, 3000, (3, 5))
+        w = block_weights(["a", "a", "b", "c", "c"])
+        acres = np.array([0.0, 10000.0, 25000.0])
+        o = objective(self.cfg3, th, d, w, acres)
+        np.testing.assert_allclose(o["overspread"], [0.0, 0.5, 3.125])
+        np.testing.assert_allclose(o["total"], o["distance"] + o["amplitude"] + o["smoothness"] + o["overspread"])
+        from eki.objective import overspread_outputs
+        F = np.hstack([distance_outputs(d, w, 1000.0), th @ regularization_matrix(self.cfg3).T,
+                       overspread_outputs(self.cfg3, acres)])
+        np.testing.assert_allclose(0.5 * (F ** 2).sum(1), o["total"])   # the EKI outputs reproduce Phi
+        with self.assertRaises(StudyError):
+            objective(self.cfg3, th, d, w)                              # areas are required in v3
+
+    def test_burned_outside_acres(self):
+        from eki.overspread import burned_outside_acres
+        toa = np.array([[-1.0, 100.0, 0.0], [50.0, 90000.0, 86400.0]])
+        inside = np.array([[True, False, False], [False, True, True]])
+        # outside: (0,1) burned at 100 s, (0,2) never, (1,0) at 50 s -> 2 cells
+        self.assertEqual(burned_outside_acres(toa, inside, 0.5, 86400.0), 1.0)
+        self.assertEqual(burned_outside_acres(toa, np.zeros_like(inside), 1.0, 86400.0), 4.0)  # 90000 s is after at_s
+        self.assertEqual(burned_outside_acres(toa, np.zeros_like(inside), 1.0, 60.0), 2.0)     # -1 and 50 s
+
+    def test_p_eps_floor_and_namelist(self):
+        from eki.case import coefficient_overrides
+        from eki.corrections import p_eps
+        base = self.flat_baseline()
+        t = {n: 0.0 for n in theta_names(self.cfg3)}
+        self.assertEqual(p_eps(self.cfg3, t), 0.01)
+        self.assertEqual(coefficient_overrides(self.cfg3, t), {"P_EPS": "0.01"})   # BASELINE: v1's literal
+        corrected_weather(self.cfg3, base, {**t, "p": np.log(0.0006 / 0.01)})
+        with self.assertRaises(StudyError):
+            corrected_weather(self.cfg3, base, {**t, "p": np.log(0.0004 / 0.01)})
+        lit = coefficient_overrides(self.cfg3, {**t, "p": 0.3})["P_EPS"]
+        self.assertEqual(float(lit), 0.01 * np.exp(0.3))                           # exact
+        text = "A = 1\nP_EPS = 0.01 ! cut\n"
+        self.assertEqual(apply_overrides(text, {"P_EPS": lit}), f"A = 1\nP_EPS = {lit} ! cut\n")
+
+    def test_v3_I00_copies_v1_weather(self):
+        import csv
+        import io
+        p3 = self.cfg3.path(self.cfg3["paths"]["ensembles"]) / "I00.csv"
+        if not p3.exists():
+            self.skipTest("no v3 I00")
+        a = list(csv.DictReader(io.StringIO((REAL.path(REAL["paths"]["ensembles"]) / "I00.csv").read_text())))
+        b = list(csv.DictReader(io.StringIO(p3.read_text())))
+        self.assertEqual(len(a), len(b))
+        for ra, rb in zip(a, b):
+            self.assertEqual(ra, {k: rb[k] for k in ra})                # every v1 field, as text
+            self.assertAlmostEqual(float(rb["p_eps_value"]) / (0.01 * np.exp(float(rb["p"]))), 1.0, places=14)
+        pe = np.array([float(r["p_eps_value"]) for r in b])
+        self.assertTrue((pe >= 0.001).all() and (pe <= 0.05).all())
 
 
 if __name__ == "__main__":

@@ -61,7 +61,8 @@ def describe(record):
     mult = "/".join(f"{v:.2f}" for v in record["speed_mult_knots"])
     d = "/".join(f"{v:+.1f}" for v in t[k:2 * k])
     m = "/".join(f"{v:+.2f}" for v in t[2 * k:3 * k])
-    return f"speed x{mult}, direction {d} deg, moisture {m} pp at the knots"
+    extra = f", P_EPS {record['P_EPS']}" if "p" in record["theta_names"] else ""
+    return f"speed x{mult}, direction {d} deg, moisture {m} pp at the knots{extra}"
 
 
 def run_one(cfg, rid, force=False):
@@ -230,7 +231,7 @@ def selection(cfg, which, of=None):
             raise StudyError("make-batch retry needs --of <batch file>")
         return [i for i in read_batch(of) if state(run_dir(cfg, i)) != "validated"], \
             f"retry_{utc_now().replace(':', '')}"
-    if re.fullmatch(r"I\d{2}|CHK\d{2}", which):
+    if re.fullmatch(r"I\d{2}|CHK\d{2}|SEN\d{2}", which):
         path = cfg.path(cfg["paths"]["ensembles"]) / f"{which}.csv"
         if not path.exists():
             raise StudyError(f"{path} not found")
@@ -239,8 +240,9 @@ def selection(cfg, which, of=None):
     raise StudyError(f"unknown selection {which!r} (I00, I01 ..., CHK01 ..., or retry)")
 
 
-def make_batch(cfg, which="I00", of=None):
-    """Write batches/<name>.txt and print the sbatch line."""
+def make_batch(cfg, which="I00", of=None, quiet=False):
+    """Write batches/<name>.txt and print the sbatch line (quiet: only write the file,
+    as `auto` does, since it runs the batch itself)."""
     ids, name = selection(cfg, which, of)
     if not ids:
         print("nothing to run")
@@ -252,11 +254,13 @@ def make_batch(cfg, which="I00", of=None):
     ntasks = math.ceil(len(ids) / size)
     path.write_text(f"# {len(ids)} runs, selection {which!r}, created {utc_now()}\n" + "\n".join(ids) + "\n")
     print(f"wrote {path} ({len(ids)} runs)")
+    if quiet:
+        return path
     print(f"{size} runs per array task -> tasks 0-{ntasks - 1}")
     for i in range(ntasks):
         part = chunk(ids, size, i)
         print(f"  task {i}: {part[0]} .. {part[-1]} ({len(part)} runs)")
-    script = sl["check_script"] if name.startswith("CHK") else sl["script"]
+    script = sl["check_script"] if name.startswith(("CHK", "SEN")) else sl["script"]
     print("Submit from the eki_calibration folder (CPUs, time and memory are set in the Slurm file):")
     print(f"  cd {CODE_ROOT}")
     print(f"  sbatch --array=0-{ntasks - 1}%{sl['max_concurrent_tasks']} {script} "

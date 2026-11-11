@@ -12,6 +12,15 @@ weather band:
 
 Zero coefficients give the baseline exactly. ELMFIRE then interpolates between the
 hourly bands itself (wind as u/v components).
+
+v3 adds one constant coefficient when corrections.p_eps is set (Jacob, 2026-11-10):
+
+    p     = ln(P_EPS / reference)     one value for the whole run, appended to theta
+    P_EPS = reference * exp(p)        written to the namelist (eki.case)
+
+A member with P_EPS below corrections.p_eps.floor (or >= 1) is not admissible: like a
+moisture history below its floor, it is refused, never clipped. Without p_eps in the
+config, theta and everything built from it are as in v1 and v2.
 """
 import numpy as np
 
@@ -21,9 +30,34 @@ FAMILIES = ("a", "d", "m")
 MOISTURE = ("m1", "m10", "m100")
 
 
+def constants(cfg):
+    """The constant (not time-varying) coefficients: ["p"] when corrections.p_eps is
+    configured (v3), else none."""
+    return ["p"] if cfg["corrections"].get("p_eps") else []
+
+
 def theta_names(cfg):
     k = len(cfg["corrections"]["knots_h"])
-    return [f"{f}_k{r}" for f in FAMILIES for r in range(1, k + 1)]
+    return [f"{f}_k{r}" for f in FAMILIES for r in range(1, k + 1)] + constants(cfg)
+
+
+def p_eps(cfg, theta):
+    """P_EPS = reference * exp(p) for a theta dict or vector (theta_names order), or
+    None when P_EPS is not a coefficient."""
+    if not constants(cfg):
+        return None
+    p = theta["p"] if isinstance(theta, dict) else np.asarray(theta, float)[theta_names(cfg).index("p")]
+    return float(cfg["corrections"]["p_eps"]["reference"]) * float(np.exp(p))
+
+
+def check_p_eps(cfg, theta):
+    """Raises if P_EPS is a coefficient and outside [floor, 1)."""
+    v = p_eps(cfg, theta)
+    if v is None:
+        return
+    floor = float(cfg["corrections"]["p_eps"]["floor"])
+    if not (np.isfinite(v) and floor <= v < 1.0):
+        raise StudyError(f"inadmissible P_EPS {v:.6g}: must be in [{floor:g}, 1)")
 
 
 def basis(hours, knots_h):
@@ -70,8 +104,10 @@ def curves(cfg, theta):
 
 def corrected_weather(cfg, baseline, theta):
     """The five hourly series written to the rasters, and the correction curves.
-    Raises if the result is not admissible (see check_admissible)."""
+    Raises if the result is not admissible (see check_admissible), or if P_EPS is a
+    coefficient outside its limits (check_p_eps)."""
     c = curves(cfg, theta)
+    check_p_eps(cfg, theta)
     w = cfg["corrections"]["moisture_weights"]
     series = {"ws": baseline.ws_mph.to_numpy(float) * np.exp(c["a"]),
               "wd": np.mod(baseline.wd_deg.to_numpy(float) + c["d"], 360.0)}

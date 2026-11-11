@@ -1,0 +1,4 @@
+run_id,wind_from,cells,burned_cells,burned_share,earliest_h,median_burned_h,mean_burned_h,mean_capped_h,burned_area_ac,same_inputs_run
+JG,041214,33758,13673,0.40503,10.4254,18.7808,18.7291,21.8651,103101,
+CO,041211,33758,18262,0.540968,16.6472,19.7597,20.26,21.9768,97957.9,
+MEAN,"['041214', '041211']",33758,14263,0.422507,14.5329,18.7345,19.1973,21.9708,97717.2,identical

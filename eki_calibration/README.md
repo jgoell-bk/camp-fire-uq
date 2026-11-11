@@ -22,17 +22,167 @@ any context summary), and `../PROJECT.md` for how to work with Jacob.
 
 - **I00 done**: job 51576874, 33/33 runs validated, 30 min wall time. It is extracted
   and piloted; see `results/`.
-- **First controlled update proposed**, not yet promoted.
-  - `proposals/I01.csv`: α = 32, mean direction correction +1/0/+4° → +15/+15/+18°.
-  - Check batch CHK01 (3 runs at the ensemble means), ready for Jacob:
+- **First controlled update verified and promoted** (2026-11-09).
+  - CHK01 (job 51581900, 3/3 validated, 12–14 min each): Φ is 34.76 at the I00 mean and
+    **23.10 at the proposed mean**. The repeat was bit-identical, so the variability is 0
+    and the change of −11.66 counts as an improvement (`results/CHK01_verify.json`).
+  - The gain is in the 6–12 h deadlines (met 1 → 9 %, mean distance 7.5 → 5.3 km) and
+    the 12–24 h ones (14 → 19 %, 5.1 → 2.5 km). The **0–6 h deadlines are unchanged**:
+    0 % met, 9.2 → 8.7 km.
+  - `ensembles/I01.csv` = `proposals/I01.csv`. Batch I01 (32 runs) is ready for Jacob:
     ```
     cd /oak/stanford/groups/gorle/jgoell/Wildfire/eki_calibration
-    sbatch --array=0-0%2 slurm/eki_check.slurm batches/CHK01.txt
+    sbatch --array=0-0%2 slurm/eki_batch.slurm batches/I01.txt
     ```
-  - Then `python -m eki verify CHK01`, and only if accepted, `python -m eki promote I01`.
+- **I01 done** (job 51676274, 32/32 validated, 29 min). It has been extracted and
+  piloted.
+  - Members' Φ: mean 48.9 → **34.1**, median 41.2 → 30.9, worst 111.9 → 65.9, best
+    14.0 → 13.1. 26 of 32 members improved (median −8.8). The run at the I01 mean scores
+    23.1 (CHK01).
+  - By deadline window (members' median): 0–6 h is unchanged (0 % met, 9.8 → 9.3 km);
+    6–12 h 1 → 4 % met, 7.6 → 5.9 km; 12–24 h 15 → 20 % met, 4.0 → 2.2 km.
+  - Constraints reached by all members: 21 → 51; by none: 15 → 14.
+  - Direction spread narrowed from 31–36° to 24–31°. Speed (mean ×1.64–1.73) and
+    moisture barely moved.
+- **Second update proposed** (2026-11-09, `propose I01`): `proposals/I02.csv`.
+  - α = 16. At α = 8 a member moved 1.15 sd; at 16 the largest moves are 0.32 sd (mean)
+    and 0.73 sd (member).
+  - Mean direction correction +14.5/+14.7/+17.8° → **+22.1/+22.2/+25.6°**. Speed
+    ×1.64/1.64/1.73 → ×1.73/1.70/1.81. Moisture −0.10/−0.16/+0.03 → −0.33/−0.34/−0.02 pp.
+  - Check batch CHK02, ready for Jacob:
+    `sbatch --array=0-0%2 slurm/eki_check.slurm batches/CHK02.txt`.
+  - CHK02_I01MEAN matches CHK01_I01MEAN up to 5e-15 (rounding in the mean), so it is
+    re-run, not reused. Its checksums will be compared with CHK01's as a cross-job
+    reproducibility check.
+- **Second update verified and promoted** (2026-11-09).
+  - CHK02: 3/3 validated, 13–15 min. Φ is 23.10 at the I01 mean and **17.57 at the
+    proposed mean** (−5.53). The repeat was bit-identical.
+  - Across jobs, CHK02_I01MEAN is byte-identical to CHK01_I01MEAN in both its weather
+    and arrival rasters.
+  - By deadline window (met share; mean km; weighted term):
+    - 0–6 h: 0.00 → 0.01; 8.7 → 7.7 km; 11.8 → 9.6. The first movement in this window.
+    - 6–12 h: 0.09 → 0.06; 5.3 → 4.0 km; 7.3 → 5.0. Fewer met, but closer.
+    - 12–24 h: 0.19 → 0.37; 2.5 → 1.4 km; 3.5 → 2.2.
+  - `ensembles/I02.csv` = `proposals/I02.csv`.
+- **I02 ensemble run and reassessed** (2026-11-09). Job 51686250: 32/32 validated, up to
+  27 min per fire. `extract` and `pilot` were run on `batches/I02.txt`.
+  - Member Φ: mean 34.1 → **27.0**, median 30.9 → 25.4, worst 65.9 → 54.7. The best
+    member hasn't improved (I00 14.0, I01 13.1, I02 13.7). 28 of 32 members improved
+    over their I01 parent (median −5.0). The run at the I02 mean scores 17.6 (CHK02).
+  - By deadline window (members' median): 0–6 h still 0 % met, 9.3 → 8.3 km;
+    6–12 h 4 → 5 % met, 5.9 → 4.7 km; 12–24 h 20 → 35 % met, 2.2 → 1.7 km.
+  - Constraints reached by all members: 51 → 120; by none: 14 → 14.
+  - Coefficient spread: direction sd is now 28/22/20° (from 31/26/24). Speed (sd about
+    0.44, mean ×1.73/1.70/1.81) and moisture (sd about 1.0 pp) are still close to their
+    initial spread.
+  - Causality: in 0–6 h, the largest non-causal (k3) weight is m_k3 −0.22. The causal
+    ones are d_k1 −0.46, a_k1 −0.42, a_k2 −0.40 and m_k1 +0.35. This k3 weight is the
+    size that correlated initialization gives, as with d_k3 −0.15 in I00.
+- **Third update proposed** (2026-11-09, Jacob: "yes next update"; `propose I02`):
+  `proposals/I03.csv`.
+  - α = 8. At α = 4 a member moved 1.13 sd; at 8 the largest moves are 0.32 sd (mean)
+    and 0.69 sd (member). No inadmissible members, no projections.
+  - Unlike the first two steps, this one moves speed and moisture more than direction.
+    - Speed ×1.73/1.70/1.81 → **×1.99/1.87/1.97**.
+    - Moisture −0.33/−0.34/−0.02 → **−0.60/−0.55/−0.08 pp**.
+    - Direction +22.1/+22.2/+25.6° → +24.0/+23.4/+29.3°.
+    The largest moves are at the first knot, which acts on the 0–6 h window.
+  - Check batch CHK03, ready for Jacob:
+    `sbatch --array=0-0%2 slurm/eki_check.slurm batches/CHK03.txt`, then `verify CHK03`.
+  - CHK03_I02MEAN equals CHK02_I02MEAN to 1e-16 (rounding in the mean). It is re-run,
+    and its checksums will be compared with CHK02's.
+- **Third update verified and promoted** (2026-11-09).
+  - CHK03 (job 51693833): 3/3 validated, 16–20 min. Φ is 17.57 at the I02 mean (equal
+    to CHK02) and **14.70 at the proposed mean** (−2.87). The repeat was bit-identical.
+    CHK03_I02MEAN is byte-identical to CHK02_I02MEAN in both its weather and arrival
+    rasters.
+  - By deadline window (met share; mean km; weighted term):
+    - 0–6 h: 0.008 → 0.008; 7.7 → 7.3 km; 9.6 → 8.8;
+    - 6–12 h: 0.06 → 0.06; 4.0 → 3.4 km; 5.0 → 3.8;
+    - 12–24 h: 0.37 → 0.56; 1.4 → 0.9 km; 2.2 → 1.0.
+  - Every fire type and both direct and proxy cells improved. Direct: 12.8 → 10.3;
+    proxy: 4.0 → 3.3.
+  - The penalty terms grew, as expected for larger corrections: amplitude 0.69 → 0.93,
+    smoothness 0.06 → 0.14.
+  - `ensembles/I03.csv` = `proposals/I03.csv`. I03 ran as job 51698097 (32/32
+    validated); it has not been extracted yet. The `auto` job does that first.
+- **The loop now runs in one job** (2026-11-09, Jacob: "come up with a way that all of
+  this can be run with one command"). See "One job for the whole loop" below. The
+  stopping rules are Jacob's: at most I10, and stop once an update gains less than 2 %.
+  A replay of the I02 → I03 step through `auto`, in a sandbox, reproduced
+  `ensembles/I03.csv` byte for byte. The CHK03 objective and the I02 extract were also
+  identical, apart from timestamps.
+- **Automated run finished** (job 51732941, 2026-11-10, 6.4 h; exit 0). It scored I03,
+  then ran CHK04–CHK08 and I04–I08. It stopped on the 2 % rule: CHK08 gained 1.4 %.
+  **I08 is the final ensemble with the original observations.**
+  - Φ at the mean: 14.70 → 13.88 → 11.23 → 9.98 → 8.21 → **8.10**. All checks improved.
+  - Members' Φ: mean 21.7 (I03) → 10.0 (I08); best 12.1 → 8.0.
+  - By deadline window (members' median, I03 → I08):
+    - 0–6 h: 0 → 2 % met, 7.6 → 5.3 km;
+    - 6–12 h: 6 → 18 % met, 3.8 → 1.4 km;
+    - 12–24 h: 52 → 60 % met, 1.3 → 0.5 km.
+  - The full table is in `results/auto_log.json` and the end of
+    `logs/camp_eki_auto_51732941.out`.
+- **Holdout scored once, after the v1 calibration** (2026-11-10, `python -m eki score
+  v1_final BASELINE CHK01_I00MEAN CHK08_I08MEAN --members I08` →
+  `results/score_v1_final.json`). It isn't used to choose any setting.
+  - The scorer's fit numbers for CHK08_I08MEAN equal `verify`'s exactly.
+
+    | Distance term (met share, mean km) | Uncorrected MEAN | I08 mean | I08 members (median) |
+    |---|---|---|---|
+    | Fit (1,199 constraints, 161 blocks) | 44.73 (2 %, 8.8) | 6.19 (19 %, 2.7) | 6.99 |
+    | Holdout (231 constraints, 37 blocks) | 44.35 (4 %, 8.8) | 10.65 (17 %, 3.2) | 10.98 |
+
+  - Holdout by window at the I08 mean: 0–6 h 3 % met, 5.1 km; 6–12 h 10 %, 1.7 km;
+    12–24 h 75 %, 0.3 km.
+  - The holdout term's excess over the fit is concentrated: two early blocks with three
+    reports contribute 5.96 of 10.65; the other 35 blocks contribute 4.7.
+    - B22_14 is OBS2306: 09:11 PST, a mile beyond the Honey Run covered bridge,
+      16.6 km from the modelled fire.
+    - B22_19 is OBS2188/2189: 08:30–09:00 PST, west Paradise, 12.9 km away.
+    - All three are in the cleaned data. Each holdout block weighs 1/37, against 1/161 on
+      the fit side.
+- **Early-window test SEN01** (2026-11-10). Sensitivity runs, not calibration: the I08
+  mean (CHK08_I08MEAN's coefficients, copied verbatim) at P_EPS 0.01 (control), 0.003
+  and 0.001.
+  - Run group `SEN<nn>`: its CSV may override namelist keys (`case.OVERRIDABLE`, P_EPS);
+    calibration files may not.
+  - Checked: the control builds identical to CHK08_I08MEAN (weather, and namelist apart
+    from paths); the others differ only in the P_EPS line.
+  - Jacob submits `sbatch --array=0-0%2 slurm/eki_check.slurm batches/SEN01.txt`, then
+    `python -m eki score SEN01 CHK08_I08MEAN SEN01_I08MEAN_PEPS0.01 SEN01_I08MEAN_PEPS0.003 SEN01_I08MEAN_PEPS0.001`.
+  - **Results** (scored 2026-11-10, `results/score_SEN01.json`). 3/3 validated. The
+    control's arrival raster is byte-identical to CHK08_I08MEAN's. Wall time: 1,853 s
+    (control), 2,548 s (0.003), 2,638 s (0.001), all in the same job.
+
+    | P_EPS | fit distance term | fit met | fit 0-6 h km | holdout distance term | holdout met |
+    |---|---|---|---|---|---|
+    | 0.01 | 6.195 | 0.19 | 5.1 | 10.651 | 0.17 |
+    | 0.003 | 2.197 | 0.40 | 2.5 | 4.960 | 0.26 |
+    | 0.001 | 0.768 | 0.54 | 1.2 | 1.537 | 0.36 |
+
+  - Overshoot check against the final CAL FIRE perimeter (153,336 ac, contained 26 Nov),
+    rasterized on the 30 m grid. Burned area by 12 h / 24 h, with the share outside the
+    final perimeter: uncorrected 18,602 (7 %) / 97,717 ac (41 %); I08 mean 46,331 (2 %)
+    / 149,871 ac (35 %); P_EPS 0.003 101,733 (37 %) / 168,721 ac (42 %); P_EPS 0.001
+    113,829 (39 %) / 170,922 ac (42 %).
+  - Among reached fit cells, the share reached before its observation window opened:
+    5 % uncorrected, 16 % I08 mean, 36 % (0.003), 51 % (0.001).
+  - Reading: the deadline objective is one-sided, so a faster fire always scores
+    better. Lower P_EPS meets the early deadlines by over-burning: 38-45k ac outside
+    the final perimeter by 12 h, against 1k for the I08 mean. P_EPS is not added to the
+    EKI until the objective penalizes over-spread (proposal to Jacob, 2026-11-10).
+  - Cosmetic: the namelist comment line still says "P_EPS fixed at 0.01" in overridden
+    runs; the P_EPS line itself is correct.
+- Jacob's labmate is correcting the arrival-time observations (2026-11-09). When the
+  corrected file arrives:
+  - the observation table, holdout and constraints must be rebuilt;
+  - the calibration restarts from I00, in its own result folders, so the current results
+    stay intact.
+  - The I00 ELMFIRE runs don't depend on the observations, but the updates do.
 - The arrival-time (lateness) update stays unused: of the 1,199 fit constraints, only
   21 are reached by every member. The fit uses the distance response instead.
-- 44 unit tests pass.
+- 52 unit tests pass.
 
 ## Decisions
 
@@ -469,14 +619,175 @@ G = √w·d/L, y = 0, R = 1 and B = `regularization_matrix`.
 
 ## Open
 
-1. **Jacob**: submit CHK01, then `python -m eki verify CHK01`.
-2. If accepted: `python -m eki promote I01` and its sbatch. Then extract I01, recompute
-   the distances, and reassess before any further update.
-3. If not: increase damping (a larger alpha0 or tighter limits), then `propose` again
-   into a new proposal; files are never edited.
+1. **Jacob**: submit `slurm/eki_auto.slurm`. It scores I03, then iterates to I10 at most
+   (see "One job for the whole loop"). Afterwards, reassess from `results/auto_log.json`.
+2. If a check is rejected: increase damping (a larger alpha0 or tighter limits), then
+   `propose` again into a new proposal; files are never edited.
+3. The corrected arrival-time observations, when they arrive: restart from I00 in a new
+   results location (see Status).
 4. If the early-window violations persist as the corrections grow: review spotting
    (P_EPS), uniform wind and representativeness before widening ranges.
 5. The holdout stays frozen and unscored.
+
+## v2: the cleaned observations (`v2/`, set up 2026-11-10)
+
+The same calibration rerun on the cleaned observations from Jacob's labmate. Run it
+from this folder with `--config v2/config.yaml`; v1 (the folders above) is untouched.
+
+- **Data**: `../ParameterEstimationFiles/arrival_observations_cleaned/camp_fire_arrival_times_2.geojson`.
+  - It has 2,513 points. All of them are exact copies of original points (location,
+    day, minute, elapsed). 323 were removed, none moved or retimed; the order differs.
+  - `elapsed` is now hours rather than a duration string.
+- **Table** (`sources.observations_subset_geojson`, `observations.select_subset`):
+  - built from the full original file, so the NIST matches and obs_ids are v1's, then
+    restricted to the kept points;
+  - 5 groups of identical points lost only some copies. Their kept copies take the
+    group's first records in workbook order (Jacob). The only deadline this decides is
+    OBS2772 (06:00 9 Nov, 5-min window): its window ends after the run, so it isn't a
+    constraint;
+  - the removed points: 250 direct and 72 proxy; by fire type O 169, V 118, C 19, S 10,
+    R 7.
+- **Review decisions**: OBS0073 (proxy) and OBS2482 (excluded) carry over; they're the
+  same points. OBS2440 was removed, so its decision and the same-event group
+  [OBS2440, OBS2434] are dropped.
+- **Holdout v2** (`holdout.blocks_from`): every 1 km block keeps its v1 role (Jacob), so
+  v1 → v2 differences come from the cleaned data only. That gives 40 of 191 blocks
+  held out (21 %); every report has its v1 partition.
+  - The first attempt re-drew with the v1 seed and matched only 4 of 38 blocks. It is
+    kept, unused, as `v2/prepared/*_fresh_draw_unused.*`.
+- **Constraints**: 1,062 primary fit constraints (v1 1,199). Of these, 1,051 are shared
+  with v1 and 11 are new; 148 of v1's were dropped. Holdout: 208.
+- **Same as v1**:
+  - the weather, the template, the fit settings and the stopping rules (I10, 2 %);
+  - the I00 ensemble: `v2/ensembles/I00.csv` is a copy of v1's (Jacob).
+
+  Built v2 I00 cases have weather rasters and a namelist identical to v1's (apart from
+  paths), and the shared inputs have the same checksums. v2's I00 arrival rasters
+  should therefore equal v1's.
+- Scratch root: `$SCRATCH/elmfire-class/eki_calibration_v2`.
+- To run: `sbatch slurm/eki_auto.slurm v2/config.yaml`. Its log is
+  `v2/results/auto_log.json`.
+
+## v3: over-spread term and P_EPS as a coefficient (`v3/`, set up 2026-11-10)
+
+Why: SEN01 showed that lower P_EPS meets the early deadlines by over-burning. The
+deadline term never penalizes early arrival, so on its own it rewards any faster fire.
+v3 is v2 (cleaned observations, holdout v2, the same constraints) plus two changes.
+Jacob confirmed each setting by name on 2026-11-10.
+
+- **Over-spread term** (`fit.overspread`, `eki/overspread.py`):
+  - R_over = ½ (A_out / 10,000 ac)², where A_out is the area the run burned outside the
+    final CAL FIRE perimeter by the end of the run (24 h);
+  - burning 10,000 ac outside costs 0.5, as much as missing every deadline by 1 km;
+  - it is one extra EKI output, A_out / 10,000, with unit noise, so ½|F|² is still Φ;
+  - the perimeter (`sources.final_perimeter`, 153,336 ac, contained 26 Nov) is
+    rasterized on the fuel grid by `python -m eki --config v3/config.yaml perimeter`
+    into `v3/prepared/final_perimeter.tif`: 153,270 ac, cell-centre rule;
+  - it is a lower bound: by 24 h the real fire filled only part of the final perimeter.
+    The uncorrected MEAN weather already burns 40,247 ac outside, which adds 8.10.
+- **P_EPS as a coefficient** (`corrections.p_eps`; theta has 10 entries, p last):
+  - p = ln(P_EPS / 0.01), one constant per run, written to the namelist as
+    P_EPS = 0.01 exp(p), an exact literal (`case.coefficient_overrides`);
+  - penalty scale ln 10, so a factor of 10 costs as much as ×2 wind or 30°. It adds
+    ½ (p / ln 10)² to R_amp and nothing to R_smooth;
+  - floor 0.0005: a member below it is inadmissible, so the step is damped until no
+    member is. Nothing is clipped;
+  - lower P_EPS means slower runs (SEN01: +40 % at 0.001).
+- **I00** (`initial_ensemble.weather_from`, `ensemble.make_extended`):
+  - v1's I00 rows (= v2's), copied as text, plus p with P_EPS log-uniform on
+    0.001–0.05, independent of the weather, from seed 20261110;
+  - the drawn P_EPS values are 0.0011 / 0.0070 / 0.049 (min / median / max); rank 10.
+- **Same as v2**: observations, holdout v2, constraints, baseline weather, shared inputs
+  (all byte-identical to v2's) and the stopping rules (I10, 2 %).
+- `v3/elmfire.data.template` differs from `../elmfire.data.template` only in the P_EPS
+  comment line.
+- **Checks before submission**:
+  - built v3 cases have v1's weather rasters; their namelists differ from v1's only in
+    paths, the P_EPS value and that comment;
+  - a sandbox replay of extract → pilot → propose → verify → promote on stand-in rasters
+    (v1's) ran end to end with the over-spread output;
+  - 58 tests pass.
+- Scratch root: `$SCRATCH/elmfire-class/eki_calibration_v3`.
+- To run: `sbatch slurm/eki_auto.slurm v3/config.yaml`. Its log is
+  `v3/results/auto_log.json`.
+- Comparing v3 with v2: their Φ differ by definition, so compare deadline distance,
+  share met, holdout score and over-spread acres. `score` reports over-spread only
+  under v3's config.
+
+### Results: v1, v2, v3 (2026-11-10)
+
+Jobs: v2 = 51800200 (8 h 38 min, stopped at I08: gain 0.6 % < 2 %); v3 = 51842711
+(4 h 43 min, stopped at CHK09: the I09 mean worsened Φ by +1.03, so I08 is final).
+v1 = 51732941 (stopped at I08, gain 1.4 %).
+
+`python -m tools.compare_finals` (→ `v3/results/compare_finals.json`) measures every
+final run (CHK08_I08MEAN) on the same yardsticks: the cleaned fit deadlines (1,062, v2 =
+v3) and the final perimeter. The holdout is not touched.
+
+| run | RMS km | met | mean km | 0–6 h met / km | 6–12 h | 12–24 h | burned by 24 h (ac) | outside perimeter (ac) |
+|---|---|---|---|---|---|---|---|---|
+| uncorrected | 9.47 | 0.02 | 8.94 | 0.00 / 10.2 | 0.01 / 8.8 | 0.09 / 6.0 | 97,717 | 40,247 |
+| v1 final | 3.44 | 0.18 | 2.79 | 0.01 / 5.1 | 0.16 / 1.2 | 0.66 / 0.4 | 149,871 | 52,359 |
+| v2 final | 3.42 | 0.19 | 2.75 | 0.01 / 5.1 | 0.18 / 1.2 | 0.67 / 0.3 | 152,264 | 54,435 |
+| v3 final | 4.10 | 0.15 | 3.33 | 0.01 / 6.2 | 0.17 / 1.3 | 0.47 / 0.6 | 109,531 | 19,368 |
+
+Final coefficients (I08 mean; speed multiplier, direction, moisture at the knots 06, 12,
+18 h):
+
+| | speed × | direction ° | moisture pp | P_EPS |
+|---|---|---|---|---|
+| v1 | 3.55 / 2.66 / 2.55 | +31.1 / +24.7 / +27.3 | −1.11 / −0.80 / −0.28 | 0.01 (fixed) |
+| v2 | 3.51 / 2.62 / 2.49 | +31.3 / +24.7 / +27.5 | −1.12 / −0.79 / −0.27 | 0.01 (fixed) |
+| v3 | 2.31 / 1.29 / 0.77 | +25.2 / +31.9 / +22.2 | −0.94 / −0.78 / −0.06 | 0.0069 |
+
+- v1 → v2: the cleaned observations barely change the answer. v2's I00 arrival rasters
+  are pixel-identical to v1's (the GeoTIFF files differ only in metadata), and BASELINE
+  is identical in all three versions.
+- v2 → v3: the over-spread term cuts the area outside the perimeter from 54,435 to
+  19,368 ac. The cost is 0.7 km of RMS deadline distance (3.42 → 4.10), almost all of it
+  in the 12–24 h deadlines (met 0.67 → 0.47). It does this mainly by slowing the
+  afternoon and evening wind (×2.62 → ×1.29 at 12 h, ×2.49 → ×0.77 at 18 h).
+- v1 and v2 burn about 150,000 ac in 24 h, nearly the whole final perimeter
+  (153,270 ac), which the real fire reached only by late November.
+- P_EPS: the ensemble narrowed from 0.0011–0.049 (I00) to 0.0038–0.0119 (I08), with
+  median 0.0069; p's sd went from 1.20 to 0.24. The data pin P_EPS near the default 0.01.
+- v3 stopped on a worsening step, not on the 2 % rule; the last accepted gain was
+  8.9 %. The I09 mean lowered the distance term (8.42 → 7.94) but burned more outside
+  (19,368 → 25,387 ac). A more damped step might still improve v3.
+- The early deadlines (0–6 h) are missed by 5–6 km in every version; no weather
+  correction here reproduces the morning run.
+- The 10,000 ac reference sets the exchange rate between acres outside and deadline km,
+  so v3 is one point on that trade-off, not a unique answer.
+
+## One job for the whole loop (`eki/auto.py`, `slurm/eki_auto.slurm`)
+
+```
+cd /oak/stanford/groups/gorle/jgoell/Wildfire/eki_calibration
+sbatch slurm/eki_auto.slurm
+```
+
+One Slurm job (24 CPUs, 2 days) runs every step on its compute node. It doesn't poll
+the scheduler or resubmit itself, and it leaves nothing running on a login node. It
+starts from the newest `ensembles/I<n>.csv`, and each pass does what the manual
+commands do, with the same files:
+
+1. run I<n>'s members (validated runs are skipped);
+2. `extract` and `pilot` it;
+3. `propose` I<n+1> and CHK<n+1>, then run the three check runs;
+4. `verify`, then `promote` if accepted, and go back to 1.
+
+It stops, after logging why:
+- once I<n> has been run and scored, if I<n> is `auto.max_ensemble` (10);
+- once I<n> has been run and scored, if the update that made I<n> lowered Φ at the mean
+  by less than `auto.min_relative_gain` (2 %, from `results/CHK<n>_verify.json`);
+- if a check isn't accepted. Nothing is promoted, and I<n> is the final ensemble;
+- at the first failed run or error. It never retries on its own.
+
+`results/auto_log.json` records every ensemble (members' Φ, and per window the members'
+median share met and distance) and every check (Φ at both means, gain, α, verdict). The
+end of the Slurm log prints the same table. Resubmitting resumes: validated runs are
+skipped, and an existing proposal or promotion is reused (a promotion only if it is
+byte-identical to its proposal).
 
 ## Commands (from this folder)
 
@@ -496,6 +807,7 @@ python -m eki pilot batches/I00.txt     # results/I00_pilot.json, _pilot_cells.c
 python -m eki propose I00               # proposals/I01.csv + .json; ensembles/CHK01.csv; batches/CHK01.txt
 python -m eki verify CHK01              # results/CHK01_verify.json (after the CHK01 runs)
 python -m eki promote I01               # ensembles/I01.csv + batches/I01.txt, only if verify accepted
+python -m eki auto --workers 24         # the whole loop (what slurm/eki_auto.slurm runs)
 python -m unittest tests.test_eki
 ```
 
@@ -512,4 +824,5 @@ python -m unittest tests.test_eki
 | `results/` | `I00_G.npz`, `I00_reach.csv`, `I00_pilot.json`, `I00_pilot_cells.csv`, `I00_distance.npz` |
 | `slurm/eki_batch.slurm` | serc, 1 node, 24 CPUs, 12 h, 2 G/CPU; logs in `logs/` |
 | `slurm/eki_check.slurm` | the same with 3 CPUs, 6 h, for CHK batches |
+| `tools/compare_finals.py` | v1/v2/v3 final runs on the cleaned fit deadlines and the final perimeter (`python -m tools.compare_finals`) |
 | `$SCRATCH/elmfire-class/eki_calibration/` | `shared/` and `runs/<BASELINE\|I00\|CHK01\|...>/<run_id>/` |

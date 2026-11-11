@@ -1,0 +1,34 @@
+{
+ "created_utc": "2026-11-10T18:48:05Z",
+ "sha256": "90ffb20bf18c450fd1e247dbe43fc85acf727484f0bb01c1dd17c374c6e7c0c4",
+ "config_target": {
+  "partition": "fit",
+  "deadline_allowance_s": 0,
+  "deadline_overrides": {},
+  "exclude_residual": true,
+  "one_per_cell": "smallest_deadline",
+  "lateness_scale_s": 3600
+ },
+ "counts": {
+  "fit": {
+   "later_deadline": 414,
+   "no_cell": 15,
+   "no_window": 0,
+   "outside_run": 64,
+   "primary": 1062,
+   "residual": 165,
+   "same_deadline": 291,
+   "window_after_run": 18
+  },
+  "holdout": {
+   "later_deadline": 119,
+   "no_cell": 7,
+   "no_window": 1,
+   "outside_run": 21,
+   "primary": 208,
+   "residual": 46,
+   "same_deadline": 76,
+   "window_after_run": 6
+  }
+ }
+}

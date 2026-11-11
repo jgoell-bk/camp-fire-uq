@@ -1,0 +1,234 @@
+{
+ "jobs": [
+  {
+   "started_utc": "2026-11-10T04:02:17Z",
+   "slurm_job_id": "51732941",
+   "host": "sh04-06n15.int",
+   "settings": {
+    "max_ensemble": 10,
+    "min_relative_gain": 0.02
+   },
+   "steps": [
+    {
+     "utc": "2026-11-10T04:03:25Z",
+     "step": "ensemble",
+     "ensemble": "I03",
+     "update_gain": 0.16352926552123268,
+     "members_phi": {
+      "mean": 21.670221022749214,
+      "median": 19.563180464707465,
+      "min": 12.047975196379387,
+      "max": 42.66567009927141
+     },
+     "windows_members_median": {
+      "0-6h": {
+       "met_share": 0.004,
+       "mean_km": 7.61
+      },
+      "6-12h": {
+       "met_share": 0.06,
+       "mean_km": 3.75
+      },
+      "12-24.01h": {
+       "met_share": 0.52,
+       "mean_km": 1.29
+      }
+     }
+    },
+    {
+     "utc": "2026-11-10T04:17:57Z",
+     "step": "check",
+     "check": "CHK04",
+     "phi_current_mean": 14.697515916454547,
+     "phi_proposed_mean": 13.883158930242786,
+     "relative_gain": 0.055407797538089484,
+     "verdict": "improves",
+     "accepted": true,
+     "repeat_bit_identical": true,
+     "alpha": 8.0
+    },
+    {
+     "utc": "2026-11-10T05:14:49Z",
+     "step": "ensemble",
+     "ensemble": "I04",
+     "update_gain": 0.055407797538089484,
+     "members_phi": {
+      "mean": 18.312823068968765,
+      "median": 17.77919653593792,
+      "min": 10.319480448610738,
+      "max": 34.98071828966662
+     },
+     "windows_members_median": {
+      "0-6h": {
+       "met_share": 0.008,
+       "mean_km": 6.98
+      },
+      "6-12h": {
+       "met_share": 0.081,
+       "mean_km": 3.23
+      },
+      "12-24.01h": {
+       "met_share": 0.568,
+       "mean_km": 1.01
+      }
+     }
+    },
+    {
+     "utc": "2026-11-10T05:32:37Z",
+     "step": "check",
+     "check": "CHK05",
+     "phi_current_mean": 13.883158930242786,
+     "phi_proposed_mean": 11.23437281798832,
+     "relative_gain": 0.19079131237807886,
+     "verdict": "improves",
+     "accepted": true,
+     "repeat_bit_identical": true,
+     "alpha": 4.0
+    },
+    {
+     "utc": "2026-11-10T06:26:00Z",
+     "step": "ensemble",
+     "ensemble": "I05",
+     "update_gain": 0.19079131237807886,
+     "members_phi": {
+      "mean": 14.464140890028933,
+      "median": 14.104171380559489,
+      "min": 10.286604131467952,
+      "max": 24.982031783450115
+     },
+     "windows_members_median": {
+      "0-6h": {
+       "met_share": 0.01,
+       "mean_km": 6.32
+      },
+      "6-12h": {
+       "met_share": 0.118,
+       "mean_km": 2.41
+      },
+      "12-24.01h": {
+       "met_share": 0.606,
+       "mean_km": 0.81
+      }
+     }
+    },
+    {
+     "utc": "2026-11-10T06:44:07Z",
+     "step": "check",
+     "check": "CHK06",
+     "phi_current_mean": 11.23437281798832,
+     "phi_proposed_mean": 9.981978233590585,
+     "relative_gain": 0.11147881636902933,
+     "verdict": "improves",
+     "accepted": true,
+     "repeat_bit_identical": true,
+     "alpha": 4.0
+    },
+    {
+     "utc": "2026-11-10T07:40:57Z",
+     "step": "ensemble",
+     "ensemble": "I06",
+     "update_gain": 0.11147881636902933,
+     "members_phi": {
+      "mean": 12.248061410964644,
+      "median": 11.946175890448448,
+      "min": 9.2227824734067,
+      "max": 18.902230893543738
+     },
+     "windows_members_median": {
+      "0-6h": {
+       "met_share": 0.014,
+       "mean_km": 5.83
+      },
+      "6-12h": {
+       "met_share": 0.155,
+       "mean_km": 1.79
+      },
+      "12-24.01h": {
+       "met_share": 0.624,
+       "mean_km": 0.67
+      }
+     }
+    },
+    {
+     "utc": "2026-11-10T08:00:24Z",
+     "step": "check",
+     "check": "CHK07",
+     "phi_current_mean": 9.981978233590585,
+     "phi_proposed_mean": 8.213528352428378,
+     "relative_gain": 0.1771642694241864,
+     "verdict": "improves",
+     "accepted": true,
+     "repeat_bit_identical": true,
+     "alpha": 4.0
+    },
+    {
+     "utc": "2026-11-10T08:59:36Z",
+     "step": "ensemble",
+     "ensemble": "I07",
+     "update_gain": 0.1771642694241864,
+     "members_phi": {
+      "mean": 11.073223071200786,
+      "median": 10.597919667094732,
+      "min": 8.251079968122422,
+      "max": 17.061568578459507
+     },
+     "windows_members_median": {
+      "0-6h": {
+       "met_share": 0.015,
+       "mean_km": 5.52
+      },
+      "6-12h": {
+       "met_share": 0.147,
+       "mean_km": 1.62
+      },
+      "12-24.01h": {
+       "met_share": 0.609,
+       "mean_km": 0.56
+      }
+     }
+    },
+    {
+     "utc": "2026-11-10T09:19:48Z",
+     "step": "check",
+     "check": "CHK08",
+     "phi_current_mean": 8.213528352428378,
+     "phi_proposed_mean": 8.101635920404965,
+     "relative_gain": 0.01362294341996542,
+     "verdict": "improves",
+     "accepted": true,
+     "repeat_bit_identical": true,
+     "alpha": 4.0
+    },
+    {
+     "utc": "2026-11-10T10:23:39Z",
+     "step": "ensemble",
+     "ensemble": "I08",
+     "update_gain": 0.01362294341996542,
+     "members_phi": {
+      "mean": 9.96854259213912,
+      "median": 9.472848881758395,
+      "min": 7.95254902660109,
+      "max": 14.59330736746965
+     },
+     "windows_members_median": {
+      "0-6h": {
+       "met_share": 0.019,
+       "mean_km": 5.27
+      },
+      "6-12h": {
+       "met_share": 0.184,
+       "mean_km": 1.38
+      },
+      "12-24.01h": {
+       "met_share": 0.604,
+       "mean_km": 0.54
+      }
+     }
+    }
+   ],
+   "stopped": "the update that made I08 lowered Phi at the mean by 1.4%, less than 2% (auto.min_relative_gain)",
+   "exit_code": 0,
+   "ended_utc": "2026-11-10T10:23:39Z"
+  }
+ ]
+}

@@ -18,8 +18,9 @@ import numpy as np
 import pandas as pd
 
 from .common import StudyError, member_id, sha256, utc_now, write_json, write_text
-from .corrections import FAMILIES, corrected_weather, theta_names
+from .corrections import corrected_weather, p_eps, theta_names
 from .forcing import load_baseline
+from .objective import penalty_scale_vector
 
 
 def _check(theta, G, y, R, B, alpha):
@@ -74,9 +75,7 @@ def controlled_step(cfg, theta, G, B, admissible):
     (new theta, record)."""
     s = cfg["fit"]["step"]
     names = theta_names(cfg)
-    k = len(cfg["corrections"]["knots_h"])
-    floor = np.array([float(s["sd_floor"]) * float(cfg["fit"]["penalty_scales"][g])
-                      for g in FAMILIES for _ in range(k)])
+    floor = float(s["sd_floor"]) * penalty_scale_vector(cfg)
     y, R = np.zeros(G.shape[1]), np.ones(G.shape[1])
     alpha, tried = float(s["alpha0"]), []
     while True:
@@ -113,7 +112,8 @@ def write_ensemble(cfg, path, iteration, theta, parent):
     table = pd.DataFrame({"run_id": [member_id(iteration, j + 1) for j in range(len(theta))],
                           "iteration": iteration, "member": np.arange(1, len(theta) + 1),
                           **{n: theta[:, i] for i, n in enumerate(names)},
-                          **{f"speed_mult_k{r + 1}": np.exp(theta[:, r]) for r in range(k)}})
+                          **{f"speed_mult_k{r + 1}": np.exp(theta[:, r]) for r in range(k)},
+                          **({"p_eps_value": [p_eps(cfg, row) for row in theta]} if "p" in names else {})})
     if path.exists():
         raise StudyError(f"{path} exists; ensemble files are never edited")
     path.parent.mkdir(parents=True, exist_ok=True)

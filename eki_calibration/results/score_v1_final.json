@@ -1,0 +1,661 @@
+{
+ "created_utc": "2026-11-10T18:56:55Z",
+ "name": "v1_final",
+ "runs": [
+  "BASELINE",
+  "CHK01_I00MEAN",
+  "CHK08_I08MEAN"
+ ],
+ "members_of": "I08",
+ "length_scale_m": 1000.0,
+ "partitions": {
+  "fit": {
+   "constraints": 1199,
+   "blocks": 161,
+   "runs": {
+    "BASELINE": {
+     "distance_term": 44.73405692408272,
+     "met_share": 0.022518765638031693,
+     "mean_km": 8.752844780860396,
+     "breakdown": {
+      "deadline_h": {
+       "0-6": {
+        "cells": 506,
+        "met_share": 0.004,
+        "mean_km": 10.08,
+        "median_km": 10.3,
+        "weighted_distance_term": 15.068,
+        "median_std_lateness_reached": 17.09
+       },
+       "12-24.01": {
+        "cells": 221,
+        "met_share": 0.095,
+        "mean_km": 5.89,
+        "median_km": 5.23,
+        "weighted_distance_term": 12.776,
+        "median_std_lateness_reached": 0.42
+       },
+       "6-12": {
+        "cells": 472,
+        "met_share": 0.008,
+        "mean_km": 8.67,
+        "median_km": 9.02,
+        "weighted_distance_term": 16.89,
+        "median_std_lateness_reached": 7.9
+       }
+      },
+      "fire_type": {
+       "C": {
+        "cells": 84,
+        "met_share": 0.0,
+        "mean_km": 8.45,
+        "median_km": 8.56,
+        "weighted_distance_term": 0.771,
+        "median_std_lateness_reached": 14.36
+       },
+       "O": {
+        "cells": 275,
+        "met_share": 0.004,
+        "mean_km": 9.35,
+        "median_km": 9.72,
+        "weighted_distance_term": 9.007,
+        "median_std_lateness_reached": 16.04
+       },
+       "R": {
+        "cells": 250,
+        "met_share": 0.008,
+        "mean_km": 8.71,
+        "median_km": 9.07,
+        "weighted_distance_term": 4.644,
+        "median_std_lateness_reached": 16.74
+       },
+       "S": {
+        "cells": 239,
+        "met_share": 0.0,
+        "mean_km": 10.1,
+        "median_km": 10.38,
+        "weighted_distance_term": 9.152,
+        "median_std_lateness_reached": 16.78
+       },
+       "V": {
+        "cells": 351,
+        "met_share": 0.068,
+        "mean_km": 7.46,
+        "median_km": 8.45,
+        "weighted_distance_term": 21.16,
+        "median_std_lateness_reached": 8.05
+       }
+      },
+      "mapping": {
+       "direct": {
+        "cells": 840,
+        "met_share": 0.024,
+        "mean_km": 8.49,
+        "median_km": 9.06,
+        "weighted_distance_term": 35.26,
+        "median_std_lateness_reached": 11.62
+       },
+       "proxy": {
+        "cells": 359,
+        "met_share": 0.019,
+        "mean_km": 9.36,
+        "median_km": 9.69,
+        "weighted_distance_term": 9.474,
+        "median_std_lateness_reached": 16.84
+       }
+      }
+     }
+    },
+    "CHK01_I00MEAN": {
+     "distance_term": 34.44428057892759,
+     "met_share": 0.030859049207673062,
+     "mean_km": 7.79832834433044,
+     "breakdown": {
+      "deadline_h": {
+       "0-6": {
+        "cells": 506,
+        "met_share": 0.004,
+        "mean_km": 9.24,
+        "median_km": 9.46,
+        "weighted_distance_term": 12.833,
+        "median_std_lateness_reached": 15.54
+       },
+       "12-24.01": {
+        "cells": 221,
+        "met_share": 0.136,
+        "mean_km": 5.06,
+        "median_km": 4.57,
+        "weighted_distance_term": 9.158,
+        "median_std_lateness_reached": -0.67
+       },
+       "6-12": {
+        "cells": 472,
+        "met_share": 0.011,
+        "mean_km": 7.53,
+        "median_km": 8.1,
+        "weighted_distance_term": 12.453,
+        "median_std_lateness_reached": 6.97
+       }
+      },
+      "fire_type": {
+       "C": {
+        "cells": 84,
+        "met_share": 0.0,
+        "mean_km": 7.61,
+        "median_km": 7.67,
+        "weighted_distance_term": 0.63,
+        "median_std_lateness_reached": 17.18
+       },
+       "O": {
+        "cells": 275,
+        "met_share": 0.004,
+        "mean_km": 8.34,
+        "median_km": 8.68,
+        "weighted_distance_term": 6.995,
+        "median_std_lateness_reached": 14.23
+       },
+       "R": {
+        "cells": 250,
+        "met_share": 0.012,
+        "mean_km": 7.76,
+        "median_km": 8.21,
+        "weighted_distance_term": 3.578,
+        "median_std_lateness_reached": 15.37
+       },
+       "S": {
+        "cells": 239,
+        "met_share": 0.008,
+        "mean_km": 9.34,
+        "median_km": 9.54,
+        "weighted_distance_term": 7.867,
+        "median_std_lateness_reached": 16.37
+       },
+       "V": {
+        "cells": 351,
+        "met_share": 0.088,
+        "mean_km": 6.4,
+        "median_km": 6.87,
+        "weighted_distance_term": 15.374,
+        "median_std_lateness_reached": 6.86
+       }
+      },
+      "mapping": {
+       "direct": {
+        "cells": 840,
+        "met_share": 0.035,
+        "mean_km": 7.56,
+        "median_km": 8.17,
+        "weighted_distance_term": 27.138,
+        "median_std_lateness_reached": 11.38
+       },
+       "proxy": {
+        "cells": 359,
+        "met_share": 0.022,
+        "mean_km": 8.37,
+        "median_km": 8.62,
+        "weighted_distance_term": 7.306,
+        "median_std_lateness_reached": 14.9
+       }
+      }
+     }
+    },
+    "CHK08_I08MEAN": {
+     "distance_term": 6.194584637046541,
+     "met_share": 0.1884904086738949,
+     "mean_km": 2.698277140257515,
+     "breakdown": {
+      "deadline_h": {
+       "0-6": {
+        "cells": 506,
+        "met_share": 0.016,
+        "mean_km": 5.06,
+        "median_km": 5.38,
+        "weighted_distance_term": 5.152,
+        "median_std_lateness_reached": 5.64
+       },
+       "12-24.01": {
+        "cells": 221,
+        "met_share": 0.656,
+        "mean_km": 0.38,
+        "median_km": 0.0,
+        "weighted_distance_term": 0.199,
+        "median_std_lateness_reached": -1.21
+       },
+       "6-12": {
+        "cells": 472,
+        "met_share": 0.155,
+        "mean_km": 1.26,
+        "median_km": 1.02,
+        "weighted_distance_term": 0.843,
+        "median_std_lateness_reached": 4.17
+       }
+      },
+      "fire_type": {
+       "C": {
+        "cells": 84,
+        "met_share": 0.143,
+        "mean_km": 1.08,
+        "median_km": 0.92,
+        "weighted_distance_term": 0.04,
+        "median_std_lateness_reached": 4.69
+       },
+       "O": {
+        "cells": 275,
+        "met_share": 0.149,
+        "mean_km": 2.7,
+        "median_km": 1.76,
+        "weighted_distance_term": 1.332,
+        "median_std_lateness_reached": 3.82
+       },
+       "R": {
+        "cells": 250,
+        "met_share": 0.204,
+        "mean_km": 2.04,
+        "median_km": 1.22,
+        "weighted_distance_term": 0.399,
+        "median_std_lateness_reached": 3.66
+       },
+       "S": {
+        "cells": 239,
+        "met_share": 0.046,
+        "mean_km": 5.26,
+        "median_km": 6.05,
+        "weighted_distance_term": 2.88,
+        "median_std_lateness_reached": 6.92
+       },
+       "V": {
+        "cells": 351,
+        "met_share": 0.316,
+        "mean_km": 1.81,
+        "median_km": 0.76,
+        "weighted_distance_term": 1.544,
+        "median_std_lateness_reached": 1.39
+       }
+      },
+      "mapping": {
+       "direct": {
+        "cells": 840,
+        "met_share": 0.221,
+        "mean_km": 2.63,
+        "median_km": 1.38,
+        "weighted_distance_term": 4.857,
+        "median_std_lateness_reached": 2.88
+       },
+       "proxy": {
+        "cells": 359,
+        "met_share": 0.111,
+        "mean_km": 2.86,
+        "median_km": 1.76,
+        "weighted_distance_term": 1.338,
+        "median_std_lateness_reached": 4.56
+       }
+      }
+     }
+    }
+   },
+   "members": {
+    "distance_term": {
+     "I08_M01": 8.162616014157855,
+     "I08_M02": 7.016400965820877,
+     "I08_M03": 6.1517733044560945,
+     "I08_M04": 6.921466207363501,
+     "I08_M05": 7.121900317191676,
+     "I08_M06": 5.486904817044019,
+     "I08_M07": 6.154288257724252,
+     "I08_M08": 5.280714488909414,
+     "I08_M09": 5.818548090190669,
+     "I08_M10": 6.088208019477612,
+     "I08_M11": 10.39337132090915,
+     "I08_M12": 5.32197536008401,
+     "I08_M13": 7.602670363545647,
+     "I08_M14": 5.972017439410078,
+     "I08_M15": 7.560681917714794,
+     "I08_M16": 6.795112664365498,
+     "I08_M17": 8.646915925433715,
+     "I08_M18": 6.117523846131484,
+     "I08_M19": 12.322468991218486,
+     "I08_M20": 5.921626543515384,
+     "I08_M21": 7.552738894828984,
+     "I08_M22": 8.578401746722943,
+     "I08_M23": 7.523609812996053,
+     "I08_M24": 7.117812120079778,
+     "I08_M25": 6.961771667337329,
+     "I08_M26": 8.689431334622608,
+     "I08_M27": 6.426307598655823,
+     "I08_M28": 9.850063071642488,
+     "I08_M29": 11.275866033832987,
+     "I08_M30": 7.625042558633685,
+     "I08_M31": 5.492029242568977,
+     "I08_M32": 6.60098193192287
+    },
+    "median": 6.989086316579103,
+    "min": 5.280714488909414,
+    "max": 12.322468991218486
+   }
+  },
+  "holdout": {
+   "constraints": 231,
+   "blocks": 37,
+   "runs": {
+    "BASELINE": {
+     "distance_term": 44.349948881277484,
+     "met_share": 0.03896103896103896,
+     "mean_km": 8.78981031407273,
+     "breakdown": {
+      "deadline_h": {
+       "0-6": {
+        "cells": 118,
+        "met_share": 0.0,
+        "mean_km": 9.85,
+        "median_km": 9.82,
+        "weighted_distance_term": 20.607,
+        "median_std_lateness_reached": 16.22
+       },
+       "12-24.01": {
+        "cells": 40,
+        "met_share": 0.225,
+        "mean_km": 5.74,
+        "median_km": 5.54,
+        "weighted_distance_term": 14.711,
+        "median_std_lateness_reached": 3.13
+       },
+       "6-12": {
+        "cells": 73,
+        "met_share": 0.0,
+        "mean_km": 8.76,
+        "median_km": 8.79,
+        "weighted_distance_term": 9.032,
+        "median_std_lateness_reached": 12.17
+       }
+      },
+      "fire_type": {
+       "C": {
+        "cells": 25,
+        "met_share": 0.0,
+        "mean_km": 8.55,
+        "median_km": 8.76,
+        "weighted_distance_term": 0.563,
+        "median_std_lateness_reached": 15.21
+       },
+       "O": {
+        "cells": 54,
+        "met_share": 0.0,
+        "mean_km": 8.8,
+        "median_km": 9.07,
+        "weighted_distance_term": 5.227,
+        "median_std_lateness_reached": 15.92
+       },
+       "R": {
+        "cells": 52,
+        "met_share": 0.0,
+        "mean_km": 8.53,
+        "median_km": 8.51,
+        "weighted_distance_term": 5.359,
+        "median_std_lateness_reached": 15.21
+       },
+       "S": {
+        "cells": 38,
+        "met_share": 0.0,
+        "mean_km": 10.62,
+        "median_km": 10.36,
+        "weighted_distance_term": 9.366,
+        "median_std_lateness_reached": 16.77
+       },
+       "V": {
+        "cells": 62,
+        "met_share": 0.145,
+        "mean_km": 7.98,
+        "median_km": 8.78,
+        "weighted_distance_term": 23.835,
+        "median_std_lateness_reached": 8.78
+       }
+      },
+      "mapping": {
+       "direct": {
+        "cells": 143,
+        "met_share": 0.035,
+        "mean_km": 8.7,
+        "median_km": 8.84,
+        "weighted_distance_term": 37.157,
+        "median_std_lateness_reached": 14.06
+       },
+       "proxy": {
+        "cells": 88,
+        "met_share": 0.045,
+        "mean_km": 8.93,
+        "median_km": 9.07,
+        "weighted_distance_term": 7.193,
+        "median_std_lateness_reached": 15.75
+       }
+      }
+     }
+    },
+    "CHK01_I00MEAN": {
+     "distance_term": 35.17583261705032,
+     "met_share": 0.04329004329004329,
+     "mean_km": 7.927157715505919,
+     "breakdown": {
+      "deadline_h": {
+       "0-6": {
+        "cells": 118,
+        "met_share": 0.0,
+        "mean_km": 9.05,
+        "median_km": 8.99,
+        "weighted_distance_term": 18.178,
+        "median_std_lateness_reached": 13.89
+       },
+       "12-24.01": {
+        "cells": 40,
+        "met_share": 0.25,
+        "mean_km": 4.58,
+        "median_km": 4.75,
+        "weighted_distance_term": 10.297,
+        "median_std_lateness_reached": 1.85
+       },
+       "6-12": {
+        "cells": 73,
+        "met_share": 0.0,
+        "mean_km": 7.95,
+        "median_km": 8.09,
+        "weighted_distance_term": 6.7,
+        "median_std_lateness_reached": 9.96
+       }
+      },
+      "fire_type": {
+       "C": {
+        "cells": 25,
+        "met_share": 0.0,
+        "mean_km": 7.66,
+        "median_km": 7.97,
+        "weighted_distance_term": 0.46,
+        "median_std_lateness_reached": 12.82
+       },
+       "O": {
+        "cells": 54,
+        "met_share": 0.019,
+        "mean_km": 7.9,
+        "median_km": 8.3,
+        "weighted_distance_term": 4.098,
+        "median_std_lateness_reached": 13.6
+       },
+       "R": {
+        "cells": 52,
+        "met_share": 0.0,
+        "mean_km": 7.68,
+        "median_km": 7.82,
+        "weighted_distance_term": 3.789,
+        "median_std_lateness_reached": 12.72
+       },
+       "S": {
+        "cells": 38,
+        "met_share": 0.0,
+        "mean_km": 9.98,
+        "median_km": 9.58,
+        "weighted_distance_term": 8.602,
+        "median_std_lateness_reached": 14.41
+       },
+       "V": {
+        "cells": 62,
+        "met_share": 0.145,
+        "mean_km": 7.0,
+        "median_km": 8.21,
+        "weighted_distance_term": 18.227,
+        "median_std_lateness_reached": 6.25
+       }
+      },
+      "mapping": {
+       "direct": {
+        "cells": 143,
+        "met_share": 0.042,
+        "mean_km": 7.79,
+        "median_km": 8.15,
+        "weighted_distance_term": 29.582,
+        "median_std_lateness_reached": 12.62
+       },
+       "proxy": {
+        "cells": 88,
+        "met_share": 0.045,
+        "mean_km": 8.15,
+        "median_km": 8.3,
+        "weighted_distance_term": 5.594,
+        "median_std_lateness_reached": 13.57
+       }
+      }
+     }
+    },
+    "CHK08_I08MEAN": {
+     "distance_term": 10.651151364735497,
+     "met_share": 0.17316017316017315,
+     "mean_km": 3.189531056110129,
+     "breakdown": {
+      "deadline_h": {
+       "0-6": {
+        "cells": 118,
+        "met_share": 0.025,
+        "mean_km": 5.11,
+        "median_km": 5.4,
+        "weighted_distance_term": 9.833,
+        "median_std_lateness_reached": 3.44
+       },
+       "12-24.01": {
+        "cells": 40,
+        "met_share": 0.75,
+        "mean_km": 0.26,
+        "median_km": 0.0,
+        "weighted_distance_term": 0.196,
+        "median_std_lateness_reached": -1.87
+       },
+       "6-12": {
+        "cells": 73,
+        "met_share": 0.096,
+        "mean_km": 1.69,
+        "median_km": 1.66,
+        "weighted_distance_term": 0.623,
+        "median_std_lateness_reached": 5.51
+       }
+      },
+      "fire_type": {
+       "C": {
+        "cells": 25,
+        "met_share": 0.16,
+        "mean_km": 2.3,
+        "median_km": 1.39,
+        "weighted_distance_term": 0.069,
+        "median_std_lateness_reached": 2.6
+       },
+       "O": {
+        "cells": 54,
+        "met_share": 0.13,
+        "mean_km": 3.13,
+        "median_km": 2.38,
+        "weighted_distance_term": 0.869,
+        "median_std_lateness_reached": 4.22
+       },
+       "R": {
+        "cells": 52,
+        "met_share": 0.154,
+        "mean_km": 2.04,
+        "median_km": 1.91,
+        "weighted_distance_term": 0.197,
+        "median_std_lateness_reached": 5.26
+       },
+       "S": {
+        "cells": 38,
+        "met_share": 0.0,
+        "mean_km": 6.31,
+        "median_km": 6.59,
+        "weighted_distance_term": 5.254,
+        "median_std_lateness_reached": 6.88
+       },
+       "V": {
+        "cells": 62,
+        "met_share": 0.339,
+        "mean_km": 2.64,
+        "median_km": 1.31,
+        "weighted_distance_term": 4.263,
+        "median_std_lateness_reached": 1.35
+       }
+      },
+      "mapping": {
+       "direct": {
+        "cells": 143,
+        "met_share": 0.224,
+        "mean_km": 3.19,
+        "median_km": 2.25,
+        "weighted_distance_term": 9.538,
+        "median_std_lateness_reached": 3.0
+       },
+       "proxy": {
+        "cells": 88,
+        "met_share": 0.091,
+        "mean_km": 3.2,
+        "median_km": 2.27,
+        "weighted_distance_term": 1.114,
+        "median_std_lateness_reached": 4.66
+       }
+      }
+     }
+    }
+   },
+   "members": {
+    "distance_term": {
+     "I08_M01": 12.568436981555845,
+     "I08_M02": 10.955921035208878,
+     "I08_M03": 10.069753864795192,
+     "I08_M04": 11.298126121160994,
+     "I08_M05": 11.098628320175976,
+     "I08_M06": 10.037493014257883,
+     "I08_M07": 10.466167878930097,
+     "I08_M08": 7.7389067045895725,
+     "I08_M09": 10.082238608532698,
+     "I08_M10": 10.268362118261555,
+     "I08_M11": 14.06325220164603,
+     "I08_M12": 9.24563283438161,
+     "I08_M13": 11.610089501919557,
+     "I08_M14": 9.479323181575342,
+     "I08_M15": 11.996478872302063,
+     "I08_M16": 10.943172451548806,
+     "I08_M17": 12.950686302503065,
+     "I08_M18": 9.735391150454513,
+     "I08_M19": 16.135535070585476,
+     "I08_M20": 9.964486359705798,
+     "I08_M21": 11.083939140781819,
+     "I08_M22": 12.35185309914753,
+     "I08_M23": 12.131034109962883,
+     "I08_M24": 11.320074852292407,
+     "I08_M25": 11.007059135258853,
+     "I08_M26": 12.199482933786907,
+     "I08_M27": 10.610637358602364,
+     "I08_M28": 13.314588942496748,
+     "I08_M29": 14.466508079279759,
+     "I08_M30": 10.863041072055541,
+     "I08_M31": 8.47988004486809,
+     "I08_M32": 10.666035869835062
+    },
+    "median": 10.981490085233865,
+    "min": 7.7389067045895725,
+    "max": 16.135535070585476
+   }
+  }
+ }
+}

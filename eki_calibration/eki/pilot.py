@@ -130,20 +130,33 @@ def pilot(cfg, batch, lateness_scale_s=3600.0):
     p = "r{:g}_".format(float(cfg["observations"]["proxy_radius_m"]))
     rr, cc = o[p + "row"].astype(int).to_numpy(), o[p + "col"].astype(int).to_numpy()
     dist = np.empty((len(ids), N))
+    over = cfg["fit"].get("overspread")          # v3: area burned outside the final perimeter (eki.overspread)
+    if over:
+        from .overspread import burned_outside_acres, perimeter_mask
+        inside, cell_acres = perimeter_mask(cfg)
+        acres = np.empty(len(ids))
     for j, rid in enumerate(ids):
         d = run_dir(cfg, str(rid))
         with rasterio.open(d / read_json(d / "DONE")["toa_file"]) as f:
-            dist[j] = distance_to_burned(f.read(1), rr, cc, u, cell_m)
+            toa = f.read(1)
+        dist[j] = distance_to_burned(toa, rr, cc, u, cell_m)
+        if over:
+            acres[j] = burned_outside_acres(toa, inside, cell_acres, float(over["at_s"]))
+    extra = {"overspread_acres": acres, "overspread_at_s": float(over["at_s"])} if over else {}
     np.savez_compressed(out / f"{batch.stem}_distance.npz", run_id=ids, obs_id=o.obs_id.to_numpy(str),
-                        distance_m=dist, deadline_s=u,
+                        distance_m=dist, deadline_s=u, **extra,
                         note="distance from the sampling-cell centre to the nearest cell burned by the deadline "
-                             "(0 < T <= u, or the ignition cell); 0 = cell burned by its deadline")
+                             "(0 < T <= u, or the ignition cell); 0 = cell burned by its deadline"
+                             + ("; overspread_acres = area burned outside the final perimeter by overspread_at_s"
+                                if over else ""))
     both = reached & np.isfinite(dist)
     distance = {"zero_share_by_run": {str(r): round(float((dist[j] == 0).mean()), 3) for j, r in enumerate(ids)},
                 "positive_m_p10_p50_p90_members": _q(dist[mem][dist[mem] > 0]),
                 "unreached_cells_m_p10_p50_p90_members": _q(dist[mem][st[mem] == NOT_REACHED]),
                 "corr_with_lateness_where_violated": _corr(dist[viol], late_h[viol]) if viol.sum() > 2 else None,
                 "met_implies_zero": bool((dist[both & ~viol] == 0).all())}
+    if over:
+        distance["overspread_acres_by_run"] = {str(r): round(float(acres[j]), 1) for j, r in enumerate(ids)}
 
     # ---- parameter-response (members only) and conditioning
     th = theta[mem]

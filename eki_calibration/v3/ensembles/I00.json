@@ -1,0 +1,72 @@
+{
+ "created_utc": "2026-11-11T01:10:41Z",
+ "file": "I00.csv",
+ "sha256": "16b513f6f42877283a75a9c23385b49143a0de2b196e69cf56bb82845f3d48a4",
+ "config_sha256": "9d9bafa0335301df1246c506eb405ec13e37686ae457167a27452b02ba07a189",
+ "settings": {
+  "size": 32,
+  "weather_from": "../ensembles/I00.csv",
+  "p_eps_range": [
+   0.001,
+   0.05
+  ],
+  "p_seed": 20261110,
+  "seed": 20261108,
+  "knot_correlation": 0.7,
+  "speed_multiplier": [
+   0.5,
+   3.0
+  ],
+  "direction_deg": [
+   -60.0,
+   60.0
+  ],
+  "moisture_pp": [
+   -2.0,
+   2.0
+  ]
+ },
+ "theta_names": [
+  "a_k1",
+  "a_k2",
+  "a_k3",
+  "d_k1",
+  "d_k2",
+  "d_k3",
+  "m_k1",
+  "m_k2",
+  "m_k3",
+  "p"
+ ],
+ "weather_from": {
+  "file": "/oak/stanford/groups/gorle/jgoell/Wildfire/eki_calibration/v3/../ensembles/I00.csv",
+  "sha256": "5ebe70af5d0fd7d57d007a3c933b025d6863b59be668a9f46abba5a62fe62e14",
+  "note": "weather coefficients and speed multipliers copied as text"
+ },
+ "method": "P_EPS = reference * exp(p); p = ln(lo / reference) + u ln(hi / lo), u ~ U(0, 1) from numpy default_rng(p_seed), independent of the weather",
+ "p_eps_drawn": {
+  "min": 0.0010759543602316,
+  "median": 0.0070283833370845,
+  "max": 0.0492181255152053
+ },
+ "rank": {
+  "members": 32,
+  "parameters": 10,
+  "rank": 10,
+  "full_rank": true,
+  "singular_values": [
+   9.4239171838214,
+   8.154537776177309,
+   7.064768579488496,
+   5.542145751174878,
+   5.365156709015405,
+   3.820437882126611,
+   3.6977691242771304,
+   2.960337210208954,
+   2.189155129032523,
+   1.8592522054105207
+  ],
+  "condition_number": 5.06865994640066
+ },
+ "baseline_sha256": "c0038f7c14fd820196d86f8d53379b0b7f5ca425a716c1fb87243721a7e49983"
+}

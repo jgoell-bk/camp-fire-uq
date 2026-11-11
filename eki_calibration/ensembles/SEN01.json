@@ -1,0 +1,12 @@
+{
+ "created_utc": "2026-11-10T19:02:51Z",
+ "sha256": "bd68b37ef23fbbdf0f3c1a371fd955c8e79832db42c893e358f83d524f72ddbf",
+ "purpose": "early-window test (Jacob, 2026-11-10): does longer spotting reach, not weather, hold back the first six hours? Sensitivity runs, not part of the calibration",
+ "theta_from": "ensembles/CHK08.csv row CHK08_I08MEAN (the I08 ensemble mean), coefficient text copied verbatim",
+ "rows": {
+  "SEN01_I08MEAN_PEPS0.01": "P_EPS 0.01 (control: should reproduce CHK08_I08MEAN exactly)",
+  "SEN01_I08MEAN_PEPS0.003": "P_EPS 0.003",
+  "SEN01_I08MEAN_PEPS0.001": "P_EPS 0.001"
+ },
+ "P_EPS": "ember landing distances are cut at the (1 - P_EPS) quantile; smaller = longer reach; the Sobol study's range was 0.001-0.05"
+}

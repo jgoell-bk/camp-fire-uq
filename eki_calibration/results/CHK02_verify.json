@@ -1,0 +1,298 @@
+{
+ "created_utc": "2026-11-09T18:55:06Z",
+ "check": "CHK02",
+ "proposal": "/oak/stanford/groups/gorle/jgoell/Wildfire/eki_calibration/proposals/I02.csv",
+ "proposal_sha256": "73aaaa300a3efceac88d2d80329549c6752f7bdc9e84686aee681f928d2dd97a",
+ "objective": {
+  "CHK02_I01MEAN": {
+   "distance": 22.617226553812642,
+   "amplitude": 0.44935769392016167,
+   "smoothness": 0.029939418423111687,
+   "total": 23.096523666155917
+  },
+  "CHK02_I01MEAN_REP": {
+   "distance": 22.617226553812642,
+   "amplitude": 0.44935769392016167,
+   "smoothness": 0.029939418423111687,
+   "total": 23.096523666155917
+  },
+  "CHK02_I02MEAN": {
+   "distance": 16.818889277712735,
+   "amplitude": 0.689816030806859,
+   "smoothness": 0.062161561811566166,
+   "total": 17.570866870331162
+  }
+ },
+ "repeat_bit_identical": true,
+ "variability": 0.0,
+ "change_proposed_minus_current": -5.525656795824755,
+ "verdict": "improves",
+ "accepted": true,
+ "diagnostics": {
+  "CHK02_I01MEAN": {
+   "deadline_h": {
+    "0-6": {
+     "cells": 506,
+     "met_share": 0.004,
+     "mean_km": 8.72,
+     "median_km": 8.99,
+     "weighted_distance_term": 11.794,
+     "median_std_lateness_reached": 11.43
+    },
+    "12-24.01": {
+     "cells": 221,
+     "met_share": 0.186,
+     "mean_km": 2.49,
+     "median_km": 1.74,
+     "weighted_distance_term": 3.529,
+     "median_std_lateness_reached": 3.34
+    },
+    "6-12": {
+     "cells": 472,
+     "met_share": 0.087,
+     "mean_km": 5.29,
+     "median_km": 5.52,
+     "weighted_distance_term": 7.294,
+     "median_std_lateness_reached": 9.24
+    }
+   },
+   "fire_type": {
+    "C": {
+     "cells": 84,
+     "met_share": 0.012,
+     "mean_km": 5.07,
+     "median_km": 5.15,
+     "weighted_distance_term": 0.3,
+     "median_std_lateness_reached": 9.5
+    },
+    "O": {
+     "cells": 275,
+     "met_share": 0.018,
+     "mean_km": 6.75,
+     "median_km": 6.79,
+     "weighted_distance_term": 4.937,
+     "median_std_lateness_reached": 10.2
+    },
+    "R": {
+     "cells": 250,
+     "met_share": 0.036,
+     "mean_km": 5.97,
+     "median_km": 5.87,
+     "weighted_distance_term": 2.013,
+     "median_std_lateness_reached": 9.57
+    },
+    "S": {
+     "cells": 239,
+     "met_share": 0.029,
+     "mean_km": 8.41,
+     "median_km": 9.18,
+     "weighted_distance_term": 6.479,
+     "median_std_lateness_reached": 11.96
+    },
+    "V": {
+     "cells": 351,
+     "met_share": 0.177,
+     "mean_km": 4.77,
+     "median_km": 4.86,
+     "weighted_distance_term": 8.888,
+     "median_std_lateness_reached": 5.27
+    }
+   },
+   "mapping": {
+    "direct": {
+     "cells": 840,
+     "met_share": 0.083,
+     "mean_km": 5.93,
+     "median_km": 5.87,
+     "weighted_distance_term": 17.446,
+     "median_std_lateness_reached": 9.52
+    },
+    "proxy": {
+     "cells": 359,
+     "met_share": 0.039,
+     "mean_km": 6.9,
+     "median_km": 6.99,
+     "weighted_distance_term": 5.171,
+     "median_std_lateness_reached": 10.32
+    }
+   }
+  },
+  "CHK02_I01MEAN_REP": {
+   "deadline_h": {
+    "0-6": {
+     "cells": 506,
+     "met_share": 0.004,
+     "mean_km": 8.72,
+     "median_km": 8.99,
+     "weighted_distance_term": 11.794,
+     "median_std_lateness_reached": 11.43
+    },
+    "12-24.01": {
+     "cells": 221,
+     "met_share": 0.186,
+     "mean_km": 2.49,
+     "median_km": 1.74,
+     "weighted_distance_term": 3.529,
+     "median_std_lateness_reached": 3.34
+    },
+    "6-12": {
+     "cells": 472,
+     "met_share": 0.087,
+     "mean_km": 5.29,
+     "median_km": 5.52,
+     "weighted_distance_term": 7.294,
+     "median_std_lateness_reached": 9.24
+    }
+   },
+   "fire_type": {
+    "C": {
+     "cells": 84,
+     "met_share": 0.012,
+     "mean_km": 5.07,
+     "median_km": 5.15,
+     "weighted_distance_term": 0.3,
+     "median_std_lateness_reached": 9.5
+    },
+    "O": {
+     "cells": 275,
+     "met_share": 0.018,
+     "mean_km": 6.75,
+     "median_km": 6.79,
+     "weighted_distance_term": 4.937,
+     "median_std_lateness_reached": 10.2
+    },
+    "R": {
+     "cells": 250,
+     "met_share": 0.036,
+     "mean_km": 5.97,
+     "median_km": 5.87,
+     "weighted_distance_term": 2.013,
+     "median_std_lateness_reached": 9.57
+    },
+    "S": {
+     "cells": 239,
+     "met_share": 0.029,
+     "mean_km": 8.41,
+     "median_km": 9.18,
+     "weighted_distance_term": 6.479,
+     "median_std_lateness_reached": 11.96
+    },
+    "V": {
+     "cells": 351,
+     "met_share": 0.177,
+     "mean_km": 4.77,
+     "median_km": 4.86,
+     "weighted_distance_term": 8.888,
+     "median_std_lateness_reached": 5.27
+    }
+   },
+   "mapping": {
+    "direct": {
+     "cells": 840,
+     "met_share": 0.083,
+     "mean_km": 5.93,
+     "median_km": 5.87,
+     "weighted_distance_term": 17.446,
+     "median_std_lateness_reached": 9.52
+    },
+    "proxy": {
+     "cells": 359,
+     "met_share": 0.039,
+     "mean_km": 6.9,
+     "median_km": 6.99,
+     "weighted_distance_term": 5.171,
+     "median_std_lateness_reached": 10.32
+    }
+   }
+  },
+  "CHK02_I02MEAN": {
+   "deadline_h": {
+    "0-6": {
+     "cells": 506,
+     "met_share": 0.008,
+     "mean_km": 7.71,
+     "median_km": 8.06,
+     "weighted_distance_term": 9.569,
+     "median_std_lateness_reached": 9.8
+    },
+    "12-24.01": {
+     "cells": 221,
+     "met_share": 0.371,
+     "mean_km": 1.42,
+     "median_km": 0.35,
+     "weighted_distance_term": 2.219,
+     "median_std_lateness_reached": 1.11
+    },
+    "6-12": {
+     "cells": 472,
+     "met_share": 0.064,
+     "mean_km": 3.99,
+     "median_km": 3.94,
+     "weighted_distance_term": 5.031,
+     "median_std_lateness_reached": 7.21
+    }
+   },
+   "fire_type": {
+    "C": {
+     "cells": 84,
+     "met_share": 0.06,
+     "mean_km": 3.52,
+     "median_km": 3.36,
+     "weighted_distance_term": 0.168,
+     "median_std_lateness_reached": 7.14
+    },
+    "O": {
+     "cells": 275,
+     "met_share": 0.051,
+     "mean_km": 5.5,
+     "median_km": 5.35,
+     "weighted_distance_term": 3.768,
+     "median_std_lateness_reached": 7.83
+    },
+    "R": {
+     "cells": 250,
+     "met_share": 0.06,
+     "mean_km": 4.66,
+     "median_km": 4.18,
+     "weighted_distance_term": 1.309,
+     "median_std_lateness_reached": 7.51
+    },
+    "S": {
+     "cells": 239,
+     "met_share": 0.029,
+     "mean_km": 7.33,
+     "median_km": 8.15,
+     "weighted_distance_term": 5.084,
+     "median_std_lateness_reached": 10.36
+    },
+    "V": {
+     "cells": 351,
+     "met_share": 0.214,
+     "mean_km": 3.91,
+     "median_km": 3.54,
+     "weighted_distance_term": 6.49,
+     "median_std_lateness_reached": 3.23
+    }
+   },
+   "mapping": {
+    "direct": {
+     "cells": 840,
+     "met_share": 0.117,
+     "mean_km": 4.82,
+     "median_km": 4.43,
+     "weighted_distance_term": 12.777,
+     "median_std_lateness_reached": 6.64
+    },
+    "proxy": {
+     "cells": 359,
+     "met_share": 0.05,
+     "mean_km": 5.71,
+     "median_km": 5.74,
+     "weighted_distance_term": 4.042,
+     "median_std_lateness_reached": 8.03
+    }
+   }
+  }
+ },
+ "note": "Phi from the runs at the mean parameters; the ensemble average of member responses is not used. Step limits do not promise a decrease."
+}

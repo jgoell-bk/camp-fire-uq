@@ -1,0 +1,60 @@
+# Station baselines (set up 2026-11-09): one deterministic ELMFIRE run per weather
+# set, with no corrections and no perturbations. See README.md. Paths may use $VARS
+# and ~; relative paths are relative to this folder.
+
+study:
+  # Run ID -> wind. A station ID gives that station's hourly wind as recorded; a list
+  # of station IDs gives the equal-weight mean of their wind vectors (u and v
+  # averaged), the MEAN blend that the EKI calibration starts from.
+  runs:
+    JG: "041214"                 # Jarbo Gap
+    CO: "041211"                 # Cohasset
+    MEAN: ["041214", "041211"]   # JG+CO mean
+  # Dead fuel moisture for every run: Jarbo Gap NFDRS, as in every earlier study.
+
+sources:
+  wind_csv: "../HistoricalDataClass/COHASSET,JARBO GAP,...OPENSHAW__WeatherHourly__11-06-2018__11-11-2018.csv"
+  stations:                      # station ID -> name in the wind file
+    "041214": "JARBO GAP"
+    "041211": "COHASSET"
+  moisture_csv: ../HistoricalDataClass/drive-download-20261019T162718Z-1-001/JarboGap__NfdrsHourly__09-30-2003__09-30-2026.csv
+  moisture_station: ["JARBO GAP", "041214"]
+  nfdrs_fuel_model: V
+  # Brewer and Clements (2020) sec. 3.3: Jarbo Gap questionable after about
+  # 06:00 PST 9 Nov 2018. A window past this time is refused.
+  jarbo_gap_reliable_until_utc: "2018-11-09T14:00:00Z"
+  # The groupmate's MEAN series (rounded to 4 decimals); prepare checks the MEAN run
+  # against it.
+  reference_mean_csv: "../ParameterEstimationFiles/Combined JG CO Wind Data-20261108T190836Z-1-001/Combined JG CO Wind Data/outputs/weather_MEAN.csv"
+
+simulation:                      # the EKI calibration's settings (Jacob, 2026-11-09)
+  t0_utc: "2018-11-08T14:00:00Z"   # model t = 0 = weather band 1 (06:00 PST)
+  ignition_s: 900                  # SIMULATION_TSTART: ignition at 06:15 PST
+  stop_s: 86400                    # SIMULATION_TSTOP: 24 h after t0 (06:00 PST 9 Nov)
+  dt_weather_s: 3600
+  ignition_lonlat: [-121.437222, 39.810283]   # the fixed ignition cell (row 447, col 1186)
+  seed: 2023                       # RANDOMIZE_RANDOM_SEED = .FALSE.: the run is deterministic
+  # P_EPS is fixed at 0.01 in elmfire.data.template (a copy of the EKI template).
+
+weather_grid:                      # uniform weather rasters in the case CRS
+  cellsize_m: 3000
+  margin_cells: 2
+
+case:
+  dir: ~/elmfire-class/camp_fire   # baseline case, read only
+  template: elmfire.data.template
+  elmfire: ~/elmfire/build/linux/bin/elmfire_1.1
+
+qoi:
+  # The group's QoI cells: wildland within 1 km outside Paradise's town limits
+  # (33,758 cells, on the fuel grid). Unburned cells count as 24 h in the capped mean,
+  # like Tcap in experiment/matlab/extract_border_toa.m.
+  border_mask: ../experiment/qgis_setup/paradise_border_mask.tif
+  # Runs with the same inputs elsewhere; qoi reports whether the arrival rasters match.
+  same_as:
+    MEAN: $SCRATCH/elmfire-class/eki_calibration/runs/BASELINE/BASELINE
+
+paths:
+  prepared: prepared               # weather.csv: the three runs' hourly inputs
+  results: results                 # border_qoi.csv
+  scratch_root: $SCRATCH/elmfire-class/station_baselines   # shared/ and runs/<ID>/

@@ -29,7 +29,7 @@ from .common import BASELINE, REACHED, StudyError, read_json, run_dir, sha256, u
 from .corrections import corrected_weather, theta_names
 from .forcing import load_baseline
 from .holdout import load_split
-from .objective import block_weights, distance_outputs, objective, regularization_matrix
+from .objective import block_weights, distance_outputs, objective, overspread_outputs, regularization_matrix
 from .observations import load_table
 from .pilot import distance_to_burned
 from .run import state
@@ -138,10 +138,18 @@ def propose(cfg, iteration=0):
     theta, d = ens[names].to_numpy(float), D["distance_m"][rows]
     L = float(cfg["fit"]["length_scale_m"])
     G, B = distance_outputs(d, w, L), regularization_matrix(cfg)
+    over = cfg["fit"].get("overspread")
+    acres = base_acres = None
+    if over:                                  # v3: one more output, A_out / reference_acres
+        if "overspread_acres" not in D.files or float(D["overspread_at_s"]) != float(over["at_s"]):
+            raise StudyError(f"{path.name} has no over-spread areas for at_s = {over['at_s']}; rerun pilot")
+        acres = D["overspread_acres"][rows]
+        G = np.hstack([G, overspread_outputs(cfg, acres)])
+        base_acres = D["overspread_acres"][[ids.index(BASELINE)]] if BASELINE in ids else None
     ok = admissible(cfg)
     new, step = controlled_step(cfg, theta, G, B, ok)
-    obj = objective(cfg, theta, d, w)
-    base = objective(cfg, np.zeros((1, len(names))), D["distance_m"][ids.index(BASELINE)][None], w) \
+    obj = objective(cfg, theta, d, w, acres)
+    base = objective(cfg, np.zeros((1, len(names))), D["distance_m"][ids.index(BASELINE)][None], w, base_acres) \
         if BASELINE in ids else None
 
     out = cfg.path("proposals") / f"{nxt}.csv"
@@ -190,7 +198,12 @@ def verify(cfg, chk):
     resp = {r: run_responses(cfg, r, c) for r in rows.run_id}
     theta = rows[names].to_numpy(float)
     d = np.array([resp[r][0] for r in rows.run_id])
-    obj = objective(cfg, theta, d, w)
+    acres = None
+    if cfg["fit"].get("overspread"):
+        from .overspread import perimeter_mask, run_acres
+        mask = perimeter_mask(cfg)
+        acres = np.array([run_acres(cfg, r, mask) for r in rows.run_id])
+    obj = objective(cfg, theta, d, w, acres)
     phi = dict(zip(rows.run_id, obj["total"]))
     cur, rep, prop = rows.run_id
     toa_same = read_json(run_dir(cfg, cur) / "DONE")["toa_sha256"] == read_json(run_dir(cfg, rep) / "DONE")["toa_sha256"]
@@ -200,6 +213,7 @@ def verify(cfg, chk):
     result = {"created_utc": utc_now(), "check": chk, "proposal": meta["proposal"],
               "proposal_sha256": meta["proposal_sha256"],
               "objective": {r: {k: float(v[j]) for k, v in obj.items()} for j, r in enumerate(rows.run_id)},
+              **({"overspread_acres": dict(zip(rows.run_id, map(float, acres)))} if acres is not None else {}),
               "repeat_bit_identical": bool(toa_same), "variability": float(variability),
               "change_proposed_minus_current": float(change), "verdict": verdict,
               "accepted": bool(change <= variability),

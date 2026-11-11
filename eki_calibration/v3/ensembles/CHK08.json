@@ -1,0 +1,11 @@
+{
+ "created_utc": "2026-11-11T05:41:28Z",
+ "sha256": "e5b374b67c112945b35d38821903748c69500acb508f7435cd5c4bf4a50cea59",
+ "proposal": "/oak/stanford/groups/gorle/jgoell/Wildfire/eki_calibration/v3/proposals/I08.csv",
+ "proposal_sha256": "eb9e8c54a85b19cea198e0b8381ec8f0f810e626d9fd9abc3e0260c0926ad750",
+ "rows": {
+  "CHK08_I07MEAN": "mean of I07",
+  "CHK08_I07MEAN_REP": "identical inputs and seed (variability)",
+  "CHK08_I08MEAN": "mean of the proposed I08"
+ }
+}

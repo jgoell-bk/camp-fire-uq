@@ -1,0 +1,53 @@
+{
+ "created_utc": "2026-11-11T01:06:44Z",
+ "file": "final_perimeter.tif",
+ "sha256": "0c404e5ebaf7c7e8f00ca4477c0b4b09a55b48d0f50db6388d152a7936908745",
+ "source": "/oak/stanford/groups/gorle/jgoell/Wildfire/eki_calibration/v3/../../ParameterEstimationFiles/Camp Fire Perimeter-20261108T190839Z-1-001/Camp Fire Perimeter/California_Fire_Perimeters_(all).shp",
+ "source_sha256": "5d840e284f76b8c0c23415b3d2f548e97c2bfba8193f32c593ff19914a23d971",
+ "commands": [
+  [
+   "ogr2ogr",
+   "-t_srs",
+   "EPSG:26910",
+   "-nlt",
+   "MULTIPOLYGON",
+   "/tmp/tmpnb4xyomv/perimeter.gpkg",
+   "/oak/stanford/groups/gorle/jgoell/Wildfire/eki_calibration/v3/../../ParameterEstimationFiles/Camp Fire Perimeter-20261108T190839Z-1-001/Camp Fire Perimeter/California_Fire_Perimeters_(all).shp"
+  ],
+  [
+   "gdal_rasterize",
+   "-q",
+   "-burn",
+   "1",
+   "-init",
+   "0",
+   "-ot",
+   "Byte",
+   "-a_srs",
+   "EPSG:26910",
+   "-te",
+   "598179.544",
+   "4377012.763",
+   "641889.544",
+   "4421292.763",
+   "-ts",
+   "1457",
+   "1476",
+   "-co",
+   "COMPRESS=DEFLATE",
+   "/tmp/tmpnb4xyomv/perimeter.gpkg",
+   "/tmp/tmpnb4xyomv/perimeter.tif"
+  ]
+ ],
+ "fuel_grid": {
+  "crs": "EPSG:26910",
+  "x0": 598179.544,
+  "top": 4421292.763,
+  "cellsize": 30.0,
+  "ncols": 1457,
+  "nrows": 1476
+ },
+ "inside_cells": 689178,
+ "inside_acres": 153269.63332990027,
+ "rule": "a cell is inside when its centre is inside the polygon (gdal_rasterize default)"
+}

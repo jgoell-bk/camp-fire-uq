@@ -1,0 +1,1002 @@
+{
+ "created_utc": "2026-11-10T06:26:00Z",
+ "batch": "/oak/stanford/groups/gorle/jgoell/Wildfire/eki_calibration/batches/I05.txt",
+ "fit_constraints": 1199,
+ "runs": [
+  {
+   "run_id": "I05_M01",
+   "reached": 1152,
+   "not_reached": 47,
+   "violated": 963,
+   "met": 189,
+   "lateness_h_p10_p50_p90_reached": [
+    -1.83,
+    6.41,
+    11.1
+   ],
+   "lateness_h_p50_p90_violated": [
+    7.33,
+    11.3
+   ]
+  },
+  {
+   "run_id": "I05_M02",
+   "reached": 1163,
+   "not_reached": 36,
+   "violated": 948,
+   "met": 215,
+   "lateness_h_p10_p50_p90_reached": [
+    -3.37,
+    7.48,
+    11.36
+   ],
+   "lateness_h_p50_p90_violated": [
+    8.33,
+    11.6
+   ]
+  },
+  {
+   "run_id": "I05_M03",
+   "reached": 1077,
+   "not_reached": 122,
+   "violated": 928,
+   "met": 149,
+   "lateness_h_p10_p50_p90_reached": [
+    -0.89,
+    8.14,
+    12.96
+   ],
+   "lateness_h_p50_p90_violated": [
+    8.91,
+    13.31
+   ]
+  },
+  {
+   "run_id": "I05_M04",
+   "reached": 1168,
+   "not_reached": 31,
+   "violated": 985,
+   "met": 183,
+   "lateness_h_p10_p50_p90_reached": [
+    -1.02,
+    4.44,
+    10.26
+   ],
+   "lateness_h_p50_p90_violated": [
+    5.44,
+    10.71
+   ]
+  },
+  {
+   "run_id": "I05_M05",
+   "reached": 1113,
+   "not_reached": 86,
+   "violated": 960,
+   "met": 153,
+   "lateness_h_p10_p50_p90_reached": [
+    -2.16,
+    4.03,
+    7.83
+   ],
+   "lateness_h_p50_p90_violated": [
+    4.51,
+    8.11
+   ]
+  },
+  {
+   "run_id": "I05_M06",
+   "reached": 1161,
+   "not_reached": 38,
+   "violated": 990,
+   "met": 171,
+   "lateness_h_p10_p50_p90_reached": [
+    -1.23,
+    3.2,
+    9.39
+   ],
+   "lateness_h_p50_p90_violated": [
+    3.91,
+    9.86
+   ]
+  },
+  {
+   "run_id": "I05_M07",
+   "reached": 1041,
+   "not_reached": 158,
+   "violated": 923,
+   "met": 118,
+   "lateness_h_p10_p50_p90_reached": [
+    -0.31,
+    5.44,
+    12.0
+   ],
+   "lateness_h_p50_p90_violated": [
+    6.23,
+    12.31
+   ]
+  },
+  {
+   "run_id": "I05_M08",
+   "reached": 1163,
+   "not_reached": 36,
+   "violated": 859,
+   "met": 304,
+   "lateness_h_p10_p50_p90_reached": [
+    -5.18,
+    2.65,
+    6.25
+   ],
+   "lateness_h_p50_p90_violated": [
+    3.55,
+    6.75
+   ]
+  },
+  {
+   "run_id": "I05_M09",
+   "reached": 1042,
+   "not_reached": 157,
+   "violated": 880,
+   "met": 162,
+   "lateness_h_p10_p50_p90_reached": [
+    -1.5,
+    8.38,
+    13.41
+   ],
+   "lateness_h_p50_p90_violated": [
+    9.23,
+    13.76
+   ]
+  },
+  {
+   "run_id": "I05_M10",
+   "reached": 1111,
+   "not_reached": 88,
+   "violated": 942,
+   "met": 169,
+   "lateness_h_p10_p50_p90_reached": [
+    -0.98,
+    3.17,
+    9.03
+   ],
+   "lateness_h_p50_p90_violated": [
+    3.85,
+    9.47
+   ]
+  },
+  {
+   "run_id": "I05_M11",
+   "reached": 1014,
+   "not_reached": 185,
+   "violated": 918,
+   "met": 96,
+   "lateness_h_p10_p50_p90_reached": [
+    0.15,
+    8.88,
+    13.54
+   ],
+   "lateness_h_p50_p90_violated": [
+    9.21,
+    13.79
+   ]
+  },
+  {
+   "run_id": "I05_M12",
+   "reached": 1149,
+   "not_reached": 50,
+   "violated": 947,
+   "met": 202,
+   "lateness_h_p10_p50_p90_reached": [
+    -2.64,
+    4.76,
+    10.05
+   ],
+   "lateness_h_p50_p90_violated": [
+    5.73,
+    10.33
+   ]
+  },
+  {
+   "run_id": "I05_M13",
+   "reached": 1144,
+   "not_reached": 55,
+   "violated": 964,
+   "met": 180,
+   "lateness_h_p10_p50_p90_reached": [
+    -2.14,
+    7.82,
+    11.72
+   ],
+   "lateness_h_p50_p90_violated": [
+    8.67,
+    11.86
+   ]
+  },
+  {
+   "run_id": "I05_M14",
+   "reached": 1169,
+   "not_reached": 30,
+   "violated": 960,
+   "met": 209,
+   "lateness_h_p10_p50_p90_reached": [
+    -2.51,
+    3.05,
+    8.05
+   ],
+   "lateness_h_p50_p90_violated": [
+    4.06,
+    8.77
+   ]
+  },
+  {
+   "run_id": "I05_M15",
+   "reached": 1099,
+   "not_reached": 100,
+   "violated": 981,
+   "met": 118,
+   "lateness_h_p10_p50_p90_reached": [
+    -0.38,
+    8.83,
+    12.75
+   ],
+   "lateness_h_p50_p90_violated": [
+    9.24,
+    13.0
+   ]
+  },
+  {
+   "run_id": "I05_M16",
+   "reached": 1155,
+   "not_reached": 44,
+   "violated": 912,
+   "met": 243,
+   "lateness_h_p10_p50_p90_reached": [
+    -3.69,
+    3.32,
+    8.48
+   ],
+   "lateness_h_p50_p90_violated": [
+    4.57,
+    9.07
+   ]
+  },
+  {
+   "run_id": "I05_M17",
+   "reached": 1172,
+   "not_reached": 27,
+   "violated": 997,
+   "met": 175,
+   "lateness_h_p10_p50_p90_reached": [
+    -1.42,
+    5.64,
+    11.01
+   ],
+   "lateness_h_p50_p90_violated": [
+    6.53,
+    11.19
+   ]
+  },
+  {
+   "run_id": "I05_M18",
+   "reached": 1104,
+   "not_reached": 95,
+   "violated": 964,
+   "met": 140,
+   "lateness_h_p10_p50_p90_reached": [
+    -1.43,
+    8.73,
+    12.7
+   ],
+   "lateness_h_p50_p90_violated": [
+    9.21,
+    13.04
+   ]
+  },
+  {
+   "run_id": "I05_M19",
+   "reached": 1154,
+   "not_reached": 45,
+   "violated": 1008,
+   "met": 146,
+   "lateness_h_p10_p50_p90_reached": [
+    -1.33,
+    5.34,
+    9.97
+   ],
+   "lateness_h_p50_p90_violated": [
+    5.79,
+    10.13
+   ]
+  },
+  {
+   "run_id": "I05_M20",
+   "reached": 1170,
+   "not_reached": 29,
+   "violated": 936,
+   "met": 234,
+   "lateness_h_p10_p50_p90_reached": [
+    -3.0,
+    2.97,
+    7.47
+   ],
+   "lateness_h_p50_p90_violated": [
+    3.93,
+    8.13
+   ]
+  },
+  {
+   "run_id": "I05_M21",
+   "reached": 1177,
+   "not_reached": 22,
+   "violated": 954,
+   "met": 223,
+   "lateness_h_p10_p50_p90_reached": [
+    -3.55,
+    2.95,
+    6.82
+   ],
+   "lateness_h_p50_p90_violated": [
+    3.47,
+    7.18
+   ]
+  },
+  {
+   "run_id": "I05_M22",
+   "reached": 1167,
+   "not_reached": 32,
+   "violated": 997,
+   "met": 170,
+   "lateness_h_p10_p50_p90_reached": [
+    -1.15,
+    3.35,
+    8.46
+   ],
+   "lateness_h_p50_p90_violated": [
+    3.92,
+    8.94
+   ]
+  },
+  {
+   "run_id": "I05_M23",
+   "reached": 1164,
+   "not_reached": 35,
+   "violated": 991,
+   "met": 173,
+   "lateness_h_p10_p50_p90_reached": [
+    -1.78,
+    4.54,
+    9.53
+   ],
+   "lateness_h_p50_p90_violated": [
+    5.21,
+    9.74
+   ]
+  },
+  {
+   "run_id": "I05_M24",
+   "reached": 1166,
+   "not_reached": 33,
+   "violated": 1038,
+   "met": 128,
+   "lateness_h_p10_p50_p90_reached": [
+    -0.3,
+    4.96,
+    10.16
+   ],
+   "lateness_h_p50_p90_violated": [
+    5.39,
+    10.28
+   ]
+  },
+  {
+   "run_id": "I05_M25",
+   "reached": 1143,
+   "not_reached": 56,
+   "violated": 982,
+   "met": 161,
+   "lateness_h_p10_p50_p90_reached": [
+    -1.11,
+    3.17,
+    8.5
+   ],
+   "lateness_h_p50_p90_violated": [
+    3.62,
+    9.19
+   ]
+  },
+  {
+   "run_id": "I05_M26",
+   "reached": 1165,
+   "not_reached": 34,
+   "violated": 988,
+   "met": 177,
+   "lateness_h_p10_p50_p90_reached": [
+    -2.17,
+    3.81,
+    7.71
+   ],
+   "lateness_h_p50_p90_violated": [
+    4.35,
+    8.01
+   ]
+  },
+  {
+   "run_id": "I05_M27",
+   "reached": 984,
+   "not_reached": 215,
+   "violated": 873,
+   "met": 111,
+   "lateness_h_p10_p50_p90_reached": [
+    -0.44,
+    10.12,
+    15.06
+   ],
+   "lateness_h_p50_p90_violated": [
+    10.78,
+    15.25
+   ]
+  },
+  {
+   "run_id": "I05_M28",
+   "reached": 1161,
+   "not_reached": 38,
+   "violated": 974,
+   "met": 187,
+   "lateness_h_p10_p50_p90_reached": [
+    -2.41,
+    5.72,
+    10.43
+   ],
+   "lateness_h_p50_p90_violated": [
+    6.59,
+    10.58
+   ]
+  },
+  {
+   "run_id": "I05_M29",
+   "reached": 1156,
+   "not_reached": 43,
+   "violated": 1002,
+   "met": 154,
+   "lateness_h_p10_p50_p90_reached": [
+    -1.74,
+    5.14,
+    8.15
+   ],
+   "lateness_h_p50_p90_violated": [
+    5.53,
+    8.31
+   ]
+  },
+  {
+   "run_id": "I05_M30",
+   "reached": 1174,
+   "not_reached": 25,
+   "violated": 910,
+   "met": 264,
+   "lateness_h_p10_p50_p90_reached": [
+    -4.57,
+    3.32,
+    6.37
+   ],
+   "lateness_h_p50_p90_violated": [
+    4.49,
+    6.63
+   ]
+  },
+  {
+   "run_id": "I05_M31",
+   "reached": 1060,
+   "not_reached": 139,
+   "violated": 749,
+   "met": 311,
+   "lateness_h_p10_p50_p90_reached": [
+    -6.1,
+    2.49,
+    6.63
+   ],
+   "lateness_h_p50_p90_violated": [
+    3.46,
+    7.13
+   ]
+  },
+  {
+   "run_id": "I05_M32",
+   "reached": 1175,
+   "not_reached": 24,
+   "violated": 887,
+   "met": 288,
+   "lateness_h_p10_p50_p90_reached": [
+    -2.75,
+    2.51,
+    6.09
+   ],
+   "lateness_h_p50_p90_violated": [
+    3.18,
+    6.88
+   ]
+  }
+ ],
+ "cells": {
+  "members": 32,
+  "reached_by_all": 787,
+  "reached_by_some": 398,
+  "reached_by_none": 14,
+  "baseline_reached": 0
+ },
+ "breakdown": {
+  "deadline_h": {
+   "0-3": {
+    "cells": 184,
+    "reached_share": 0.987,
+    "violated_share_of_reached": 0.988,
+    "lateness_h_p50_violated": 6.07,
+    "reached_by_no_member": 2
+   },
+   "12-18": {
+    "cells": 127,
+    "reached_share": 0.93,
+    "violated_share_of_reached": 0.509,
+    "lateness_h_p50_violated": 2.53,
+    "reached_by_no_member": 0
+   },
+   "18-24.01": {
+    "cells": 94,
+    "reached_share": 0.782,
+    "violated_share_of_reached": 0.131,
+    "lateness_h_p50_violated": 1.73,
+    "reached_by_no_member": 1
+   },
+   "3-6": {
+    "cells": 322,
+    "reached_share": 0.976,
+    "violated_share_of_reached": 0.986,
+    "lateness_h_p50_violated": 6.77,
+    "reached_by_no_member": 2
+   },
+   "6-9": {
+    "cells": 290,
+    "reached_share": 0.943,
+    "violated_share_of_reached": 0.932,
+    "lateness_h_p50_violated": 5.73,
+    "reached_by_no_member": 7
+   },
+   "9-12": {
+    "cells": 182,
+    "reached_share": 0.937,
+    "violated_share_of_reached": 0.78,
+    "lateness_h_p50_violated": 3.59,
+    "reached_by_no_member": 2
+   }
+  },
+  "km_from_ignition": {
+   "0-10": {
+    "cells": 77,
+    "reached_share": 0.995,
+    "violated_share_of_reached": 0.879,
+    "lateness_h_p50_violated": 2.78,
+    "reached_by_no_member": 0
+   },
+   "10-13": {
+    "cells": 254,
+    "reached_share": 0.956,
+    "violated_share_of_reached": 0.798,
+    "lateness_h_p50_violated": 6.48,
+    "reached_by_no_member": 4
+   },
+   "13-16": {
+    "cells": 478,
+    "reached_share": 0.938,
+    "violated_share_of_reached": 0.815,
+    "lateness_h_p50_violated": 5.49,
+    "reached_by_no_member": 4
+   },
+   "16-20": {
+    "cells": 265,
+    "reached_share": 0.929,
+    "violated_share_of_reached": 0.883,
+    "lateness_h_p50_violated": 5.82,
+    "reached_by_no_member": 6
+   },
+   "20-50": {
+    "cells": 125,
+    "reached_share": 0.94,
+    "violated_share_of_reached": 0.876,
+    "lateness_h_p50_violated": 4.91,
+    "reached_by_no_member": 0
+   }
+  },
+  "nist_region": {
+   "Bille Rd": {
+    "cells": 54,
+    "reached_share": 0.963,
+    "violated_share_of_reached": 0.927,
+    "lateness_h_p50_violated": 6.91,
+    "reached_by_no_member": 0
+   },
+   "Butte Creek Canyon": {
+    "cells": 21,
+    "reached_share": 0.854,
+    "violated_share_of_reached": 0.784,
+    "lateness_h_p50_violated": 5.24,
+    "reached_by_no_member": 0
+   },
+   "Clark Rd": {
+    "cells": 109,
+    "reached_share": 0.99,
+    "violated_share_of_reached": 0.915,
+    "lateness_h_p50_violated": 6.25,
+    "reached_by_no_member": 0
+   },
+   "Concow": {
+    "cells": 89,
+    "reached_share": 0.996,
+    "violated_share_of_reached": 0.882,
+    "lateness_h_p50_violated": 2.95,
+    "reached_by_no_member": 0
+   },
+   "Elliott Rd and Nunneley Rd": {
+    "cells": 79,
+    "reached_share": 0.956,
+    "violated_share_of_reached": 0.898,
+    "lateness_h_p50_violated": 5.39,
+    "reached_by_no_member": 2
+   },
+   "Foothills": {
+    "cells": 60,
+    "reached_share": 0.933,
+    "violated_share_of_reached": 0.777,
+    "lateness_h_p50_violated": 2.3,
+    "reached_by_no_member": 0
+   },
+   "Magalia and Coutolenc Rd": {
+    "cells": 94,
+    "reached_share": 0.778,
+    "violated_share_of_reached": 0.353,
+    "lateness_h_p50_violated": 3.78,
+    "reached_by_no_member": 0
+   },
+   "Neal Rd": {
+    "cells": 68,
+    "reached_share": 0.992,
+    "violated_share_of_reached": 0.91,
+    "lateness_h_p50_violated": 6.11,
+    "reached_by_no_member": 0
+   },
+   "Nelson Bar Rd": {
+    "cells": 64,
+    "reached_share": 0.935,
+    "violated_share_of_reached": 0.256,
+    "lateness_h_p50_violated": 1.68,
+    "reached_by_no_member": 0
+   },
+   "Pearson Rd and Buschmann Rd": {
+    "cells": 129,
+    "reached_share": 0.922,
+    "violated_share_of_reached": 0.964,
+    "lateness_h_p50_violated": 4.52,
+    "reached_by_no_member": 4
+   },
+   "Pentz Rd": {
+    "cells": 209,
+    "reached_share": 0.985,
+    "violated_share_of_reached": 0.944,
+    "lateness_h_p50_violated": 5.14,
+    "reached_by_no_member": 2
+   },
+   "Skyway": {
+    "cells": 155,
+    "reached_share": 0.929,
+    "violated_share_of_reached": 0.889,
+    "lateness_h_p50_violated": 8.22,
+    "reached_by_no_member": 4
+   },
+   "Valley View Dr": {
+    "cells": 16,
+    "reached_share": 0.967,
+    "violated_share_of_reached": 0.687,
+    "lateness_h_p50_violated": 3.79,
+    "reached_by_no_member": 0
+   },
+   "Wagstaff Rd": {
+    "cells": 52,
+    "reached_share": 0.943,
+    "violated_share_of_reached": 0.949,
+    "lateness_h_p50_violated": 8.97,
+    "reached_by_no_member": 2
+   }
+  },
+  "fire_type": {
+   "C": {
+    "cells": 84,
+    "reached_share": 0.834,
+    "violated_share_of_reached": 0.852,
+    "lateness_h_p50_violated": 5.0,
+    "reached_by_no_member": 7
+   },
+   "O": {
+    "cells": 275,
+    "reached_share": 0.957,
+    "violated_share_of_reached": 0.873,
+    "lateness_h_p50_violated": 5.58,
+    "reached_by_no_member": 1
+   },
+   "R": {
+    "cells": 250,
+    "reached_share": 0.966,
+    "violated_share_of_reached": 0.851,
+    "lateness_h_p50_violated": 5.25,
+    "reached_by_no_member": 1
+   },
+   "S": {
+    "cells": 239,
+    "reached_share": 0.952,
+    "violated_share_of_reached": 0.937,
+    "lateness_h_p50_violated": 7.14,
+    "reached_by_no_member": 4
+   },
+   "V": {
+    "cells": 351,
+    "reached_share": 0.939,
+    "violated_share_of_reached": 0.726,
+    "lateness_h_p50_violated": 4.32,
+    "reached_by_no_member": 1
+   }
+  },
+  "mapping": {
+   "direct": {
+    "cells": 840,
+    "reached_share": 0.951,
+    "violated_share_of_reached": 0.809,
+    "lateness_h_p50_violated": 5.34,
+    "reached_by_no_member": 5
+   },
+   "proxy": {
+    "cells": 359,
+    "reached_share": 0.927,
+    "violated_share_of_reached": 0.904,
+    "lateness_h_p50_violated": 5.68,
+    "reached_by_no_member": 9
+   }
+  }
+ },
+ "distance_response": {
+  "zero_share_by_run": {
+   "I05_M01": 0.158,
+   "I05_M02": 0.179,
+   "I05_M03": 0.124,
+   "I05_M04": 0.153,
+   "I05_M05": 0.128,
+   "I05_M06": 0.143,
+   "I05_M07": 0.098,
+   "I05_M08": 0.254,
+   "I05_M09": 0.135,
+   "I05_M10": 0.141,
+   "I05_M11": 0.08,
+   "I05_M12": 0.168,
+   "I05_M13": 0.15,
+   "I05_M14": 0.174,
+   "I05_M15": 0.098,
+   "I05_M16": 0.203,
+   "I05_M17": 0.146,
+   "I05_M18": 0.117,
+   "I05_M19": 0.122,
+   "I05_M20": 0.195,
+   "I05_M21": 0.186,
+   "I05_M22": 0.142,
+   "I05_M23": 0.144,
+   "I05_M24": 0.107,
+   "I05_M25": 0.134,
+   "I05_M26": 0.148,
+   "I05_M27": 0.093,
+   "I05_M28": 0.156,
+   "I05_M29": 0.128,
+   "I05_M30": 0.22,
+   "I05_M31": 0.259,
+   "I05_M32": 0.24
+  },
+  "positive_m_p10_p50_p90_members": [
+   757.17,
+   4118.86,
+   9040.48
+  ],
+  "unreached_cells_m_p10_p50_p90_members": [
+   664.74,
+   2354.76,
+   7756.7
+  ],
+  "corr_with_lateness_where_violated": 0.6063482893250062,
+  "met_implies_zero": true
+ },
+ "parameter_response_corr": {
+  "reached": {
+   "a_k1": -0.19,
+   "a_k2": -0.25,
+   "a_k3": -0.14,
+   "d_k1": 0.0,
+   "d_k2": 0.3,
+   "d_k3": 0.45,
+   "m_k1": -0.04,
+   "m_k2": -0.12,
+   "m_k3": -0.16
+  },
+  "violated_share_of_reached": {
+   "a_k1": -0.24,
+   "a_k2": -0.12,
+   "a_k3": -0.27,
+   "d_k1": -0.32,
+   "d_k2": -0.36,
+   "d_k3": -0.44,
+   "m_k1": 0.28,
+   "m_k2": 0.33,
+   "m_k3": 0.24
+  },
+  "mean_lateness_h_common_cells": {
+   "a_k1": 0.05,
+   "a_k2": 0.04,
+   "a_k3": -0.04,
+   "d_k1": -0.53,
+   "d_k2": -0.67,
+   "d_k3": -0.36,
+   "m_k1": 0.07,
+   "m_k2": 0.1,
+   "m_k3": 0.02
+  },
+  "mean_distance_km": {
+   "a_k1": -0.45,
+   "a_k2": -0.32,
+   "a_k3": -0.22,
+   "d_k1": -0.32,
+   "d_k2": -0.24,
+   "d_k3": -0.04,
+   "m_k1": 0.25,
+   "m_k2": 0.19,
+   "m_k3": 0.09
+  },
+  "burned_by_deadline_share": {
+   "a_k1": 0.2,
+   "a_k2": 0.09,
+   "a_k3": 0.23,
+   "d_k1": 0.31,
+   "d_k2": 0.38,
+   "d_k3": 0.47,
+   "m_k1": -0.26,
+   "m_k2": -0.32,
+   "m_k3": -0.25
+  }
+ },
+ "parameter_response_r2": {
+  "reached": 0.354,
+  "violated_share_of_reached": 0.746,
+  "mean_lateness_h_common_cells": 0.834,
+  "mean_distance_km": 0.617,
+  "burned_by_deadline_share": 0.718
+ },
+ "per_cell_response": {
+  "arrival_common_cells": {
+   "cells_varying": 787,
+   "a_k1": {
+    "median_abs_corr": 0.08,
+    "share_abs_corr_over_0.35": 0.01
+   },
+   "a_k2": {
+    "median_abs_corr": 0.06,
+    "share_abs_corr_over_0.35": 0.0
+   },
+   "a_k3": {
+    "median_abs_corr": 0.07,
+    "share_abs_corr_over_0.35": 0.01
+   },
+   "d_k1": {
+    "median_abs_corr": 0.45,
+    "share_abs_corr_over_0.35": 0.72
+   },
+   "d_k2": {
+    "median_abs_corr": 0.6,
+    "share_abs_corr_over_0.35": 0.83
+   },
+   "d_k3": {
+    "median_abs_corr": 0.25,
+    "share_abs_corr_over_0.35": 0.32
+   },
+   "m_k1": {
+    "median_abs_corr": 0.1,
+    "share_abs_corr_over_0.35": 0.01
+   },
+   "m_k2": {
+    "median_abs_corr": 0.1,
+    "share_abs_corr_over_0.35": 0.01
+   },
+   "m_k3": {
+    "median_abs_corr": 0.09,
+    "share_abs_corr_over_0.35": 0.01
+   }
+  },
+  "distance_all_cells": {
+   "cells_varying": 1195,
+   "a_k1": {
+    "median_abs_corr": 0.31,
+    "share_abs_corr_over_0.35": 0.48
+   },
+   "a_k2": {
+    "median_abs_corr": 0.23,
+    "share_abs_corr_over_0.35": 0.27
+   },
+   "a_k3": {
+    "median_abs_corr": 0.17,
+    "share_abs_corr_over_0.35": 0.08
+   },
+   "d_k1": {
+    "median_abs_corr": 0.36,
+    "share_abs_corr_over_0.35": 0.51
+   },
+   "d_k2": {
+    "median_abs_corr": 0.33,
+    "share_abs_corr_over_0.35": 0.48
+   },
+   "d_k3": {
+    "median_abs_corr": 0.08,
+    "share_abs_corr_over_0.35": 0.16
+   },
+   "m_k1": {
+    "median_abs_corr": 0.13,
+    "share_abs_corr_over_0.35": 0.23
+   },
+   "m_k2": {
+    "median_abs_corr": 0.1,
+    "share_abs_corr_over_0.35": 0.01
+   },
+   "m_k3": {
+    "median_abs_corr": 0.07,
+    "share_abs_corr_over_0.35": 0.0
+   }
+  }
+ },
+ "conditioning": {
+  "theta_singular_values": [
+   8.943,
+   7.536,
+   5.97,
+   5.566,
+   5.225,
+   4.393,
+   3.843,
+   2.792,
+   2.541
+  ],
+  "theta_condition": 3.52,
+  "arrival_common_cells_singular_values_top": [
+   376.072,
+   160.134,
+   89.262,
+   70.044,
+   62.393,
+   42.141,
+   40.187,
+   35.793,
+   30.28,
+   29.141
+  ],
+  "arrival_common_cells_effective_rank_1pct": 31,
+  "distance_km_singular_values_top": [
+   182.888,
+   145.149,
+   67.999,
+   47.511,
+   39.992,
+   34.25,
+   27.341,
+   19.537,
+   18.485,
+   16.909
+  ],
+  "distance_km_effective_rank_1pct": 31,
+  "deadline_CFF_plus_I_condition_common_cells": 6.26,
+  "deadline_CFF_trace_common_cells": 7.2631,
+  "deadline_scale_used_s": 3600.0
+ },
+ "notes": [
+  "lateness = modelled arrival - report deadline (h); positive = deadline violated",
+  "correlations over 32 members: |r| > 0.35 is about p < 0.05",
+  "common cells = reached by every member; used for diagnostics only, never as the target"
+ ]
+}

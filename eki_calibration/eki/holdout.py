@@ -10,6 +10,11 @@ its centre. Reports that must stay together are linked:
 Blocks joined by a link form one unit. The units are shuffled with holdout.seed, and
 the first round(fraction x units) are held out. Model output is never used.
 
+holdout.blocks_from (optional, v2): instead of a new draw, every block keeps its
+partition in that earlier split file, so the fit/holdout blocks stay as they were
+(Jacob, 2026-11-10). Every block must be in that file with one partition, and no unit
+may span both partitions.
+
 This tests spatial generalization within this fire; it is not validation on an
 independent fire. The file is frozen: a different split must get a new version.
 """
@@ -78,11 +83,26 @@ def split(cfg, obs):
             u.join(first, b)
     loc["unit"] = [u.find(b) for b in loc.block]
     units = sorted(set(loc.unit))
-    rng = np.random.default_rng(int(h["seed"]))
-    order = rng.permutation(len(units))
-    n_hold = int(round(float(h["fraction"]) * len(units)))
-    held = {units[i] for i in order[:n_hold]}
-    loc["partition"] = np.where(loc.unit.isin(held), "holdout", "fit")
+    if h.get("blocks_from"):
+        src = cfg.path(h["blocks_from"])
+        prev = pd.read_csv(src, keep_default_na=False, na_values=[""])
+        roles = prev.groupby("block").partition.agg(lambda x: set(x))
+        if (roles.map(len) > 1).any():
+            raise StudyError(f"{src.name}: some blocks have two partitions")
+        roles = roles.map(lambda x: next(iter(x)))
+        unknown = sorted(set(loc.block) - set(roles.index))
+        if unknown:
+            raise StudyError(f"{len(unknown)} blocks are not in {src.name} (first: {unknown[0]})")
+        loc["partition"] = loc.block.map(roles)
+        if (loc.groupby("unit").partition.nunique() > 1).any():
+            raise StudyError(f"a linked unit spans fit and holdout blocks of {src.name}")
+        n_hold = int(loc[loc.partition == "holdout"].unit.nunique())
+    else:
+        rng = np.random.default_rng(int(h["seed"]))
+        order = rng.permutation(len(units))
+        n_hold = int(round(float(h["fraction"]) * len(units)))
+        held = {units[i] for i in order[:n_hold]}
+        loc["partition"] = np.where(loc.unit.isin(held), "holdout", "fit")
     return loc, {"blocks": int(loc.block.nunique()), "units": len(units), "holdout_units": n_hold,
                  "holdout_blocks": int(loc[loc.partition == "holdout"].block.nunique()),
                  "links_spanning_blocks": int(spanning)}
@@ -134,7 +154,9 @@ def write_split(cfg):
         "same_event_groups": cfg["observations"].get("same_event_groups") or [],
         "rule": "1 km blocks from the fuel grid's top-left corner, located by the frozen sampling cell "
                 "(else the containing cell); blocks linked by a shared NIST record or a same_event_groups "
-                "entry form one unit; units shuffled with the seed; the first round(fraction x units) held out",
+                "entry form one unit; " + (f"each block keeps its partition in {cfg['holdout']['blocks_from']}"
+                                           if cfg["holdout"].get("blocks_from") else
+                                           "units shuffled with the seed; the first round(fraction x units) held out"),
         "scope": "spatial generalization within this fire, not validation on an independent fire",
         "coverage": cov})
     return part, info, cov

@@ -1,0 +1,348 @@
+{
+ "jobs": [
+  {
+   "started_utc": "2026-11-10T19:48:13Z",
+   "slurm_job_id": "51800200",
+   "host": "sh04-04n15.int",
+   "settings": {
+    "max_ensemble": 10,
+    "min_relative_gain": 0.02
+   },
+   "steps": [
+    {
+     "utc": "2026-11-10T20:22:10Z",
+     "step": "ensemble",
+     "ensemble": "I00",
+     "update_gain": null,
+     "members_phi": {
+      "mean": 49.00387728115177,
+      "median": 40.94421399751322,
+      "min": 13.670148806841096,
+      "max": 113.21700830541043
+     },
+     "windows_members_median": {
+      "0-6h": {
+       "met_share": 0.002,
+       "mean_km": 9.97
+      },
+      "6-12h": {
+       "met_share": 0.011,
+       "mean_km": 7.72
+      },
+      "12-24.01h": {
+       "met_share": 0.162,
+       "mean_km": 4.12
+      }
+     }
+    },
+    {
+     "utc": "2026-11-10T20:29:50Z",
+     "step": "check",
+     "check": "CHK01",
+     "phi_current_mean": 34.81699348305908,
+     "phi_proposed_mean": 23.12312893444428,
+     "relative_gain": 0.33586658061973923,
+     "verdict": "improves",
+     "accepted": true,
+     "repeat_bit_identical": true,
+     "alpha": 32.0
+    },
+    {
+     "utc": "2026-11-10T20:59:53Z",
+     "step": "ensemble",
+     "ensemble": "I01",
+     "update_gain": 0.33586658061973923,
+     "members_phi": {
+      "mean": 34.11733166472853,
+      "median": 31.481183979104806,
+      "min": 13.313761900055534,
+      "max": 66.409804846016
+     },
+     "windows_members_median": {
+      "0-6h": {
+       "met_share": 0.002,
+       "mean_km": 9.37
+      },
+      "6-12h": {
+       "met_share": 0.035,
+       "mean_km": 5.98
+      },
+      "12-24.01h": {
+       "met_share": 0.209,
+       "mean_km": 2.32
+      }
+     }
+    },
+    {
+     "utc": "2026-11-10T21:09:35Z",
+     "step": "check",
+     "check": "CHK02",
+     "phi_current_mean": 23.12312893444428,
+     "phi_proposed_mean": 16.836918620476034,
+     "relative_gain": 0.27185811798178794,
+     "verdict": "improves",
+     "accepted": true,
+     "repeat_bit_identical": true,
+     "alpha": 16.0
+    },
+    {
+     "utc": "2026-11-10T21:44:01Z",
+     "step": "ensemble",
+     "ensemble": "I02",
+     "update_gain": 0.27185811798178794,
+     "members_phi": {
+      "mean": 26.710408155281577,
+      "median": 24.932528226787376,
+      "min": 13.446993383529472,
+      "max": 54.15246201125257
+     },
+     "windows_members_median": {
+      "0-6h": {
+       "met_share": 0.002,
+       "mean_km": 8.41
+      },
+      "6-12h": {
+       "met_share": 0.041,
+       "mean_km": 4.69
+      },
+      "12-24.01h": {
+       "met_share": 0.363,
+       "mean_km": 1.8
+      }
+     }
+    },
+    {
+     "utc": "2026-11-10T21:56:29Z",
+     "step": "check",
+     "check": "CHK03",
+     "phi_current_mean": 16.836918620476034,
+     "phi_proposed_mean": 14.45995012706003,
+     "relative_gain": 0.14117598041516222,
+     "verdict": "improves",
+     "accepted": true,
+     "repeat_bit_identical": true,
+     "alpha": 8.0
+    },
+    {
+     "utc": "2026-11-10T22:36:35Z",
+     "step": "ensemble",
+     "ensemble": "I03",
+     "update_gain": 0.14117598041516222,
+     "members_phi": {
+      "mean": 21.48802379371189,
+      "median": 19.712395601826827,
+      "min": 11.43244581326841,
+      "max": 42.37347788840671
+     },
+     "windows_members_median": {
+      "0-6h": {
+       "met_share": 0.004,
+       "mean_km": 7.7
+      },
+      "6-12h": {
+       "met_share": 0.058,
+       "mean_km": 3.77
+      },
+      "12-24.01h": {
+       "met_share": 0.478,
+       "mean_km": 1.29
+      }
+     }
+    },
+    {
+     "utc": "2026-11-10T22:50:26Z",
+     "step": "check",
+     "check": "CHK04",
+     "phi_current_mean": 14.45995012706003,
+     "phi_proposed_mean": 13.311354014216489,
+     "relative_gain": 0.0794329235405925,
+     "verdict": "improves",
+     "accepted": true,
+     "repeat_bit_identical": true,
+     "alpha": 8.0
+    },
+    {
+     "utc": "2026-11-10T23:36:03Z",
+     "step": "ensemble",
+     "ensemble": "I04",
+     "update_gain": 0.0794329235405925,
+     "members_phi": {
+      "mean": 18.003513479169616,
+      "median": 17.625287039376218,
+      "min": 10.588025444067469,
+      "max": 35.206682448489886
+     },
+     "windows_members_median": {
+      "0-6h": {
+       "met_share": 0.004,
+       "mean_km": 7.04
+      },
+      "6-12h": {
+       "met_share": 0.073,
+       "mean_km": 3.08
+      },
+      "12-24.01h": {
+       "met_share": 0.547,
+       "mean_km": 1.11
+      }
+     }
+    },
+    {
+     "utc": "2026-11-10T23:50:35Z",
+     "step": "check",
+     "check": "CHK05",
+     "phi_current_mean": 13.311354014216489,
+     "phi_proposed_mean": 10.660741687139687,
+     "relative_gain": 0.199124170557402,
+     "verdict": "improves",
+     "accepted": true,
+     "repeat_bit_identical": true,
+     "alpha": 4.0
+    },
+    {
+     "utc": "2026-11-11T00:44:43Z",
+     "step": "ensemble",
+     "ensemble": "I05",
+     "update_gain": 0.199124170557402,
+     "members_phi": {
+      "mean": 14.125163731051511,
+      "median": 13.628763131824236,
+      "min": 9.896487483757548,
+      "max": 24.09717760401738
+     },
+     "windows_members_median": {
+      "0-6h": {
+       "met_share": 0.005,
+       "mean_km": 6.44
+      },
+      "6-12h": {
+       "met_share": 0.102,
+       "mean_km": 2.41
+      },
+      "12-24.01h": {
+       "met_share": 0.606,
+       "mean_km": 0.75
+      }
+     }
+    },
+    {
+     "utc": "2026-11-11T01:01:01Z",
+     "step": "check",
+     "check": "CHK06",
+     "phi_current_mean": 10.660741687139687,
+     "phi_proposed_mean": 10.093891346705048,
+     "relative_gain": 0.05317175456173416,
+     "verdict": "improves",
+     "accepted": true,
+     "repeat_bit_identical": true,
+     "alpha": 4.0
+    },
+    {
+     "utc": "2026-11-11T01:54:11Z",
+     "step": "ensemble",
+     "ensemble": "I06",
+     "update_gain": 0.05317175456173416,
+     "members_phi": {
+      "mean": 12.058341781966192,
+      "median": 11.492172637353491,
+      "min": 8.760087417530983,
+      "max": 19.045381324578162
+     },
+     "windows_members_median": {
+      "0-6h": {
+       "met_share": 0.009,
+       "mean_km": 5.95
+      },
+      "6-12h": {
+       "met_share": 0.14,
+       "mean_km": 1.87
+      },
+      "12-24.01h": {
+       "met_share": 0.62,
+       "mean_km": 0.72
+      }
+     }
+    },
+    {
+     "utc": "2026-11-11T02:11:29Z",
+     "step": "check",
+     "check": "CHK07",
+     "phi_current_mean": 10.093891346705048,
+     "phi_proposed_mean": 7.774810304000491,
+     "relative_gain": 0.22975094173780414,
+     "verdict": "improves",
+     "accepted": true,
+     "repeat_bit_identical": true,
+     "alpha": 4.0
+    },
+    {
+     "utc": "2026-11-11T03:08:54Z",
+     "step": "ensemble",
+     "ensemble": "I07",
+     "update_gain": 0.22975094173780414,
+     "members_phi": {
+      "mean": 10.829045136276564,
+      "median": 10.196165288651336,
+      "min": 8.38721015987632,
+      "max": 17.23829893928146
+     },
+     "windows_members_median": {
+      "0-6h": {
+       "met_share": 0.011,
+       "mean_km": 5.52
+      },
+      "6-12h": {
+       "met_share": 0.156,
+       "mean_km": 1.57
+      },
+      "12-24.01h": {
+       "met_share": 0.617,
+       "mean_km": 0.58
+      }
+     }
+    },
+    {
+     "utc": "2026-11-11T03:28:30Z",
+     "step": "check",
+     "check": "CHK08",
+     "phi_current_mean": 7.774810304000491,
+     "phi_proposed_mean": 7.729289042535786,
+     "relative_gain": 0.005854967476348867,
+     "verdict": "improves",
+     "accepted": true,
+     "repeat_bit_identical": true,
+     "alpha": 4.0
+    },
+    {
+     "utc": "2026-11-11T04:25:22Z",
+     "step": "ensemble",
+     "ensemble": "I08",
+     "update_gain": 0.005854967476348867,
+     "members_phi": {
+      "mean": 9.802596098594954,
+      "median": 9.26613525400453,
+      "min": 7.792420390771657,
+      "max": 14.431776938010094
+     },
+     "windows_members_median": {
+      "0-6h": {
+       "met_share": 0.013,
+       "mean_km": 5.37
+      },
+      "6-12h": {
+       "met_share": 0.173,
+       "mean_km": 1.43
+      },
+      "12-24.01h": {
+       "met_share": 0.598,
+       "mean_km": 0.56
+      }
+     }
+    }
+   ],
+   "stopped": "the update that made I08 lowered Phi at the mean by 0.6%, less than 2% (auto.min_relative_gain)",
+   "exit_code": 0,
+   "ended_utc": "2026-11-11T04:25:22Z"
+  }
+ ]
+}

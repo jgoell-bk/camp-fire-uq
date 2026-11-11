@@ -173,3 +173,9 @@ slurm:   # CPUs, time and memory are in the Slurm file
   runs_per_task: 33                # the baseline and 32 members in one task, 24 fires at a time
   max_concurrent_tasks: 2
   check_script: slurm/eki_check.slurm   # CHK batches (a few runs at ensemble means): 3 CPUs
+
+auto:   # python -m eki auto (slurm/eki_auto.slurm): the whole loop in one job (Jacob, 2026-11-09)
+  # Each pass runs and scores an ensemble, then proposes, checks and promotes the next.
+  # It always stops at a rejected check or a failed run, and also:
+  max_ensemble: 10            # after running and scoring I10
+  min_relative_gain: 0.02     # after running and scoring an ensemble whose update lowered Phi at the mean by < 2 %

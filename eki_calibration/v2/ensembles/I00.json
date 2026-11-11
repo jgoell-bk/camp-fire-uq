@@ -1,0 +1,97 @@
+{
+ "created_utc": "2026-11-08T19:59:49Z",
+ "file": "I00.csv",
+ "sha256": "5ebe70af5d0fd7d57d007a3c933b025d6863b59be668a9f46abba5a62fe62e14",
+ "config_sha256": "85d07198b5335bff2500d6c4658268b8532cd4d235576e18c6c0397f949f9d67",
+ "settings": {
+  "size": 32,
+  "seed": 20261108,
+  "knot_correlation": 0.7,
+  "speed_multiplier": [
+   0.5,
+   3.0
+  ],
+  "direction_deg": [
+   -60.0,
+   60.0
+  ],
+  "moisture_pp": [
+   -2.0,
+   2.0
+  ]
+ },
+ "knots_h": [
+  0,
+  6,
+  12
+ ],
+ "theta_names": [
+  "a_k1",
+  "a_k2",
+  "a_k3",
+  "d_k1",
+  "d_k2",
+  "d_k3",
+  "m_k1",
+  "m_k2",
+  "m_k3"
+ ],
+ "method": "per family: z = L e, e ~ N(0, I), L L^T = C, C_rs = rho^|r-s|; value = lo + (hi - lo) Phi(z); a = ln(speed multiplier)",
+ "rank": {
+  "members": 32,
+  "parameters": 9,
+  "rank": 9,
+  "full_rank": true,
+  "singular_values": [
+   9.414716655425618,
+   8.04998198514559,
+   6.932613942417716,
+   5.365175920002432,
+   4.105960811865686,
+   3.7684938544926285,
+   2.9641034307700282,
+   2.2273007831773075,
+   1.9767178763632758
+  ],
+  "condition_number": 4.762802404937328
+ },
+ "correlations": {
+  "a_lag1": {
+   "target_normal_scores": 0.7,
+   "normal_scores": 0.7409712573462884,
+   "coefficients": 0.6739603217132212
+  },
+  "a_lag2": {
+   "target_normal_scores": 0.48999999999999994,
+   "normal_scores": 0.47713175112072487,
+   "coefficients": 0.3470502410756137
+  },
+  "d_lag1": {
+   "target_normal_scores": 0.7,
+   "normal_scores": 0.5726377818306316,
+   "coefficients": 0.5515290991141868
+  },
+  "d_lag2": {
+   "target_normal_scores": 0.48999999999999994,
+   "normal_scores": 0.2866893888523846,
+   "coefficients": 0.3282240375203788
+  },
+  "m_lag1": {
+   "target_normal_scores": 0.7,
+   "normal_scores": 0.6586104273088165,
+   "coefficients": 0.6397567567817664
+  },
+  "m_lag2": {
+   "target_normal_scores": 0.48999999999999994,
+   "normal_scores": 0.5081516146490318,
+   "coefficients": 0.5327314848680125
+  }
+ },
+ "minimum_written": {
+  "ws_mph": 1.2672593223787654,
+  "m1_pct": 2.8015926033663714,
+  "m10_pct": 4.942673301893097,
+  "m100_pct": 7.802673301893098
+ },
+ "baseline_sha256": "c0038f7c14fd820196d86f8d53379b0b7f5ca425a716c1fb87243721a7e49983"
+}

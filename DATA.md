@@ -11,7 +11,7 @@ or can be downloaded again. Paths are relative to the project folder on Oak
 |---|---|---|
 | Sobol study runs (5,376) | `$SCRATCH/elmfire-class/camp_sobol_d6/` | Per-run arrival rasters, weather rasters, records. `experiment/README.md`. |
 | Local wind-direction study runs | `$SCRATCH/elmfire-class/local_sensitivity/` and `local_sensitivity_fixed/` | `local_sensitivity/README.md`. |
-| EKI calibration runs | `$SCRATCH/elmfire-class/eki_calibration/` | `eki_calibration/README.md`. |
+| EKI calibration runs | `$SCRATCH/elmfire-class/eki_calibration/`, `eki_calibration_v2/`, `eki_calibration_v3/` | v1, v2 (cleaned observations), v3 (over-spread term + P_EPS). `eki_calibration/README.md`. |
 | Earlier pilots | `$SCRATCH/elmfire-class/camp_sobol/`, `camp_sobol_spot/` | Superseded. |
 
 `$SCRATCH` is purged 90 days after files were last modified. Copy anything worth
@@ -25,7 +25,8 @@ keeping to Oak.
 | `experiment/qgis/*.tif` | `experiment/tools/qgis_export.py` |
 | `experiment/qgis_setup/*.tif`, `setup.gpkg` (incl. the QoI mask `paradise_border_mask.tif`) | `experiment/tools/qgis_setup_export.py` (needs the Census shapefile below) |
 | `local_sensitivity/qgis/*.tif` | `local_sensitivity/analysis/lsa_gradient.py` |
-| `eki_calibration/results/*.npz` | `python -m eki extract` and `python -m eki pilot` |
+| `eki_calibration/results/*.npz`, `eki_calibration/v2/results/*.npz`, `eki_calibration/v3/results/*.npz` | `python -m eki extract` and `python -m eki pilot` (with `--config v2/config.yaml` or `v3/config.yaml`) |
+| `eki_calibration/v3/prepared/final_perimeter.tif` | `python -m eki --config v3/config.yaml perimeter` (needs `module load physics gdal/3.10.2`) |
 | `*.out`, `*/logs/*` | Slurm job logs |
 | `results/` (top level, 496 MB) | ELMFIRE tutorial runs and the 50-member validation-suite run of the baseline case (`slurm/`, `tutorials/`) |
 

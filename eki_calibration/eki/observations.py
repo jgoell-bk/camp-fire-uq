@@ -26,6 +26,14 @@ Where several located rows share a key, nist_match_basis says so. The GeoJSON
 features in such a group are identical, so the assignment within the group changes no
 observation.
 
+Subset (sources.observations_subset_geojson, optional): a cleaned copy of the GeoJSON
+that keeps only some of its points (v2, 2026-11-10). The table is built from the full
+GeoJSON as above, so every NIST match and obs_id stays the same, and is then
+restricted to the kept points (select_subset). Each kept point must equal an original
+point exactly in longitude, latitude, day, minute and elapsed minutes. Where k of m
+identical original points are kept, the first k in workbook order are used (Jacob,
+2026-11-10).
+
 event_type comes from NIST fields only:
 - residual: NIST 'Residual Fire?', fire lingering after the front passed;
 - fire_present: any other report; fire was observed at the place during the window.
@@ -172,6 +180,53 @@ def radius_prefix(radius):
     return f"r{radius:g}_"
 
 
+def select_subset(df, path):
+    """Positions in df (the full GeoJSON's rows, file = workbook order) of the points the
+    subset GeoJSON keeps, in df order, and a record of what was kept. See the module
+    docstring for the rule."""
+    with open(path) as f:
+        fc = json.load(f)
+    crs = fc.get("crs", {}).get("properties", {}).get("name")
+    if crs not in CRS84:
+        raise StudyError(f"{path}: CRS {crs!r}, expected CRS84 (lon, lat)")
+    key = lambda lon, lat, date, time: (round(float(lon), 6), round(float(lat), 6), str(date)[:10], str(time))
+    want, minutes = {}, {}
+    for i, feat in enumerate(fc["features"]):
+        g, p = feat["geometry"], feat["properties"]
+        if g["type"] != "Point":
+            raise StudyError(f"{path}: feature {i} is a {g['type']}, not a Point")
+        k = key(*g["coordinates"][:2], p["Date"], p["Time"])
+        want[k] = want.get(k, 0) + 1
+        minutes.setdefault(k, set()).add(round(float(p["elapsed_minutes"]), 6))
+    have = {}
+    for i, k in enumerate(map(key, df.lon, df.lat, df.date_original, df.time_original)):
+        have.setdefault(k, []).append(i)
+    missing = [k for k in want if k not in have]
+    if missing:
+        raise StudyError(f"{len(missing)} subset points match no original point exactly (first: {missing[0]})")
+    keep, partial = [], []
+    for k, n in want.items():
+        rows = have[k]
+        if n > len(rows):
+            raise StudyError(f"the subset has {n} copies of {k}, the original only {len(rows)}")
+        if minutes[k] != {round(float(df.elapsed_minutes_original[rows[0]]), 6)}:
+            raise StudyError(f"subset point {k}: elapsed minutes {minutes[k]} differ from the original")
+        keep += rows[:n]                                   # first n in workbook order
+        if n < len(rows):
+            partial.append({"key": list(k), "kept": int(n), "of": len(rows),
+                            "kept_obs_ids": [df.obs_id[i] for i in rows[:n]],
+                            "dropped_obs_ids": [df.obs_id[i] for i in rows[n:]]})
+    keep = sorted(keep)
+    dropped = sorted(set(range(len(df))) - set(keep))
+    info = {"subset_source": str(path), "subset_sha256": sha256(path), "subset_features": len(fc["features"]),
+            "original_features": len(df), "kept": len(keep), "dropped": len(dropped),
+            "dropped_obs_ids": [df.obs_id[i] for i in dropped],
+            "partly_kept_groups": partial,
+            "rule": "kept = original rows equal to a subset point in lon, lat (6 decimals), day, minute and elapsed "
+                    "minutes; where k of m identical rows are kept, the first k in workbook order (Jacob, 2026-11-10)"}
+    return keep, info
+
+
 def apply_review(df, cfg, radius, fbfm, ok, transform):
     """Mapping of the review points that have a recorded decision, for one radius."""
     out = {}
@@ -202,6 +257,11 @@ def build_table(cfg):
     df.insert(0, "obs_id", [f"OBS{i + 1:04d}" for i in range(len(df))])
     nist, unplaced = match_nist(df, load_records(wb))
     df = pd.concat([df, nist], axis=1)
+    subset = cfg["sources"].get("observations_subset_geojson")
+    subset_info = None
+    if subset:
+        keep, subset_info = select_subset(df, cfg.path(subset))
+        df = df.iloc[keep].reset_index(drop=True)          # feature_index stays the full GeoJSON's
     s = cfg["simulation"]
     df["window_start_s"] = df.model_t_s
     df["window_end_s"] = df.model_t_s + 60.0 * df.nist_window_min
@@ -261,7 +321,7 @@ def build_table(cfg):
 
     meta = {"created_utc": utc_now(), "source": str(src), "source_sha256": sha256(src),
             "nist_workbook": str(wb), "nist_workbook_sha256": sha256(wb),
-            "nist_rows_not_in_geojson": unplaced,
+            "nist_rows_not_in_geojson": unplaced, "subset": subset_info,
             "config_sha256": cfg.sha256, "features": len(df),
             "fuel_sha256": sha256(fuels / f"{stems['FBFM']}.tif"),
             "bldg_area_sha256": sha256(fuels / f"{stems['BLDG_AREA']}.tif"),

@@ -74,6 +74,9 @@ class Config(dict):
 # Check runs at ensemble means, e.g. CHK01_I00MEAN, CHK01_I01MEAN, CHK01_I00MEAN_REP
 # (the repeat has identical inputs and seed, in its own folder).
 CHECK_RE = re.compile(r"^(CHK\d{2})_I\d{2}MEAN(_REP)?$")
+# Sensitivity runs (not part of the calibration), e.g. SEN01_I08MEAN_PEPS0.001: a row of
+# ensembles/SEN01.csv, whose extra columns may override namelist settings (case.OVERRIDABLE).
+SENS_RE = re.compile(r"^(SEN\d{2})_[A-Za-z0-9._]+$")
 
 
 def member_id(iteration, member):
@@ -83,7 +86,7 @@ def member_id(iteration, member):
 def parse_run_id(rid):
     """(iteration, member) of a member run; (None, None) for BASELINE and check runs.
     Use run_group, not this, to tell the kinds apart."""
-    if rid == BASELINE or CHECK_RE.match(rid):
+    if rid == BASELINE or CHECK_RE.match(rid) or SENS_RE.match(rid):
         return None, None
     m = MEMBER_RE.match(rid)
     if not m or int(m.group(2)) < 1:
@@ -96,7 +99,7 @@ def run_group(rid):
     """BASELINE, I00, I01, ... or CHK01, ...: the runs folder and the coefficient file."""
     if rid == BASELINE:
         return BASELINE
-    c = CHECK_RE.match(rid)
+    c = CHECK_RE.match(rid) or SENS_RE.match(rid)
     if c:
         return c.group(1)
     iteration, _ = parse_run_id(rid)

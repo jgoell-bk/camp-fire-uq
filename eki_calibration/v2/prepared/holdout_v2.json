@@ -1,0 +1,95 @@
+{
+ "created_utc": "2026-11-10T18:48:04Z",
+ "file": "holdout_v2.csv",
+ "sha256": "a2f61db7a58ef8e152a329dc995bdd80bf69bc6f0c2653ac8a4a87938b0247ec",
+ "settings": {
+  "version": 2,
+  "blocks_from": "../prepared/holdout_v1.csv",
+  "block_m": 1000,
+  "fraction": 0.2,
+  "seed": 20261108
+ },
+ "observations_sha256": "029781a88856ed25d42eee1dced0b3dad45e335ff3d0760519e5bf602fadfde8",
+ "blocks": 191,
+ "units": 191,
+ "holdout_units": 40,
+ "holdout_blocks": 40,
+ "links_spanning_blocks": 0,
+ "same_event_groups": [],
+ "rule": "1 km blocks from the fuel grid's top-left corner, located by the frozen sampling cell (else the containing cell); blocks linked by a shared NIST record or a same_event_groups entry form one unit; each block keeps its partition in ../prepared/holdout_v1.csv",
+ "scope": "spatial generalization within this fire, not validation on an independent fire",
+ "coverage": {
+  "fit": {
+   "blocks": 151,
+   "reports": 2029,
+   "in_window": 1965,
+   "after_window": 64,
+   "primary_direct": 1265,
+   "primary_proxy": 749,
+   "primary_excluded": 15,
+   "residual": 174,
+   "candidate_target": 1062,
+   "candidate_target_proxy": 341,
+   "in_window_0-3h": 271,
+   "in_window_3-6h": 565,
+   "in_window_6-9h": 576,
+   "in_window_9-12h": 315,
+   "in_window_12-18h": 132,
+   "in_window_18-24.01h": 106,
+   "fire_type_V": 469,
+   "fire_type_R": 528,
+   "fire_type_C": 276,
+   "fire_type_S": 362,
+   "fire_type_O": 394,
+   "km_from_ignition_p10_p50_p90": [
+    12.3,
+    14.6,
+    19.3
+   ],
+   "x_km_range": [
+    606.1,
+    634.0
+   ],
+   "y_km_range": [
+    4384.4,
+    4410.1
+   ]
+  },
+  "holdout": {
+   "blocks": 40,
+   "reports": 484,
+   "in_window": 463,
+   "after_window": 21,
+   "primary_direct": 275,
+   "primary_proxy": 202,
+   "primary_excluded": 7,
+   "residual": 50,
+   "candidate_target": 208,
+   "candidate_target_proxy": 81,
+   "in_window_0-3h": 90,
+   "in_window_3-6h": 156,
+   "in_window_6-9h": 95,
+   "in_window_9-12h": 70,
+   "in_window_12-18h": 35,
+   "in_window_18-24.01h": 17,
+   "fire_type_V": 94,
+   "fire_type_R": 123,
+   "fire_type_C": 110,
+   "fire_type_S": 71,
+   "fire_type_O": 86,
+   "km_from_ignition_p10_p50_p90": [
+    12.3,
+    13.0,
+    16.1
+   ],
+   "x_km_range": [
+    605.7,
+    632.7
+   ],
+   "y_km_range": [
+    4388.3,
+    4411.7
+   ]
+  }
+ }
+}
